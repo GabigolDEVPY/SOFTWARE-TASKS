@@ -2,6 +2,17 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
+class layouts(QVBoxLayout):
+    def __init__(self, texto, botao):
+        super().__init__()
+        self.addWidget(texto)
+        self.addWidget(botao)
+        self.configstyle()
+        
+    def configstyle(self):
+        self.setSpacing(10)
+        self.setContentsMargins(4, 0, 0, 110)
+
 class texto(QLabel):
     def __init__(self, nome):
         super().__init__()
@@ -28,11 +39,10 @@ class login(QMainWindow):
         # criando a janela
         self.widget_central = QWidget()
         self.vlayout = QVBoxLayout()
-        self.vlayout.setSpacing(0) 
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
                     
-        # textos
+        # textos, Usuário, Senha
         self.titulo = texto("BEM-VINDO")
         self.texto_login = texto("Usuário")
         self.texto_senha = texto("Senha")
@@ -41,13 +51,19 @@ class login(QMainWindow):
         self.campo_usuario = linha("Digite o nome...")
         self.campo_senha = linha('Digite a senha...')
         
+        # layout login
+        self.layout_login = layouts(self.texto_login, self.campo_usuario)
+        
+        # layout senha
+        self.layout_senha = QVBoxLayout()
+        self.layout_senha.addWidget(self.texto_senha)
+        self.layout_senha.addWidget(self.campo_senha)
         
         #adicionando na tela
         self.vlayout.addWidget(self.titulo)
-        self.vlayout.addWidget(self.texto_login)
-        self.vlayout.addWidget(self.campo_usuario)
-        self.vlayout.addWidget(self.texto_senha)
-        self.vlayout.addWidget(self.campo_senha)
+        self.vlayout.addLayout(self.layout_login)
+        self.vlayout.addLayout(self.layout_senha)
+
         self.setFixedSize(350, 500)
 
         
