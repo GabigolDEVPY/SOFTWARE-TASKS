@@ -13,6 +13,7 @@ class layouts(QVBoxLayout):
         self.setSpacing(10)
         self.setContentsMargins(4, 0, 0, 110)
 
+# criador e estilizador dos textos
 class texto(QLabel):
     def __init__(self, nome):
         super().__init__()
