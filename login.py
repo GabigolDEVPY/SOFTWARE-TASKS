@@ -55,10 +55,7 @@ class login(QMainWindow):
         self.layout_login = layouts(self.texto_login, self.campo_usuario)
         
         # layout senha
-        self.layout_senha = QVBoxLayout()
-        self.layout_senha.addWidget(self.texto_senha)
-        self.layout_senha.addWidget(self.campo_senha)
-        
+        self.layout_senha = layouts(self.texto_senha, self.campo_senha)
         #adicionando na tela
         self.vlayout.addWidget(self.titulo)
         self.vlayout.addLayout(self.layout_login)
