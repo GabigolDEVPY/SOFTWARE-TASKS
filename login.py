@@ -2,6 +2,15 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
+
+class botoes(QPushButton):
+    def __init__(self, nome, cor):
+        super().__init__()
+        self.setText(nome)
+        self.setFixedSize(300, 40)
+        self.setStyleSheet(f"QPushButton {{color:{cor} ; background-color: #0b8e1f}}")
+
+# criar layouts
 class layouts(QVBoxLayout):
     def __init__(self, texto, botao):
         super().__init__()
@@ -10,17 +19,18 @@ class layouts(QVBoxLayout):
         self.configstyle()
         
     def configstyle(self):
-        self.setSpacing(10)
-        self.setContentsMargins(4, 0, 0, 110)
+        self.setSpacing(8)
+        
 
 # criador e estilizador dos textos
 class texto(QLabel):
-    def __init__(self, nome):
+    def __init__(self, nome, tamanho):
         super().__init__()
-        self.configstyle(nome)
-    def configstyle(self, nome):
+        self.configstyle(nome, tamanho)
+    def configstyle(self, nome, tamanho):
         self.setText(nome)
         self.setContentsMargins(30, 0, 30, 0)
+        self.setStyleSheet(f"font-size: {tamanho}px;")
 
 # criador e estilizador de linhas 
 class linha(QLineEdit):
@@ -42,11 +52,16 @@ class login(QMainWindow):
         self.vlayout = QVBoxLayout()
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
+        
+        
+        # criando botões
+        self.botao_login = botoes("LOGIN", "#ffffff")
+        self.botao_registrar = botoes("REGISTRAR", "#ffffff")
                     
         # textos, Usuário, Senha
-        self.titulo = texto("BEM-VINDO")
-        self.texto_login = texto("Usuário")
-        self.texto_senha = texto("Senha")
+        self.titulo = texto("BEM-VINDO", "30")
+        self.texto_login = texto("Usuário", None)
+        self.texto_senha = texto("Senha", None)
         
         # campos de digitar senha e usuário
         self.campo_usuario = linha("Digite o nome...")
@@ -54,13 +69,19 @@ class login(QMainWindow):
         
         # layout login
         self.layout_login = layouts(self.texto_login, self.campo_usuario)
+        self.layout_login.setContentsMargins(0, 10, 0, 20)
         
         # layout senha
         self.layout_senha = layouts(self.texto_senha, self.campo_senha)
+        self.layout_senha.setContentsMargins(0, 0, 0, 110)
+        
+        
         #adicionando na tela
         self.vlayout.addWidget(self.titulo)
         self.vlayout.addLayout(self.layout_login)
         self.vlayout.addLayout(self.layout_senha)
+        self.vlayout.addWidget(self.botao_login)
+        self.vlayout.addWidget(self.botao_registrar)
 
         self.setFixedSize(350, 500)
 
