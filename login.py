@@ -22,7 +22,7 @@ class texto(QLabel):
         self.setText(nome)
         self.setContentsMargins(30, 0, 30, 0)
 
-
+# criador e estilizador de linhas 
 class linha(QLineEdit):
     def __init__(self, nome):
         super().__init__()
