@@ -2,12 +2,13 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
+
 class botoes(QPushButton):
     def __init__(self, nome, cor):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
-        self.setStyleSheet(f"QPushButton {{background-color: #ff8000; border: None; border-radius: 4px; font-weight: bold}} QPushButton:hover {{background-color: #40b7f7;}}")
+        self.setStyleSheet(f"QPushButton {{background-color: #ff8000; border: None; border-radius: 4px; font-weight: bold; color: #282828;}} QPushButton:hover {{background-color: #9c4e00; font-size: 13px;}}")
 
 # criar layouts
 class layouts(QVBoxLayout):
@@ -36,7 +37,7 @@ class linha(QLineEdit):
         super().__init__()
         self.configStyle(nome)
     def configStyle(self, nome):
-        self.setStyleSheet("QLineEdit {font-size: 16px; border-radius: 4px; color: #ff8000; border: 1px solid #ff8000; background-color: #fffffff8;} QLineEdit:focus {border: 2px solid #ff8000;}")
+        self.setStyleSheet("QLineEdit {font-size: 16px; border-radius: 4px; color: #ff8000; border: 1px solid #ff8000; background-color: #282828;} QLineEdit:focus {border: 2px solid #ff8000;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
         self.setContentsMargins(50, 0, 30, 0)
@@ -47,16 +48,21 @@ class login(QMainWindow):
         
         # criando a janela
         self.widget_central = QWidget()
-        self.widget_central.setStyleSheet("background-color: #ffffff;")
+        self.widget_central.setStyleSheet("background-color: #282828;")
         self.vlayout = QVBoxLayout()
         self.vlayout.setContentsMargins(0, 0, 0, 30)
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
+        # criando olho botão
+        self.olho = QPushButton("🙈")
+        self.olho.setFixedSize(20, 20)
         
         # criando botões
         self.botao_login = botoes("LOGIN", None)
         self.botao_registrar = botoes("REGISTRAR", None)
-                    
+        
+        self.layout_senha_olho = QHBoxLayout()
+        
         # textos, Usuário, Senha
         self.titulo = texto("BEM-VINDO   ", "30")
         self.texto_login = texto("Usuário", None)
@@ -65,6 +71,7 @@ class login(QMainWindow):
         # campos de digitar senha e usuário
         self.campo_usuario = linha("Digite o nome...")
         self.campo_senha = linha('Digite a senha...')
+        self.campo_senha.setEchoMode(QLineEdit.Password)
         
         # layout login
         self.layout_login = layouts(self.texto_login, self.campo_usuario)
@@ -72,19 +79,25 @@ class login(QMainWindow):
         
         # layout senha
         self.layout_senha = layouts(self.texto_senha, self.campo_senha)
-        self.layout_senha.setContentsMargins(0, 0, 0, 103)
+        self.layout_senha.setContentsMargins(0, 0, 30, 103)
         
         #adicionando na tela
         self.vlayout.addWidget(self.titulo, alignment=Qt.AlignCenter)
         self.vlayout.addLayout(self.layout_login)
-        self.vlayout.addLayout(self.layout_senha)
+        self.layout_senha_olho.addLayout(self.layout_senha)
+        self.layout_senha_olho.addWidget(self.olho)
+        self.vlayout.addLayout(self.layout_senha_olho)
         self.vlayout.addWidget(self.botao_login, alignment=Qt.AlignCenter)
         self.vlayout.addWidget(self.botao_registrar, alignment=Qt.AlignCenter)
         self.setFixedSize(350, 500)
+        
+        self.olho.clicked.connect(lambda: trocar_status_senha)
+        def trocar_status_senha():
+            self.campo_senha.setEchoMode(QLineEdit.Normal)
 
 if __name__ == "__main__":
     app = QApplication([])
-    app.setStyle("windows11")
+    app.setStyle("qtdarktheme")
     janela_login = login()
     janela_login.show()
     app.exec()    
