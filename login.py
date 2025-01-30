@@ -54,6 +54,7 @@ class login(QMainWindow):
         self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
+        self.olho.setStyleSheet("border: 1px solid #ff8000; border-radius: 4px;")
         self.olho.setFixedSize(25, 25)
         
         # criando botões
@@ -94,8 +95,9 @@ class login(QMainWindow):
         self.setFixedSize(350, 500)
         
         self.olho.clicked.connect(lambda: trocar_status_senha())
+        
         def trocar_status_senha():
-            if self.olho.text == "🙈":
+            if self.olho.text() == "🙈":
                 self.campo_senha.setEchoMode(QLineEdit.Normal)
                 self.olho.setText("👀")
             else:
