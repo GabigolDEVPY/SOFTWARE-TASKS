@@ -40,7 +40,7 @@ class linha(QLineEdit):
         self.setStyleSheet("QLineEdit {font-size: 16px; border-radius: 4px; color: #ff8000; border: 1px solid #ff8000; background-color: #282828;} QLineEdit:focus {border: 2px solid #ff8000;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
-        self.setContentsMargins(50, 0, 30, 0)
+        self.setContentsMargins(50, 0, 45, 0)
 
 class login(QMainWindow):
     def __init__(self):
@@ -50,12 +50,11 @@ class login(QMainWindow):
         self.widget_central = QWidget()
         self.widget_central.setStyleSheet("background-color: #282828;")
         self.vlayout = QVBoxLayout()
-        self.vlayout.setContentsMargins(0, 0, 0, 30)
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
-        self.olho.setFixedSize(20, 20)
+        self.olho.setFixedSize(25, 25)
         
         # criando botões
         self.botao_login = botoes("LOGIN", None)
@@ -75,25 +74,34 @@ class login(QMainWindow):
         
         # layout login
         self.layout_login = layouts(self.texto_login, self.campo_usuario)
-        self.layout_login.setContentsMargins(0, 50, 0, 20)
+        self.layout_login.setContentsMargins(0, 50, 0, 0)
         
         # layout senha
-        self.layout_senha = layouts(self.texto_senha, self.campo_senha)
-        self.layout_senha.setContentsMargins(0, 0, 30, 103)
+        self.layout_senha = QGridLayout()
+        self.layout_senha.addWidget(self.texto_senha, 0, 0)
+        self.layout_senha.addWidget(self.campo_senha, 1, 0)
+        self.layout_senha.addWidget(self.olho, 1, 2)
+        self.layout_senha.setContentsMargins(0, 20, 5, 100)
         
         #adicionando na tela
+
+        # layout principal
         self.vlayout.addWidget(self.titulo, alignment=Qt.AlignCenter)
         self.vlayout.addLayout(self.layout_login)
-        self.layout_senha_olho.addLayout(self.layout_senha)
-        self.layout_senha_olho.addWidget(self.olho)
-        self.vlayout.addLayout(self.layout_senha_olho)
+        self.vlayout.addLayout(self.layout_senha)
         self.vlayout.addWidget(self.botao_login, alignment=Qt.AlignCenter)
         self.vlayout.addWidget(self.botao_registrar, alignment=Qt.AlignCenter)
         self.setFixedSize(350, 500)
         
-        self.olho.clicked.connect(lambda: trocar_status_senha)
+        self.olho.clicked.connect(lambda: trocar_status_senha())
         def trocar_status_senha():
-            self.campo_senha.setEchoMode(QLineEdit.Normal)
+            if self.olho.text == "🙈":
+                self.campo_senha.setEchoMode(QLineEdit.Normal)
+                self.olho.setText("👀")
+            else:
+                self.campo_senha.setEchoMode(QLineEdit.Password)
+                self.olho.setText("🙈")
+                
 
 if __name__ == "__main__":
     app = QApplication([])
