@@ -1,6 +1,8 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from tema import aplicar_tema_dark
+import qdarktheme
 
 
 class botoes(QPushButton):
@@ -8,7 +10,6 @@ class botoes(QPushButton):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
-        self.setStyleSheet(f"QPushButton {{background-color: #ff8000; border: None; border-radius: 4px; font-weight: bold; color: #282828;}} QPushButton:hover {{background-color: #9c4e00; font-size: 13px;}}")
 
 # criar layouts
 class layouts(QVBoxLayout):
@@ -29,7 +30,6 @@ class texto(QLabel):
     def configstyle(self, nome, tamanho):
         self.setText(nome)
         self.setContentsMargins(50, 0, 30, 0)
-        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold; color: #ff8000 ;")
 
 # criador e estilizador de linhas 
 class linha(QLineEdit):
@@ -37,7 +37,6 @@ class linha(QLineEdit):
         super().__init__()
         self.configStyle(nome)
     def configStyle(self, nome):
-        self.setStyleSheet("QLineEdit {font-size: 16px; border-radius: 4px; color: #ff8000; border: 1px solid #ff8000; background-color: #282828;} QLineEdit:focus {border: 2px solid #ff8000;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
         self.setContentsMargins(50, 0, 45, 0)
@@ -48,14 +47,14 @@ class login(QMainWindow):
         
         # criando a janela
         self.widget_central = QWidget()
-        self.widget_central.setStyleSheet("background-color: #282828;")
+
         self.vlayout = QVBoxLayout()
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
-        self.olho.setStyleSheet("border: 1px solid #ff8000; border-radius: 4px;")
-        self.olho.setFixedSize(25, 25)
+        self.olho.setStyleSheet("border: 1px solid ; border-radius: 4px;")
+        self.olho.setFixedSize(30, 30)
         
         # criando botões
         self.botao_login = botoes("LOGIN", None)
@@ -107,7 +106,7 @@ class login(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication([])
-    app.setStyle("qtdarktheme")
+    tema = aplicar_tema_dark(app)
     janela_login = login()
     janela_login.show()
     app.exec()    
