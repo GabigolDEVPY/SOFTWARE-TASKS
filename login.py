@@ -10,7 +10,7 @@ class botoes(QPushButton):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
-        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold;} QPushButton:Hover {background-color: #25004a;}")
+        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold;} QPushButton:Hover {background-color: #000000;}")
 
 # criar layouts
 class layouts(QVBoxLayout):
