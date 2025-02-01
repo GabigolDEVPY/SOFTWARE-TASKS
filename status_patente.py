@@ -2,7 +2,6 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from custom_sidebar import Sidebar
-from tema import aplicar_tema_dark
 import sys
 
 class statusPatente(QWidget):

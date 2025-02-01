@@ -1,7 +1,6 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from tema import aplicar_tema_dark
 import sys
 
 class botoes(QPushButton):
@@ -32,7 +31,7 @@ class Sidebar(QWidget):
         # Criar botões e adicionar ao VerticalLayout
         self.botao_dashboard = botoes("🏠")
         self.botao_tarefas = botoes("📋")
-        self.botao_diarias = botoes("📦")
+        self.botao_diarias = botoes("📅")
         self.botao_concluidos = botoes("✅")
         self.botao_patente = botoes("🎖️")
 
@@ -59,7 +58,7 @@ class Sidebar(QWidget):
             self.animation.setEndValue(145)
             self.botao_dashboard.setText("🏠 Dashboard")
             self.botao_tarefas.setText("📋 Tarefas")
-            self.botao_diarias.setText("📦 Diarias")
+            self.botao_diarias.setText("📅 Diarias")
             self.botao_concluidos.setText("✅ Concluidos")
             self.botao_patente.setText("🎖️ Patente")
         else:
@@ -67,7 +66,7 @@ class Sidebar(QWidget):
             self.animation.setEndValue(70)
             self.botao_dashboard.setText("🏠")
             self.botao_tarefas.setText("📋")
-            self.botao_diarias.setText("📦")
+            self.botao_diarias.setText("📅")
             self.botao_concluidos.setText("✅")
             self.botao_patente.setText("🎖️")
         self.animation.start()      
