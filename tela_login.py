@@ -1,6 +1,7 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from tela_inicial import janela_principal
 from tema import aplicar_tema_dark
 import qdarktheme
 
@@ -10,7 +11,7 @@ class botoes(QPushButton):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
-        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold;} QPushButton:Hover {background-color: #000000;}")
+        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold; color: #ffffff;} QPushButton:Hover {background-color: #000000;}")
 
 # criar layouts
 class layouts(QVBoxLayout):
@@ -29,7 +30,7 @@ class texto(QLabel):
         super().__init__()
         self.configstyle(nome, tamanho)
     def configstyle(self, nome, tamanho):
-        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold;")
+        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold; color: #ffffff;")
         self.setText(nome)
         self.setContentsMargins(50, 0, 20, 0)
 
@@ -39,7 +40,7 @@ class linha(QLineEdit):
         super().__init__()
         self.configStyle(nome)
     def configStyle(self, nome):
-        self.setStyleSheet("QLineEdit:Focus {border: 2px solid #400040;} QLineEdit:Hover {border: 1px solid #400040;}")
+        self.setStyleSheet("QLineEdit {border: 1px solid #400040; color: #ffffff;} QLineEdit:Focus {border: 3px solid #400040;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
         self.setContentsMargins(50, 0, 30, 0)
@@ -58,7 +59,7 @@ class login(QMainWindow):
         self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
-        self.olho.setStyleSheet("border: 1px solid ; border-radius: 4px;")
+        self.olho.setStyleSheet("border: 1px solid #400040; border-radius: 4px;")
         self.olho.setFixedSize(30, 30)
         
         # criando botões
@@ -68,7 +69,7 @@ class login(QMainWindow):
 
         
         # textos, Usuário, Senha
-        self.titulo = texto("BEM-VINDO   ", "30")
+        self.titulo = texto("    BEM-VINDO ", "30")
         self.texto_login = texto("Usuário", "14")
         self.texto_senha = texto("Senha", "14")
         
@@ -91,14 +92,23 @@ class login(QMainWindow):
         #adicionando na tela
 
         # layout principal
-        self.vlayout.addWidget(self.titulo, alignment=Qt.AlignCenter)
+        self.vlayout.addWidget(self.titulo, alignment=Qt.AlignTop)
         self.vlayout.addLayout(self.layout_login)
         self.vlayout.addLayout(self.layout_senha)
         self.vlayout.addWidget(self.botao_login, alignment=Qt.AlignCenter)
         self.vlayout.addWidget(self.botao_registrar, alignment=Qt.AlignCenter)
         self.setFixedSize(350, 500)
         
+        
+        def criar_janela_principal(self):
+            self.janela = janela_principal()
+            self.janela.show()
+            self.close()
+            
+            
+            
         self.olho.clicked.connect(lambda: trocar_status_senha())
+        self.botao_login.clicked.connect(lambda: criar_janela_principal(self))
         
         def trocar_status_senha():
             if self.olho.text() == "🙈":
@@ -107,11 +117,5 @@ class login(QMainWindow):
             else:
                 self.campo_senha.setEchoMode(QLineEdit.Password)
                 self.olho.setText("🙈")
+        self.show()        
                 
-
-if __name__ == "__main__":
-    app = QApplication([])
-    tema = aplicar_tema_dark.aplicar_outro(app, app)
-    janela_login = login()
-    janela_login.show()
-    app.exec()    

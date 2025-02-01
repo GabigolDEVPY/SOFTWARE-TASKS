@@ -2,7 +2,6 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from custom_sidebar import Sidebar
-from tema import aplicar_tema_dark
 from status_patente import statusPatente
 import sys
 
@@ -21,15 +20,9 @@ class janela_principal(QMainWindow):
         
         # criando status pantente
         self.statusPatente = statusPatente()
+        self.statusPatente.setContentsMargins(0, 0, 0, 20)
         
         
         self.widget_central.setLayout(self.CentralLayout)
-        self.CentralLayout.addWidget(self.sideBar, alignment=Qt.AlignLeft)
+        self.CentralLayout.addWidget(self.sideBar, alignment=Qt.AlignTop | Qt.AlignLeft)
         self.CentralLayout.addWidget(self.statusPatente, alignment=Qt.AlignTop)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    tema = aplicar_tema_dark(app)
-    window = janela_principal()
-    window.show()
-    app.exec()        

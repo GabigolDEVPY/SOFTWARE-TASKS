@@ -4,74 +4,74 @@ from PySide6.QtGui import *
 from tema import aplicar_tema_dark
 import sys
 
+class botoes(QPushButton):
+    def __init__(self, nome):
+        super().__init__()
+        self.setMinimumSize(40, 60)
+        self.setText(nome)
+        self.setMinimumHeight(70)
+        self.setStyleSheet("QPushButton {background-color: #400080; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff;} QPushButton:Hover {Background-color: #000000;}")
+        
+
 class Sidebar(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.expanded = False  # 🔹 Estado inicial: recolhida
-        self.setFixedWidth(60)  # 🔹 Começa mostrando só os ícones
+        self.setFixedWidth(70)  # 🔹 Começa mostrando só os ícones
         
-        # Layout vertical da sidebar
-        self.layout = QVBoxLayout()
-        self.layout.setContentsMargins(5, 5, 5, 5)
-        self.layout.setSpacing(0)
+        # VerticalLayout vertical da sidebar
+        self.VerticalLayout = QVBoxLayout()
+        self.VerticalLayout.setContentsMargins(5, 5, 5, 5)
+        self.VerticalLayout.setSpacing(0)
 
         # 🔹 Botão de menu (três barras)
         self.btn_menu = QPushButton(" ☰ ")
-        self.btn_menu.setStyleSheet("color: white; background: #000000; border: none; font-size: 20px;")
+        self.btn_menu.setStyleSheet("QPushButton {color: white; background: #000000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #400040;}")
         self.btn_menu.clicked.connect(self.toggle_sidebar)  # Conecta ao método de expandir/retrair
-        self.layout.addWidget(self.btn_menu)
 
-        # 🔹 Botões da sidebar
-        self.buttons = []
-        button_data = [
-            ("🏠", " Home"),
-            ("📊", " Dashboard"),
-            ("📦", " Orders"),
-            ("🛒", " Products"),
-            ("👥", " Customers")
-        ]
+        # Criar botões e adicionar ao VerticalLayout
+        self.botao_dashboard = botoes("🏠")
+        self.botao_tarefas = botoes("📋")
+        self.botao_diarias = botoes("📦")
+        self.botao_concluidos = botoes("✅")
+        self.botao_patente = botoes("🎖️")
 
-        # Criar botões e adicionar ao layout
-        for icon, text in button_data:
-            btn = QPushButton(icon if not self.expanded else icon + text)
-            btn.setStyleSheet("""
-                QPushButton {
-                    color: white;
-                    background: #ff1e0057;
-                    border: none;
-                    text-align: left;
-                    font-size: 16px;
-                    padding: 10px;
-                }
-                QPushButton:hover {
-                    background-color: #000000;
-                }
-            """)
-            btn.setMinimumHeight(70)
-            self.buttons.append(btn)
-            self.layout.setSpacing(0)
-            self.layout.addWidget(btn)
 
-        self.layout.addStretch()  # 🔹 Mantém alinhamento correto
-        self.setLayout(self.layout)
+        self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
+        self.setLayout(self.VerticalLayout)
 
         # 🔹 Criando animação para suavizar a expansão
         self.animation = QPropertyAnimation(self, b"minimumWidth")
+        self.animation.setDuration(400)
+        self.animation.setEasingCurve(QEasingCurve.InOutQuad)
+        
+        self.VerticalLayout.addWidget(self.btn_menu)
+        self.VerticalLayout.addWidget(self.botao_tarefas)
+        self.VerticalLayout.addWidget(self.botao_diarias)
+        self.VerticalLayout.addWidget(self.botao_concluidos)
+        self.VerticalLayout.addWidget(self.botao_patente)
 
     def toggle_sidebar(self):
-        """ Expande ou retrai a sidebar com animação """
-        if self.expanded:
-            new_width = 60
-            for btn in self.buttons:
-                btn.setText(btn.text()[0])  # Mantém só o ícone
-        else:
-            new_width = 200
-            for i, btn in enumerate(self.buttons):
-                btn.setText(["🏠 Home", "📊 Dashboard", "📦 Orders", "🛒 Products", "👥 Customers"][i])
-
         self.expanded = not self.expanded
-        self.animation.setDuration(300)  # 🔹 Tempo da animação (300ms)
-        self.animation.setStartValue(self.width())
-        self.animation.setEndValue(new_width)
+        
+        if self.expanded:
+            self.animation.setStartValue(70)
+            self.animation.setEndValue(145)
+            self.botao_dashboard.setText("🏠 Dashboard")
+            self.botao_tarefas.setText("📋 Tarefas")
+            self.botao_diarias.setText("📦 Diarias")
+            self.botao_concluidos.setText("✅ Concluidos")
+            self.botao_patente.setText("🎖️ Patente")
+        else:
+            self.animation.setStartValue(145)
+            self.animation.setEndValue(70)
+            self.botao_dashboard.setText("🏠")
+            self.botao_tarefas.setText("📋")
+            self.botao_diarias.setText("📦")
+            self.botao_concluidos.setText("✅")
+            self.botao_patente.setText("🎖️")
         self.animation.start()      
+            
+
+
 
