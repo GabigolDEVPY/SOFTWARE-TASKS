@@ -10,6 +10,7 @@ class botoes(QPushButton):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
+        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold;} QPushButton:Hover {background-color: #25004a;}")
 
 # criar layouts
 class layouts(QVBoxLayout):
@@ -28,8 +29,9 @@ class texto(QLabel):
         super().__init__()
         self.configstyle(nome, tamanho)
     def configstyle(self, nome, tamanho):
+        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold;")
         self.setText(nome)
-        self.setContentsMargins(50, 0, 30, 0)
+        self.setContentsMargins(50, 0, 20, 0)
 
 # criador e estilizador de linhas 
 class linha(QLineEdit):
@@ -37,9 +39,10 @@ class linha(QLineEdit):
         super().__init__()
         self.configStyle(nome)
     def configStyle(self, nome):
+        self.setStyleSheet("QLineEdit:Focus {border: 2px solid #400040;} QLineEdit:Hover {border: 1px solid #400040;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
-        self.setContentsMargins(50, 0, 45, 0)
+        self.setContentsMargins(50, 0, 30, 0)
 
 class login(QMainWindow):
     def __init__(self):
@@ -47,8 +50,10 @@ class login(QMainWindow):
         
         # criando a janela
         self.widget_central = QWidget()
+        self.widget_central.setStyleSheet("background-color: #161616;")
 
         self.vlayout = QVBoxLayout()
+        self.vlayout.setContentsMargins(0, 0, 0, 50)
         self.widget_central.setLayout(self.vlayout)
         self.setCentralWidget(self.widget_central)
         # criando olho botão
@@ -60,12 +65,12 @@ class login(QMainWindow):
         self.botao_login = botoes("LOGIN", None)
         self.botao_registrar = botoes("REGISTRAR", None)
         
-        self.layout_senha_olho = QHBoxLayout()
+
         
         # textos, Usuário, Senha
         self.titulo = texto("BEM-VINDO   ", "30")
-        self.texto_login = texto("Usuário", None)
-        self.texto_senha = texto("Senha", None)
+        self.texto_login = texto("Usuário", "14")
+        self.texto_senha = texto("Senha", "14")
         
         # campos de digitar senha e usuário
         self.campo_usuario = linha("Digite o nome...")
@@ -81,7 +86,7 @@ class login(QMainWindow):
         self.layout_senha.addWidget(self.texto_senha, 0, 0)
         self.layout_senha.addWidget(self.campo_senha, 1, 0)
         self.layout_senha.addWidget(self.olho, 1, 2)
-        self.layout_senha.setContentsMargins(0, 20, 5, 100)
+        self.layout_senha.setContentsMargins(0, 20, 15, 100)
         
         #adicionando na tela
 
@@ -106,7 +111,7 @@ class login(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication([])
-    tema = aplicar_tema_dark(app)
+    tema = aplicar_tema_dark.aplicar_outro(app, app)
     janela_login = login()
     janela_login.show()
     app.exec()    
