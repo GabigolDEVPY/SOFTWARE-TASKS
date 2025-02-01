@@ -3,6 +3,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from custom_sidebar import Sidebar
 from tema import aplicar_tema_dark
+from status_patente import statusPatente
 import sys
 
 class janela_principal(QMainWindow):
@@ -13,10 +14,18 @@ class janela_principal(QMainWindow):
         self.setCentralWidget(self.widget_central)
         self.CentralLayout = QHBoxLayout()
         self.widget_central.setStyleSheet("background-color: #161616;")
+        
+        # criando a sidebar
         self.sideBar = Sidebar(self)
         self.sideBar.setParent(self)
+        
+        # criando status pantente
+        self.statusPatente = statusPatente()
+        
+        
         self.widget_central.setLayout(self.CentralLayout)
         self.CentralLayout.addWidget(self.sideBar, alignment=Qt.AlignLeft)
+        self.CentralLayout.addWidget(self.statusPatente, alignment=Qt.AlignTop)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
