@@ -19,8 +19,6 @@ class statusPatente(QWidget):
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(60, 20)
         self.atualizar_patente()
-    # def addXP(self):
-    #     self.XP.text() = str(int(self.XP.text() + 50))    
         
     def atualizar_patente(self):
         if int(self.XP.text()) >= 1000:
@@ -45,3 +43,7 @@ class statusPatente(QWidget):
         self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignTop)
         self.layoutStatus.addWidget(self.patente)
         
+def addXP(self):
+    print("XP")
+    xp = int(self.XP.text) + 30
+    self.XP.setText(str(xp))   

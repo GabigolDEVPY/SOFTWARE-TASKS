@@ -1,7 +1,7 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from status_patente import statusPatente
+import status_patente 
 import sys
 
 class botoes(QPushButton):
@@ -27,16 +27,20 @@ class Sidebar(QWidget):
         # 🔹 Botão de menu (três barras)
         self.btn_menu = QPushButton(" ☰ ")
         self.btn_menu.setStyleSheet("QPushButton {color: white; background: #000000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #400040;}")
-        self.btn_menu.clicked.connect(self.toggle_sidebar)  # Conecta ao método de expandir/retrair
-        self.btn_menu.clicked.connect(statusPatente.addXP)  
-        self.btn_menu.clicked.connect(statusPatente.)  
+        self.btn_menu.clicked.connect(self.toggle_sidebar)  # Conecta ao método de expandir/retrair 
 
         # Criar botões e adicionar ao VerticalLayout
         self.botao_dashboard = botoes("🏠")
-        self.botao_tarefas = botoes("📋")
+        self.botao_tarefas = botoes("")
         self.botao_diarias = botoes("📅")
         self.botao_concluidos = botoes("✅")
         self.botao_patente = botoes("🎖️")
+        
+        self.botao_dashboard.clicked.connect(print("ok"))
+        
+        
+        
+        
 
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
@@ -48,6 +52,7 @@ class Sidebar(QWidget):
         self.animation.setEasingCurve(QEasingCurve.InOutQuad)
         
         self.VerticalLayout.addWidget(self.btn_menu)
+        self.VerticalLayout.addWidget(self.botao_dashboard)
         self.VerticalLayout.addWidget(self.botao_tarefas)
         self.VerticalLayout.addWidget(self.botao_diarias)
         self.VerticalLayout.addWidget(self.botao_concluidos)
@@ -60,7 +65,7 @@ class Sidebar(QWidget):
             self.animation.setStartValue(70)
             self.animation.setEndValue(145)
             self.botao_dashboard.setText("🏠 Dashboard")
-            self.botao_tarefas.setText("📋 Tarefas")
+            self.botao_tarefas.setText(" Tarefas")
             self.botao_diarias.setText("📅 Diarias")
             self.botao_concluidos.setText("✅ Concluidos")
             self.botao_patente.setText("🎖️ Patente")
@@ -68,7 +73,7 @@ class Sidebar(QWidget):
             self.animation.setStartValue(145)
             self.animation.setEndValue(70)
             self.botao_dashboard.setText("🏠")
-            self.botao_tarefas.setText("📋")
+            self.botao_tarefas.setText("")
             self.botao_diarias.setText("📅")
             self.botao_concluidos.setText("✅")
             self.botao_patente.setText("🎖️")
