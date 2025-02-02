@@ -68,7 +68,7 @@ class login(QMainWindow):
 
         
         # textos, Usuário, Senha
-        self.titulo = texto("    BEM-VINDO ", "30")
+        self.titulo = texto("     BEM-VINDO", "30")
         self.texto_login = texto("Usuário", "14")
         self.texto_senha = texto("Senha", "14")
         

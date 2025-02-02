@@ -1,7 +1,6 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from custom_sidebar import Sidebar
 import sys
 
 class statusPatente(QWidget):
@@ -15,11 +14,13 @@ class statusPatente(QWidget):
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff;")
         self.XPmenu.setFixedSize(25, 20)
         
-        self.XP = QLabel("0")
+        self.XP = QLabel("1001")
         self.XP.setStyleSheet("border-radius: None; background-color: #30005f; color: #ffffff;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(60, 20)
         self.atualizar_patente()
+    # def addXP(self):
+    #     self.XP.text() = str(int(self.XP.text() + 50))    
         
     def atualizar_patente(self):
         if int(self.XP.text()) >= 1000:
