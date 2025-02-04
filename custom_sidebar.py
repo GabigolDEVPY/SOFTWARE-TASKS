@@ -1,6 +1,7 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from status_patente import statusPatente
 import sys
 
 class botoes(QPushButton):
@@ -13,8 +14,9 @@ class botoes(QPushButton):
         
 
 class Sidebar(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, status_patente, parent=None):
         super().__init__(parent)
+        self.status_patentes = statusPatente
         self.expanded = False  # 🔹 Estado inicial: recolhida
         self.setFixedWidth(70)  # 🔹 Começa mostrando só os ícones
         
@@ -34,6 +36,9 @@ class Sidebar(QWidget):
         self.botao_diarias = botoes("📅")
         self.botao_concluidos = botoes("✅")
         self.botao_patente = botoes("🎖️")
+        
+        
+        self.botao_dashboard.clicked.connect(self.status_patentes.atualizar_xp)
 
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
@@ -45,6 +50,7 @@ class Sidebar(QWidget):
         self.animation.setEasingCurve(QEasingCurve.InOutQuad)
         
         self.VerticalLayout.addWidget(self.btn_menu)
+        self.VerticalLayout.addWidget(self.botao_dashboard)
         self.VerticalLayout.addWidget(self.botao_tarefas)
         self.VerticalLayout.addWidget(self.botao_diarias)
         self.VerticalLayout.addWidget(self.botao_concluidos)
@@ -69,8 +75,8 @@ class Sidebar(QWidget):
             self.botao_diarias.setText("📅")
             self.botao_concluidos.setText("✅")
             self.botao_patente.setText("🎖️")
-        self.animation.start()      
-            
+        self.animation.start()
+        
 
 
 

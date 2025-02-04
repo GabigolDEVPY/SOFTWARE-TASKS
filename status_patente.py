@@ -21,6 +21,7 @@ class statusPatente(QWidget):
         self.atualizar_patente()
         
     def atualizar_patente(self):
+        print("123")
         if int(self.XP.text()) >= 1000:
             Pixmap = QPixmap("D:\WINDOWS\PROGRAMACAO_TUDO\SOFTWARE-TASKS\icons\patente.png")
         elif int(self.XP.text()) < 1000:
@@ -43,7 +44,11 @@ class statusPatente(QWidget):
         self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignTop)
         self.layoutStatus.addWidget(self.patente)
         
-def addXP(self):
-    print("XP")
-    xp = int(self.XP.text) + 30
-    self.XP.setText(str(xp))   
+    def atualizar_xp(self):
+        print("XP atualizado!")  # Para ver se está sendo chamado
+        try:
+            print(self.XP.text())
+            novo_xp = int(self.XP.text()) + 100
+            self.XP.setText("10099")
+        except AttributeError:
+            print("Erro: status_patente.XP não encontrado!")
