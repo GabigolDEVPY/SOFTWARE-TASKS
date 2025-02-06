@@ -14,15 +14,13 @@ class janela_principal(QMainWindow):
         self.CentralLayout = QHBoxLayout()
         self.widget_central.setStyleSheet("background-color: #161616;")
         
-        # criando a sidebar
-        self.sideBar = Sidebar(self)
-        self.sideBar.setParent(self)
+        self.status_patente = statusPatente()
         
-        # criando status pantente
-        self.statusPatente = statusPatente()
-        self.statusPatente.setContentsMargins(0, 0, 0, 20)
+        # criando a sidebar
+        self.sideBar = Sidebar(self.status_patente)
+        self.sideBar.setParent(self)
         
         
         self.widget_central.setLayout(self.CentralLayout)
         self.CentralLayout.addWidget(self.sideBar, alignment=Qt.AlignTop | Qt.AlignLeft)
-        self.CentralLayout.addWidget(self.statusPatente, alignment=Qt.AlignTop)
+        self.CentralLayout.addWidget(self.status_patente, alignment=Qt.AlignTop)

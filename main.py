@@ -2,8 +2,6 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from tela_login import login
-from custom_sidebar import Sidebar
-from status_patente import statusPatente
 import sys
 
 

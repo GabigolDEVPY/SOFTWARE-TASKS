@@ -1,7 +1,6 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from status_patente import statusPatente
 import sys
 
 class botoes(QPushButton):
@@ -14,9 +13,9 @@ class botoes(QPushButton):
         
 
 class Sidebar(QWidget):
-    def __init__(self, status_patente, parent=None):
-        super().__init__(parent)
-        self.status_patentes = statusPatente
+    def __init__(self, status_patente):
+        super().__init__()
+        self.status_patente = status_patente
         self.expanded = False  # 🔹 Estado inicial: recolhida
         self.setFixedWidth(70)  # 🔹 Começa mostrando só os ícones
         
@@ -37,9 +36,9 @@ class Sidebar(QWidget):
         self.botao_concluidos = botoes("✅")
         self.botao_patente = botoes("🎖️")
         
+        self.botao_dashboard.clicked.connect(self.mudar_xp)
         
-        self.botao_dashboard.clicked.connect(self.status_patentes.atualizar_xp)
-
+        
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
         self.setLayout(self.VerticalLayout)
@@ -77,6 +76,13 @@ class Sidebar(QWidget):
             self.botao_patente.setText("🎖️")
         self.animation.start()
         
+    def mudar_xp(self):
+        # Alterando o XP ao clicar no botão
+        novo_xp = (int(self.status_patente.XP.text()) + 100)
+        print(novo_xp)
+        self.status_patente.XP.setText(str(novo_xp))
+        self.status_patente.atualizar_patente()
+
 
 
 
