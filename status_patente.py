@@ -7,6 +7,37 @@ local = os.path.dirname(os.path.abspath(__file__))
 local_patentes = os.path.join(local, "icons")
 patentes = [(i * 1000, os.path.join(local_patentes, f"Prancheta {i + 1}.png")) for i in range(111)]
 
+class popUp(QDialog):
+    def __init__(self, id, numero):
+        super().__init__()
+        self.setFixedSize(300, 300)
+        self.setStyleSheet("Background-color: #161616;")
+        
+        #criando componentes
+        self.VerticalLayout = QVBoxLayout()
+        self.setLayout(self.VerticalLayout)
+        self.label_patente = QLabel()
+        self.label_parabens = QLabel("LEVEL AUMENTADO\n"
+                                    f"           LEVEL {str(int(numero / 1000))}")
+        
+        self.label_parabens.setStyleSheet("font-size: 20px; color: #ffffff; font-weight: bold;")
+        self.label_patente.setFixedSize(150, 150)
+        self.label_patente.setScaledContents(True)
+        
+        self.botao = QPushButton("OK")
+        self.botao.setStyleSheet("QPushButton {background-color: #30005f; font-size: 20px; font-weight: bold; color: #ffffff; border-radius: 1px;} QPushButton:Hover {background-color: #000000;}")
+        self.botao.setFixedSize(150, 50)
+        self.patente = QPixmap(id)
+        self.label_patente.setPixmap(self.patente)
+        
+        self.VerticalLayout.addWidget(self.label_parabens, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.VerticalLayout.addWidget(self.label_patente, alignment=Qt.AlignCenter)
+        self.VerticalLayout.addWidget(self.botao, alignment=Qt.AlignCenter)
+        self.botao.clicked.connect(lambda: self.close())
+        
+        self.show()
+        self.exec()
+
 
 class statusPatente(QWidget):
     def __init__(self):
@@ -40,13 +71,21 @@ class statusPatente(QWidget):
         self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignTop)
         self.layoutStatus.addWidget(self.patente)
         
-        self.atualizar_patente()
+        self.patente_inicial()
+        
+    def patente_inicial(self):
+        xp = int(self.XP.text())
+        for i in range(111, -1, -1):
+            if xp == (i) * 1000:
+                Pixmap = QPixmap(patentes[i][1])
+                self.patente.setPixmap(Pixmap)    
         
     def atualizar_patente(self):
         xp = int(self.XP.text())
         for i in range(111, -1, -1):
             if xp == (i) * 1000:
                 Pixmap = QPixmap(patentes[i][1])
+                popUp(patentes[i][1], patentes[i][0])
                 self.patente.setPixmap(Pixmap)
 
 

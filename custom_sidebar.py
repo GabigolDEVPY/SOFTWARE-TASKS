@@ -79,7 +79,6 @@ class Sidebar(QWidget):
     def mudar_xp(self):
         # Alterando o XP ao clicar no botão
         novo_xp = (int(self.status_patente.XP.text()) + 100)
-        print(novo_xp)
         self.status_patente.XP.setText(str(novo_xp))
         self.status_patente.atualizar_patente()
 
