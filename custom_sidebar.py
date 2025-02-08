@@ -9,7 +9,7 @@ class botoes(QPushButton):
         self.setMinimumSize(40, 60)
         self.setText(nome)
         self.setMinimumHeight(70)
-        self.setStyleSheet("QPushButton {background-color: #400080; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff;} QPushButton:Hover {Background-color: #000000;}")
+        self.setStyleSheet("QPushButton {background-color:  #30005f; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff;} QPushButton:Hover {Background-color: #000000;}")
         
 
 class Sidebar(QWidget):
@@ -26,6 +26,7 @@ class Sidebar(QWidget):
 
         # 🔹 Botão de menu (três barras)
         self.btn_menu = QPushButton(" ☰ ")
+        self.btn_menu.setMinimumSize(70, 40)
         self.btn_menu.setStyleSheet("QPushButton {color: white; background: #000000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #400040;}")
 
 
@@ -35,9 +36,6 @@ class Sidebar(QWidget):
         self.botao_diarias = botoes("📅")
         self.botao_concluidos = botoes("✅")
         self.botao_patente = botoes("🎖️")
-        
-        self.botao_dashboard.clicked.connect(self.mudar_xp)
-        
         
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
@@ -75,11 +73,6 @@ class Sidebar(QWidget):
             self.botao_patente.setText("🎖️")
         self.animation.start()
         
-    def mudar_xp(self):
-        # Alterando o XP ao clicar no botão
-        novo_xp = (int(self.status_patente.XP.text()) + 100)
-        self.status_patente.XP.setText(str(novo_xp))
-        self.status_patente.atualizar_patente()
 
 
 

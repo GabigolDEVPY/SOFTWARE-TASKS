@@ -20,13 +20,13 @@ class popUp(QDialog):
         self.label_parabens = QLabel("LEVEL AUMENTADO\n"
                                     f"           LEVEL {str(int(numero / 1000))}")
         
-        self.label_parabens.setStyleSheet("font-size: 20px; color: #ffffff; font-weight: bold;")
+        self.label_parabens.setStyleSheet("font-size: 16px; color: #ffffff; font-weight: bold;")
         self.label_patente.setFixedSize(150, 150)
         self.label_patente.setScaledContents(True)
         
         self.botao = QPushButton("OK")
         self.botao.setStyleSheet("QPushButton {background-color: #30005f; font-size: 20px; font-weight: bold; color: #ffffff; border-radius: 1px;} QPushButton:Hover {background-color: #000000;}")
-        self.botao.setFixedSize(150, 50)
+        self.botao.setFixedSize(110, 35)
         self.patente = QPixmap(id)
         self.label_patente.setPixmap(self.patente)
         
@@ -42,10 +42,13 @@ class popUp(QDialog):
 class statusPatente(QFrame):
     def __init__(self):
         super().__init__()
-        self.setFixedSize(820, 40)
+        self.setFixedSize(830, 40)
         self.setStyleSheet("background-color: #30005f;")
         
+        self.teste = QLabel("testeeeeeeee")
         # criando widgets
+        
+        self.teste = QLabel("TESTEEEEE")
         self.XPmenu = QLabel("XP")
         self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
@@ -58,19 +61,21 @@ class statusPatente(QFrame):
         
         #criando layout
         self.layoutStatus = QHBoxLayout()
-        self.layoutStatus.setContentsMargins(670, 0, 0, 0)
+        self.layoutStatus.setContentsMargins(0, 0, 0, 0)
         self.layoutStatus.setSpacing(0)
         
         # criando patente
         self.patente = QLabel()
+        self.patente.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.patente.setFixedSize(50, 50)
         self.patente.setStyleSheet("border-radius: None; background-color: #30005f")
         self.patente.setScaledContents(True)
         self.patente.setContentsMargins(0, 0, 0, 10)
         
         self.setLayout(self.layoutStatus)
-        self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignCenter)
-        self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignCenter)
+        self.layoutStatus.addWidget(self.teste, alignment=Qt.AlignLeft)
+        self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignRight)
+        self.layoutStatus.addWidget(self.XP)
         self.layoutStatus.addWidget(self.patente)
         
         self.patente_inicial()
@@ -90,8 +95,11 @@ class statusPatente(QFrame):
                 popUp(patentes[i][1], patentes[i][0])
                 self.patente.setPixmap(Pixmap)
 
-
-            
+    def atualizar_xp(self):
+        print("123")
+        self.xp = int(self.XP.text()) + 100
+        self.XP.setText(str(self.xp))            
+        self.atualizar_patente()            
 
         
         
