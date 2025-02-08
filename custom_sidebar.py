@@ -21,13 +21,13 @@ class Sidebar(QWidget):
         
         # VerticalLayout vertical da sidebar
         self.VerticalLayout = QVBoxLayout()
-        self.VerticalLayout.setContentsMargins(5, 5, 5, 5)
+        self.VerticalLayout.setContentsMargins(0, 0, 0, 0)
         self.VerticalLayout.setSpacing(0)
 
         # 🔹 Botão de menu (três barras)
         self.btn_menu = QPushButton(" ☰ ")
         self.btn_menu.setStyleSheet("QPushButton {color: white; background: #000000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #400040;}")
-        self.btn_menu.clicked.connect(self.toggle_sidebar)  # Conecta ao método de expandir/retrair
+
 
         # Criar botões e adicionar ao VerticalLayout
         self.botao_dashboard = botoes("🏠")
@@ -42,11 +42,7 @@ class Sidebar(QWidget):
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
         self.setLayout(self.VerticalLayout)
-
-        # 🔹 Criando animação para suavizar a expansão
-        self.animation = QPropertyAnimation(self, b"minimumWidth")
-        self.animation.setDuration(400)
-        self.animation.setEasingCurve(QEasingCurve.InOutQuad)
+    
         
         self.VerticalLayout.addWidget(self.btn_menu)
         self.VerticalLayout.addWidget(self.botao_dashboard)
@@ -56,12 +52,15 @@ class Sidebar(QWidget):
         self.VerticalLayout.addWidget(self.botao_patente)
 
     def toggle_sidebar(self):
+        self.animation = QPropertyAnimation(self, b"minimumWidth")
+        self.animation.setDuration(400)
+        self.animation.setEasingCurve(QEasingCurve.InOutQuad)
         self.expanded = not self.expanded
         
         if self.expanded:
             self.animation.setStartValue(70)
             self.animation.setEndValue(145)
-            self.botao_dashboard.setText("🏠 Dashboard")
+            self.botao_dashboard.setText("🏠 Início")
             self.botao_tarefas.setText("📋 Tarefas")
             self.botao_diarias.setText("📅 Diarias")
             self.botao_concluidos.setText("✅ Concluidos")

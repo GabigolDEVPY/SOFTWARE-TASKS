@@ -39,24 +39,26 @@ class popUp(QDialog):
         self.exec()
 
 
-class statusPatente(QWidget):
+class statusPatente(QFrame):
     def __init__(self):
         super().__init__()
-        self.setFixedSize(150, 50)
-        self.setStyleSheet("background-color: #000000;")
+        self.setFixedSize(820, 40)
+        self.setStyleSheet("background-color: #30005f;")
         
         # criando widgets
-        self.XPmenu = QLabel(" XP")
-        self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff;")
-        self.XPmenu.setFixedSize(25, 20)
+        self.XPmenu = QLabel("XP")
+        self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
+        self.XPmenu.setFixedSize(35, 40)
         
         self.XP = QLabel("0")
-        self.XP.setStyleSheet("border-radius: None; background-color: #30005f; color: #ffffff;")
+        self.XP.setStyleSheet("border-radius: None; background-color: #161616; color: #ffffff; font-weight: semi-bold; font-size: 15px;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.XP.setFixedSize(60, 20)
+        self.XP.setFixedSize(70, 40)
         
         #criando layout
         self.layoutStatus = QHBoxLayout()
+        self.layoutStatus.setContentsMargins(670, 0, 0, 0)
         self.layoutStatus.setSpacing(0)
         
         # criando patente
@@ -67,8 +69,8 @@ class statusPatente(QWidget):
         self.patente.setContentsMargins(0, 0, 0, 10)
         
         self.setLayout(self.layoutStatus)
-        self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignTop)
-        self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignTop)
+        self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignCenter)
+        self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignCenter)
         self.layoutStatus.addWidget(self.patente)
         
         self.patente_inicial()
