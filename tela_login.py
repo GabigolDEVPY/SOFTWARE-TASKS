@@ -2,7 +2,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from tela_inicial import janela_principal
-import qdarktheme
+import sys
 
 
 class botoes(QPushButton):
@@ -118,3 +118,7 @@ class login(QMainWindow):
                 self.olho.setText("🙈")
         self.show()        
                 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = login()
+    app.exec()

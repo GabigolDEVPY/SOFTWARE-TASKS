@@ -1,6 +1,11 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+import os
+
+local = os.path.dirname(os.path.abspath(__file__))
+local_patentes = os.path.join(local, "icons")
+patentes = [(i * 1000, os.path.join(local_patentes, f"Prancheta {i + 1}.png")) for i in range(111)]
 
 
 class statusPatente(QWidget):
@@ -14,43 +19,38 @@ class statusPatente(QWidget):
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff;")
         self.XPmenu.setFixedSize(25, 20)
         
-        self.XP = QLabel("999")
+        self.XP = QLabel("0")
         self.XP.setStyleSheet("border-radius: None; background-color: #30005f; color: #ffffff;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(60, 20)
-        self.patente_inicial()
         
         #criando layout
         self.layoutStatus = QHBoxLayout()
         self.layoutStatus.setSpacing(0)
+        
+        # criando patente
+        self.patente = QLabel()
+        self.patente.setFixedSize(50, 50)
+        self.patente.setStyleSheet("border-radius: None; background-color: #30005f")
+        self.patente.setScaledContents(True)
+        self.patente.setContentsMargins(0, 0, 0, 10)
         
         self.setLayout(self.layoutStatus)
         self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignTop)
         self.layoutStatus.addWidget(self.XP, alignment=Qt.AlignTop)
         self.layoutStatus.addWidget(self.patente)
         
-    def patente_inicial(self):
-        print("123")
-        if int(self.XP.text()) >= 1000:
-            Pixmap = QPixmap("D:\WINDOWS\PROGRAMACAO_TUDO\SOFTWARE-TASKS\icons\patente.png")
-        elif int(self.XP.text()) < 1000:
-            Pixmap = QPixmap("D:\WINDOWS\PROGRAMACAO_TUDO\SOFTWARE-TASKS\icons\patente2.png")
-            
-        self.patente = QLabel()
-        self.patente.setPixmap(Pixmap)
-        self.patente.setFixedSize(50, 50)
-        self.patente.setStyleSheet("border-radius: None; background-color: #30005f")
-        self.patente.setScaledContents(True)
-        self.patente.setContentsMargins(0, 0, 0, 10)
+        self.atualizar_patente()
         
     def atualizar_patente(self):
-        print("123")
-        if int(self.XP.text()) >= 1000:
-            Pixmap = QPixmap("D:\WINDOWS\PROGRAMACAO_TUDO\SOFTWARE-TASKS\icons\patente.png")
-        elif int(self.XP.text()) < 1000:
-            Pixmap = QPixmap("D:\WINDOWS\PROGRAMACAO_TUDO\SOFTWARE-TASKS\icons\patente2.png")
+        xp = int(self.XP.text())
+        for i in range(111, -1, -1):
+            if xp == (i) * 1000:
+                Pixmap = QPixmap(patentes[i][1])
+                self.patente.setPixmap(Pixmap)
+
+
             
-        self.patente.setPixmap(Pixmap)
 
         
         
