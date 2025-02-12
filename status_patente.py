@@ -45,10 +45,8 @@ class statusPatente(QFrame):
         self.setFixedSize(830, 40)
         self.setStyleSheet("background-color: #30005f;")
         
-        self.teste = QLabel("testeeeeeeee")
         # criando widgets
         
-        self.teste = QLabel("TESTEEEEE")
         self.XPmenu = QLabel("XP")
         self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
@@ -73,7 +71,6 @@ class statusPatente(QFrame):
         self.patente.setContentsMargins(0, 0, 0, 10)
         
         self.setLayout(self.layoutStatus)
-        self.layoutStatus.addWidget(self.teste, alignment=Qt.AlignLeft)
         self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignRight)
         self.layoutStatus.addWidget(self.XP)
         self.layoutStatus.addWidget(self.patente)
@@ -92,8 +89,8 @@ class statusPatente(QFrame):
         for i in range(111, -1, -1):
             if xp == (i) * 1000:
                 Pixmap = QPixmap(patentes[i][1])
-                popUp(patentes[i][1], patentes[i][0])
                 self.patente.setPixmap(Pixmap)
+                popUp(patentes[i][1], patentes[i][0])
 
     def atualizar_xp(self):
         print("123")

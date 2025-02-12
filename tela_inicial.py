@@ -22,7 +22,7 @@ class janela_principal(QMainWindow):
 
             # Tamanho para o status_patente
             status_patente_width = 750 if self.expanded else 825 # Exemplo de valores diferentes
-
+            
             # Animação para `widgetcentro`
             anim_central = QPropertyAnimation(self.widgetcentro, b"minimumWidth")
             anim_central.setDuration(400)
