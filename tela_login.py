@@ -109,7 +109,7 @@ class login(QMainWindow):
             
             
         self.olho.clicked.connect(lambda: trocar_status_senha())
-        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, janela_principal()))
+        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, dados, self.campo_usuario.text(), self.campo_senha.text(), janela_principal()))
         
         def trocar_status_senha():
             if self.olho.text() == "🙈":
