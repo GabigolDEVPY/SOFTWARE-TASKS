@@ -9,7 +9,7 @@ class botoes(QPushButton):
         self.setMinimumSize(40, 60)
         self.setText(nome)
         self.setMinimumHeight(70)
-        self.setStyleSheet("QPushButton {background-color:  #30005f; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff;} QPushButton:Hover {Background-color: #000000;}")
+        self.setStyleSheet("QPushButton {background-color:  #30005f; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff; text-align: left; padding-left: 25px;} QPushButton:Hover {Background-color: #000000;}")
         
 
 class Sidebar(QWidget):
@@ -31,11 +31,11 @@ class Sidebar(QWidget):
 
 
         # Criar botões e adicionar ao VerticalLayout
-        self.botao_dashboard = botoes("🏠")
-        self.botao_tarefas = botoes("📋")
-        self.botao_diarias = botoes("📅")
-        self.botao_concluidos = botoes("✅")
-        self.botao_patente = botoes("🎖️")
+        self.botao_dashboard = botoes(" 🏠")
+        self.botao_tarefas = botoes(" 📋")
+        self.botao_diarias = botoes(" 📅")
+        self.botao_concluidos = botoes(" ✅")
+        self.botao_patente = botoes(" 🎖️")
         
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
@@ -66,11 +66,11 @@ class Sidebar(QWidget):
         else:
             self.animation.setStartValue(145)
             self.animation.setEndValue(70)
-            self.botao_dashboard.setText("🏠")
-            self.botao_tarefas.setText("📋")
-            self.botao_diarias.setText("📅")
-            self.botao_concluidos.setText("✅")
-            self.botao_patente.setText("🎖️")
+            self.botao_dashboard.setText(" 🏠")
+            self.botao_tarefas.setText(" 📋")
+            self.botao_diarias.setText(" 📅")
+            self.botao_concluidos.setText(" ✅")
+            self.botao_patente.setText(" 🎖️")
         self.animation.start()
         
 

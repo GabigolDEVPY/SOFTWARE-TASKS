@@ -93,7 +93,6 @@ class statusPatente(QFrame):
                 popUp(patentes[i][1], patentes[i][0])
 
     def atualizar_xp(self):
-        print("123")
         self.xp = int(self.XP.text()) + 100
         self.XP.setText(str(self.xp))            
         self.atualizar_patente()            

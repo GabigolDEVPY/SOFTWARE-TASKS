@@ -120,6 +120,6 @@ class login(QMainWindow):
                 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    app.setStyle("Cleanlooks")
     window = login()
     app.exec()

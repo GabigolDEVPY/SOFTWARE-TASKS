@@ -1,6 +1,31 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+import random
+
+
+tarefas = []
+
+class ver(QDialog):
+    def __init__(self, descricao):
+        super().__init__()
+        self.setStyleSheet("background-color: #303030;")
+        self.centrallayout = QVBoxLayout()
+        self.setLayout(self.centrallayout)
+        self.titulo = QLabel("DESCRIÇÃO")  
+        self.titulo.setStyleSheet("color: #ffffff; font-weight: bold; font-size: 20px;")      
+        self.descricao = QTextEdit(descricao)
+        self.descricao.setStyleSheet("color: #ffffff;")
+        self.descricao.setMinimumSize(400, 300)
+        self.descricao.setReadOnly(True)    
+        self.botao_ok = botoes("OK", 40, 150)
+        self.centrallayout.addWidget(self.titulo, alignment=Qt.AlignCenter)       
+        self.centrallayout.addWidget(self.descricao)       
+        self.centrallayout.addWidget(self.botao_ok, alignment=Qt.AlignCenter)
+        self.botao_ok.clicked.connect(lambda: self.close())
+        self.show()
+        self.exec()       
+
 
 class dialog_tarefa(QDialog):
     def __init__(self, lista):
@@ -36,15 +61,23 @@ class dialog_tarefa(QDialog):
         self.central_layout.addWidget(self.botao_cancelar, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.botao_cancelar.clicked.connect(lambda: self.close())
-        self.botao_ok.clicked.connect(lambda: add_task(self))
+        self.botao_ok.clicked.connect(lambda: add_task())
         
-        def add_task(self):
+        def add_task():
+            id = len(tarefas) + 1
             item = QListWidgetItem(self.lista)
-            widget = Custom_widget(self.tarefa.text())
+            widget = Custom_widget(self.tarefa.text(), id)
             item.setSizeHint(widget.sizeHint())
             self.lista.addItem(item)
             self.lista.setItemWidget(item, widget)
             widget.muda_cor()
+            tarefas.append({
+                "id": id, 
+                "titulo": self.titulo.text(),
+                "descrição": self.descricao.toPlainText()
+                })
+            print(tarefas)
+
             self.close()
             
 
@@ -61,11 +94,13 @@ class botoes(QPushButton):
         self.setFixedSize(largura, altura)
         
 class Custom_widget(QWidget):
-    def __init__(self, nome):
+    def __init__(self, nome, id):
         super().__init__()
         self.central_layout = QHBoxLayout()
         self.setLayout(self.central_layout)
+        self.id = id
         self.checkbox = QCheckBox()
+        self.checkbox.setStyleSheet("background-color: #c0c0c0;")
         self.checkbox.setStyleSheet("background: transparent;")
         self.checkbox.setFixedWidth(40)
         self.titulo = QLabel(nome)
@@ -77,7 +112,8 @@ class Custom_widget(QWidget):
         self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor())
         self.central_layout.addWidget(self.checkbox)     
         self.central_layout.addWidget(self.titulo)     
-        self.central_layout.addWidget(self.prioridade)     
+        self.central_layout.addWidget(self.prioridade)
+        
     
 
     def muda_cor(self):
@@ -93,24 +129,68 @@ class Custom_widget(QWidget):
         
 
 class TaskLista(QWidget):
-    def __init__(self):
+    def __init__(self, status_patente):
         super().__init__()
         self.CentralLayout = QHBoxLayout(self)
         self.task_list = QListWidget()
+        self.status_patente = status_patente
         
         # layout botões
         self.layout_botoes = QVBoxLayout()
         self.layout_botoes.setAlignment(Qt.AlignTop)
+        self.botao_concluir = botoes("CONCLUIR", 35, 80)
         self.botao_adicionar = botoes("ADICIONAR", 35, 80)
+        self.botao_ver = botoes("VER TAREFA", 35, 80)
         self.botao_excluir = botoes("EXCLUIR", 35, 80)
+        self.layout_botoes.addWidget(self.botao_concluir)
         self.layout_botoes.addWidget(self.botao_adicionar)
+        self.layout_botoes.addWidget(self.botao_ver)
         self.layout_botoes.addWidget(self.botao_excluir)
-        
         self.CentralLayout.addWidget(self.task_list)
         self.CentralLayout.addLayout(self.layout_botoes)
         
         self.botao_adicionar.clicked.connect(lambda: dialog_tarefa(self.task_list))
+        self.botao_concluir.clicked.connect(lambda: concluir_tarefa())
+        self.botao_ver.clicked.connect(lambda: ver_tarefa())
+        self.botao_excluir.clicked.connect(lambda: excluir_tarefa())
         
+        def concluir_tarefa():
+            selected_item = self.task_list.currentRow()
+            selected_line = self.task_list.currentItem()
+            if selected_item >= 0:
+                widget = self.task_list.itemWidget(selected_line)
+                id = widget.id
+                
+                for tarefa in tarefas:
+                    if tarefa["id"] == id:
+                        tarefas.remove(tarefa)
+                        print(tarefas)
+                self.task_list.takeItem(selected_item)
+                
+                self.status_patente.atualizar_xp()
+        
+        def ver_tarefa():
+            selected_item = self.task_list.currentItem()
+            if selected_item:
+                widget = self.task_list.itemWidget(selected_item)
+                id = widget.id
+                for tarefa in tarefas:
+                    if tarefa["id"] == id:
+                        ver(tarefa["descrição"])
+                        
+        def excluir_tarefa():
+            selected_item = self.task_list.currentRow()
+            selected_line = self.task_list.currentItem()
+            if selected_item >= 0:
+                widget = self.task_list.itemWidget(selected_line)
+                id = widget.id
+                
+                for tarefa in tarefas:
+                    if tarefa["id"] == id:
+                        tarefas.remove(tarefa)
+                        print(tarefas)
+                self.task_list.takeItem(selected_item)                
+                        
         
 
 
@@ -129,7 +209,7 @@ class ui_diarias(QFrame):
         self.texto = QLabel("INICIO")
         self.texto.setMinimumSize(100, 24)
         self.texto.setStyleSheet("font-size: 24px; font-weight: bold; color: #ffffff;")
-        self.tela_list = TaskLista()
+        self.tela_list = TaskLista(self.statusPatente)
 
         
         # add no layout
