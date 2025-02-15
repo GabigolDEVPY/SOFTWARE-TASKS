@@ -3,6 +3,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from tela_inicial import janela_principal
 import sys
+from backend import load_json, verificar_login
 
 
 class botoes(QPushButton):
@@ -48,6 +49,7 @@ class login(QMainWindow):
     def __init__(self):
         super().__init__()
         
+        dados = load_json.load_file()
         # criando a janela
         self.widget_central = QWidget()
         self.widget_central.setStyleSheet("background-color: #161616;")
@@ -99,7 +101,7 @@ class login(QMainWindow):
         self.setFixedSize(350, 500)
         
         
-        def criar_janela_principal(self):
+        def fazer_login(self):
             self.janela = janela_principal()
             self.janela.show()
             self.close()
@@ -107,7 +109,7 @@ class login(QMainWindow):
             
             
         self.olho.clicked.connect(lambda: trocar_status_senha())
-        self.botao_login.clicked.connect(lambda: criar_janela_principal(self))
+        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, janela_principal()))
         
         def trocar_status_senha():
             if self.olho.text() == "🙈":
