@@ -1,5 +1,6 @@
 def verificar_login(self, dados, login, senha, janela):
     users = dados
+    print(users)
     for user in users:
         if user["login"] == login and user["senha"] == senha:
             self.janela = janela
@@ -10,16 +11,18 @@ def verificar_login(self, dados, login, senha, janela):
 
 def cadastrar(self, dados, login, senha):
     users = dados
+    print(users)
     for user in users:
         if user["login"] == login:
             return print("usuário já existe")
         
-        dados.append(
-            {
-                "login": login,
-                "senha": senha,
-                "xp": 0,
-                "tarefas": []
-            }
-        )   
+    users.append(
+        {
+            "login": login,
+            "senha": senha,
+            "xp": 0,
+            "tarefas": []
+        }
+    )
+    print(users)  
 
