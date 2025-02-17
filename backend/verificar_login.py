@@ -1,16 +1,21 @@
-def verificar_login(self, dados, login, senha, janela):
-    users = dados
+from backend import load_json
+from tela_inicial import janela_principal
+
+def verificar_login(self, login, senha):
+    users = load_json.load_file()
     print(users)
+    indice = -1
     for user in users:
+        indice += 1
         if user["login"] == login and user["senha"] == senha:
-            self.janela = janela
+            self.janela = janela_principal(user, indice)
             self.janela.show()
             self.close()
         else: 
             print("usuário não encontrado")   
 
-def cadastrar(self, dados, login, senha):
-    users = dados
+def cadastrar(self, login, senha):
+    users = load_json.load_file()
     print(users)
     for user in users:
         if user["login"] == login:
@@ -24,5 +29,6 @@ def cadastrar(self, dados, login, senha):
             "tarefas": []
         }
     )
-    print(users)  
+    print(users)
+    load_json.save_file(users)  
 

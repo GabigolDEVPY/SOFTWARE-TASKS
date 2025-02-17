@@ -7,10 +7,10 @@ from ui.ui_diarias import ui_diarias
 import sys
 
 class janela_principal(QMainWindow):
-    def __init__(self):
+    def __init__(self, user, indice):
         super().__init__()
         self.expanded = False
-        
+        print(user)
         def mudar_tamanhos(self):
             """Anima a mudança de tamanho de `widgetcentro` e `status_patente` ao mesmo tempo, mas com tamanhos diferentes."""
 
@@ -59,7 +59,7 @@ class janela_principal(QMainWindow):
 
         
         # criando status patente
-        self.status_patente = statusPatente()
+        self.status_patente = statusPatente(user, indice)
         self.widgetcentro = ui_diarias(self.status_patente)
         
         # criando a sidebar

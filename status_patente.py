@@ -1,6 +1,7 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from backend import load_json
 import os
 
 local = os.path.dirname(os.path.abspath(__file__))
@@ -40,8 +41,10 @@ class popUp(QDialog):
 
 
 class statusPatente(QFrame):
-    def __init__(self):
+    def __init__(self, user, indice):
         super().__init__()
+        self.user = user
+        self.indice = indice
         self.setFixedSize(830, 40)
         self.setStyleSheet("background-color: #30005f;")
         
@@ -52,7 +55,7 @@ class statusPatente(QFrame):
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
         self.XPmenu.setFixedSize(35, 40)
         
-        self.XP = QLabel("0")
+        self.XP = QLabel(str(self.user["xp"]))
         self.XP.setStyleSheet("border-radius: None; background-color: #161616; color: #ffffff; font-weight: semi-bold; font-size: 15px;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(70, 40)
@@ -64,6 +67,8 @@ class statusPatente(QFrame):
         
         # criando patente
         self.patente = QLabel()
+        self.Pixmap = QPixmap(patentes[0][1])
+        self.patente.setPixmap(self.Pixmap)
         self.patente.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.patente.setFixedSize(50, 50)
         self.patente.setStyleSheet("border-radius: None; background-color: #30005f")
@@ -95,7 +100,12 @@ class statusPatente(QFrame):
     def atualizar_xp(self):
         self.xp = int(self.XP.text()) + 100
         self.XP.setText(str(self.xp))            
-        self.atualizar_patente()            
+        self.atualizar_patente()
+        self.user["xp"] += 100
+        dados = load_json.load_file()
+        dados[self.indice] = self.user
+        load_json.save_file(dados)
+        print(self.user)            
 
         
         

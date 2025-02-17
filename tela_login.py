@@ -1,7 +1,6 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from tela_inicial import janela_principal
 import sys
 from backend import load_json, verificar_login
 
@@ -49,7 +48,6 @@ class login(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        dados = load_json.load_file()
         # criando a janela
         self.widget_central = QWidget()
         self.widget_central.setStyleSheet("background-color: #161616;")
@@ -99,18 +97,10 @@ class login(QMainWindow):
         self.vlayout.addWidget(self.botao_login, alignment=Qt.AlignCenter)
         self.vlayout.addWidget(self.botao_registrar, alignment=Qt.AlignCenter)
         self.setFixedSize(350, 500)
-        
-        
-        def fazer_login(self):
-            self.janela = janela_principal()
-            self.janela.show()
-            self.close()
-            
-            
-            
+    
         self.olho.clicked.connect(lambda: trocar_status_senha())
-        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, dados, self.campo_usuario.text(), self.campo_senha.text(), janela_principal()))
-        self.botao_registrar.clicked.connect(lambda: verificar_login.cadastrar(self, dados, self.campo_usuario.text(), self.campo_senha.text()))
+        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, self.campo_usuario.text(), self.campo_senha.text()))
+        self.botao_registrar.clicked.connect(lambda: verificar_login.cadastrar(self, self.campo_usuario.text(), self.campo_senha.text()))
         
         def trocar_status_senha():
             if self.olho.text() == "🙈":
