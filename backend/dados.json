@@ -1,1 +1,8 @@
-[{"login": "1", "senha": "1", "xp": 1000, "tarefas": []}, {"login": "2", "senha": "2", "xp": 1000, "tarefas": []}]
+[
+    {
+        "login": "1",
+        "senha": "1",
+        "xp": 200,
+        "tarefas": []
+    }
+]

@@ -1,10 +1,8 @@
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from backend import load_json
 import random
-
-
-tarefas = []
 
 class ver(QDialog):
     def __init__(self, descricao):
@@ -28,8 +26,11 @@ class ver(QDialog):
 
 
 class dialog_tarefa(QDialog):
-    def __init__(self, lista):
+    def __init__(self, lista, user, indice):
         super().__init__()
+        self.user = user
+        self.tarefas = user['tarefas']
+        self.indice = indice
         self.lista = lista
         self.setStyleSheet("background-color: #303030;")
         self.setFixedSize(500, 500)
@@ -61,22 +62,28 @@ class dialog_tarefa(QDialog):
         self.central_layout.addWidget(self.botao_cancelar, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.botao_cancelar.clicked.connect(lambda: self.close())
-        self.botao_ok.clicked.connect(lambda: add_task())
+        self.botao_ok.clicked.connect(lambda: add_task(self.tarefas))
         
-        def add_task():
-            id = len(tarefas) + 1
+        def add_task(tarefas):
+            id = len(tarefas)
             item = QListWidgetItem(self.lista)
             widget = Custom_widget(self.tarefa.text(), id)
             item.setSizeHint(widget.sizeHint())
             self.lista.addItem(item)
             self.lista.setItemWidget(item, widget)
             widget.muda_cor()
-            tarefas.append({
+
+            self.user['tarefas'].append({
                 "id": id, 
-                "titulo": self.titulo.text(),
+                "titulo": self.tarefa.text(),
                 "descrição": self.descricao.toPlainText()
                 })
-            print(tarefas)
+            users = load_json.load_file()
+            users[indice] = self.user
+            load_json.save_file(users)
+            print(users)
+            
+            
 
             self.close()
             
@@ -129,8 +136,11 @@ class Custom_widget(QWidget):
         
 
 class TaskLista(QWidget):
-    def __init__(self, status_patente):
+    def __init__(self, status_patente, user, indice):
         super().__init__()
+        self.user = user
+        self.tarefas = user['tarefas']
+        self.indice = indice
         self.CentralLayout = QHBoxLayout(self)
         self.task_list = QListWidget()
         self.status_patente = status_patente
@@ -149,12 +159,25 @@ class TaskLista(QWidget):
         self.CentralLayout.addWidget(self.task_list)
         self.CentralLayout.addLayout(self.layout_botoes)
         
-        self.botao_adicionar.clicked.connect(lambda: dialog_tarefa(self.task_list))
-        self.botao_concluir.clicked.connect(lambda: concluir_tarefa())
-        self.botao_ver.clicked.connect(lambda: ver_tarefa())
-        self.botao_excluir.clicked.connect(lambda: excluir_tarefa())
+        self.botao_adicionar.clicked.connect(lambda: dialog_tarefa(self.task_list, self.user, self.indice))
+        self.botao_concluir.clicked.connect(lambda: concluir_tarefa(self, self.tarefas))
+        self.botao_ver.clicked.connect(lambda: ver_tarefa(self.tarefas))
+        self.botao_excluir.clicked.connect(lambda: excluir_tarefa(self.tarefas))
         
-        def concluir_tarefa():
+        def add_tarefas_inicial(tarefas):
+            for tarefa in tarefas:
+                id = tarefa['id']
+                item = QListWidgetItem(self.task_list)
+                widget = Custom_widget(tarefa['titulo'], id)
+                item.setSizeHint(widget.sizeHint())
+                self.task_list.addItem(item)
+                self.task_list.setItemWidget(item, widget)
+                widget.muda_cor()
+        
+        add_tarefas_inicial(self.tarefas)
+        
+        def concluir_tarefa(self, tarefas):
+            tarefas = tarefas
             selected_item = self.task_list.currentRow()
             selected_line = self.task_list.currentItem()
             if selected_item >= 0:
@@ -166,10 +189,14 @@ class TaskLista(QWidget):
                         tarefas.remove(tarefa)
                         print(tarefas)
                 self.task_list.takeItem(selected_item)
-                
+                self.user['tarefas'] = tarefas
+                users = load_json.load_file()
+                users[self.indice]['tarefas'] = tarefas
+                load_json.save_file(users)
                 self.status_patente.atualizar_xp()
         
-        def ver_tarefa():
+        def ver_tarefa(tarefas):
+            tarefas = tarefas
             selected_item = self.task_list.currentItem()
             if selected_item:
                 widget = self.task_list.itemWidget(selected_item)
@@ -178,7 +205,8 @@ class TaskLista(QWidget):
                     if tarefa["id"] == id:
                         ver(tarefa["descrição"])
                         
-        def excluir_tarefa():
+        def excluir_tarefa(tarefas):
+            tarefas = tarefas
             selected_item = self.task_list.currentRow()
             selected_line = self.task_list.currentItem()
             if selected_item >= 0:
@@ -188,7 +216,10 @@ class TaskLista(QWidget):
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
                         tarefas.remove(tarefa)
-                        print(tarefas)
+                        users = load_json.load_file()
+                        users[self.indice]['tarefas'] = tarefas
+                        load_json.save_file(users)
+                        print(users)
                 self.task_list.takeItem(selected_item)                
                         
         
@@ -196,8 +227,10 @@ class TaskLista(QWidget):
 
 
 class ui_diarias(QFrame):
-    def __init__(self, status_patente):
+    def __init__(self, status_patente, user, indice):
         super().__init__()
+        self.user = user
+        self.indice = indice
         self.setFixedSize(825, 555)
         self.setStyleSheet("background-color: #303030;")
         self.centralLayout = QVBoxLayout()
@@ -209,7 +242,7 @@ class ui_diarias(QFrame):
         self.texto = QLabel("INICIO")
         self.texto.setMinimumSize(100, 24)
         self.texto.setStyleSheet("font-size: 24px; font-weight: bold; color: #ffffff;")
-        self.tela_list = TaskLista(self.statusPatente)
+        self.tela_list = TaskLista(self.statusPatente, self.user, self.indice)
 
         
         # add no layout

@@ -56,11 +56,14 @@ class janela_principal(QMainWindow):
         # frame centro
         self.layoutCENTRO = QHBoxLayout()
 
+        # criando user e indice
+        self.user = user
+        self.indice = indice
 
         
         # criando status patente
         self.status_patente = statusPatente(user, indice)
-        self.widgetcentro = ui_diarias(self.status_patente)
+        self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice)
         
         # criando a sidebar
         self.sideBar = Sidebar(self.status_patente)
