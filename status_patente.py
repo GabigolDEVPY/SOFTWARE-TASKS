@@ -86,9 +86,10 @@ class statusPatente(QFrame):
     def patente_inicial(self):
         xp = int(self.xp_user)
         for i in range(111, -1, -1):
-            if xp == (i) * 1000:
+            if xp >= (i) * 1000:
                 Pixmap = QPixmap(patentes[i][1])
                 self.patente.setPixmap(Pixmap)
+                break
         
     def atualizar_patente(self):
         xp = int(self.XP.text())
