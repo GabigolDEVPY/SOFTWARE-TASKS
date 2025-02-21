@@ -99,11 +99,11 @@ class statusPatente(QFrame):
                 self.patente.setPixmap(Pixmap)
                 popUp(patentes[i][1], patentes[i][0])
 
-    def atualizar_xp(self):
-        self.xp = int(self.XP.text()) + 100
+    def atualizar_xp(self, xp):
+        self.xp = int(self.XP.text()) + xp
         self.XP.setText(str(self.xp))            
         self.atualizar_patente()
-        self.user["xp"] += 100
+        self.user["xp"] += xp
         dados = load_json.load_file()
         dados[self.indice] = self.user
         load_json.save_file(dados)

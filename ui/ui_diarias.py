@@ -148,10 +148,13 @@ class Custom_widget(QWidget):
         xp = 0
         if dificuldade == "DIFÍCIL":
             xp = 150
+            self.xp.setStyleSheet("color: #800000")
         elif dificuldade == "MEDIO":
             xp = 120
+            self.xp.setStyleSheet("color: #ff6600")
         elif dificuldade == "FÁCIL":
-            xp = 100   
+            xp = 100
+            self.xp.setStyleSheet("color: #007a0a")   
         return str(xp)    
     
 
@@ -223,6 +226,7 @@ class TaskLista(QWidget):
             if selected_item >= 0:
                 widget = self.task_list.itemWidget(selected_line)
                 id = widget.id
+                xp = int(widget.xp.text().split()[1])
                 
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
@@ -233,7 +237,7 @@ class TaskLista(QWidget):
                 users = load_json.load_file()
                 users[self.indice]['tarefas'] = tarefas
                 load_json.save_file(users)
-                self.status_patente.atualizar_xp()
+                self.status_patente.atualizar_xp(xp)
         
         def ver_tarefa(tarefas):
             tarefas = tarefas
