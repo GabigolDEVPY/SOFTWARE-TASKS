@@ -2,50 +2,7 @@
     {
         "login": "1",
         "senha": "1",
-        "xp": 1400,
-        "tarefas": [
-            {
-                "id": 0,
-                "titulo": "ds",
-                "descrição": "dasdasdasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE"
-            },
-            {
-                "id": 1,
-                "titulo": "das",
-                "descrição": "dasdasdasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE"
-            },
-            {
-                "id": 2,
-                "titulo": "das",
-                "descrição": "dasdasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE"
-            },
-            {
-                "id": 4,
-                "titulo": "dasd",
-                "descrição": "asdasdasdasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE"
-            },
-            {
-                "id": 5,
-                "titulo": "dasd",
-                "descrição": "asdasdasdasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "TRANQUILO"
-            },
-            {
-                "id": 5,
-                "titulo": "DORMIR",
-                "descrição": "asdasdasdasdasdasdasdasdasdasd",
-                "dificuldade": "MEDIO",
-                "prioridade": "RELEVANTE"
-            }
-        ]
+        "xp": 2000,
+        "tarefas": []
     }
 ]

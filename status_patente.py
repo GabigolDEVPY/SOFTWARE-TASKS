@@ -44,6 +44,7 @@ class statusPatente(QFrame):
     def __init__(self, user, indice):
         super().__init__()
         self.user = user
+        self.xp_user = user["xp"]
         self.indice = indice
         self.setFixedSize(830, 40)
         self.setStyleSheet("background-color: #30005f;")
@@ -55,7 +56,7 @@ class statusPatente(QFrame):
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
         self.XPmenu.setFixedSize(35, 40)
         
-        self.XP = QLabel(str(self.user["xp"]))
+        self.XP = QLabel(str(self.xp_user))
         self.XP.setStyleSheet("border-radius: None; background-color: #161616; color: #ffffff; font-weight: semi-bold; font-size: 15px;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(70, 40)
@@ -83,11 +84,11 @@ class statusPatente(QFrame):
         self.patente_inicial()
         
     def patente_inicial(self):
-        xp = int(self.XP.text())
+        xp = int(self.xp_user)
         for i in range(111, -1, -1):
             if xp == (i) * 1000:
                 Pixmap = QPixmap(patentes[i][1])
-                self.patente.setPixmap(Pixmap)    
+                self.patente.setPixmap(Pixmap)
         
     def atualizar_patente(self):
         xp = int(self.XP.text())
