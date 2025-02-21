@@ -44,6 +44,20 @@ class dialog_tarefa(QDialog):
         self.tarefa = QLineEdit()
         self.tarefa.setStyleSheet("color: #ffffff;")
         self.tarefa.setMinimumHeight(35)
+        
+        # parte só para esses combobox chato aqui
+        self.layoutCombos = QHBoxLayout()
+        self.layoutCombos.setContentsMargins(70, 5, 70, 5)
+        self.qual_prioridade = QComboBox()
+        self.qual_prioridade.setFixedSize(140, 40)
+        self.qual_prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
+        self.qual_dificuldade = QComboBox()
+        self.qual_dificuldade.setFixedSize(140, 40)
+        self.qual_dificuldade.addItems(["FÁCIL", "MEDIO", "DIFÍCIL"])
+        self.layoutCombos.addWidget(self.qual_prioridade)
+        self.layoutCombos.addWidget(self.qual_dificuldade)
+        
+        
         self.linha_descricao = QLabel("DESCRIÇÃO")
         self.linha_descricao.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold;")
         self.descricao = QTextEdit()
@@ -58,6 +72,7 @@ class dialog_tarefa(QDialog):
         self.central_layout.addWidget(self.tarefa)
         self.central_layout.addWidget(self.linha_descricao)
         self.central_layout.addWidget(self.descricao)
+        self.central_layout.addLayout(self.layoutCombos)
         self.central_layout.addWidget(self.botao_ok, alignment=Qt.AlignmentFlag.AlignCenter)
         self.central_layout.addWidget(self.botao_cancelar, alignment=Qt.AlignmentFlag.AlignCenter)
         
@@ -67,19 +82,21 @@ class dialog_tarefa(QDialog):
         def add_task(tarefas):
             id = len(tarefas)
             item = QListWidgetItem(self.lista)
-            widget = Custom_widget(self.tarefa.text(), id)
+            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText())
             item.setSizeHint(widget.sizeHint())
             self.lista.addItem(item)
             self.lista.setItemWidget(item, widget)
-            widget.muda_cor()
+            widget.muda_cor(self.qual_prioridade.currentText())
 
             self.user['tarefas'].append({
                 "id": id, 
                 "titulo": self.tarefa.text(),
-                "descrição": self.descricao.toPlainText()
+                "descrição": self.descricao.toPlainText(),
+                "dificuldade": self.qual_dificuldade.currentText(),
+                "prioridade": self.qual_prioridade.currentText()
                 })
             users = load_json.load_file()
-            users[indice] = self.user
+            users[self.indice] = self.user
             load_json.save_file(users)
             print(users)
             
@@ -101,10 +118,12 @@ class botoes(QPushButton):
         self.setFixedSize(largura, altura)
         
 class Custom_widget(QWidget):
-    def __init__(self, nome, id):
+    def __init__(self, nome, id, dificuldade, prioridade):
         super().__init__()
         self.central_layout = QHBoxLayout()
         self.setLayout(self.central_layout)
+        self.Qprioridade = prioridade
+        self.dificuldade = dificuldade
         self.id = id
         self.checkbox = QCheckBox()
         self.checkbox.setStyleSheet("background-color: #c0c0c0;")
@@ -112,26 +131,45 @@ class Custom_widget(QWidget):
         self.checkbox.setFixedWidth(40)
         self.titulo = QLabel(nome)
         self.titulo.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
+        self.xp = QLabel(f"XP {self.verificarXP(self.dificuldade)}  ")
+        self.xp.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.prioridade = QComboBox()
         self.prioridade.setStyleSheet("border-radius: 2px; font-weight: bold; color: #ffffff;")
-        self.prioridade.setFixedSize(95, 35)
+        self.prioridade.setFixedSize(105, 35)
         self.prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
-        self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor())
+        self.muda_cor(self.Qprioridade)
+        self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor(self.prioridade.currentText()))
         self.central_layout.addWidget(self.checkbox)     
         self.central_layout.addWidget(self.titulo)     
-        self.central_layout.addWidget(self.prioridade)
+        self.central_layout.addWidget(self.xp, alignment=Qt.AlignmentFlag.AlignRight)
+        self.central_layout.addWidget(self.prioridade)     
         
+    def verificarXP(self, dificuldade):
+        xp = 0
+        if dificuldade == "DIFÍCIL":
+            xp = 150
+        elif dificuldade == "MEDIO":
+            xp = 120
+        elif dificuldade == "FÁCIL":
+            xp = 100   
+        return str(xp)    
     
 
-    def muda_cor(self):
-        opcao = self.prioridade.currentText()
-        
+    def muda_cor(self, opcao):
+        print(opcao)
+        opcao = opcao      
         if opcao == "URGENTE":
-            self.setStyleSheet("background-color: #800000;")
+            # Mudar a cor de fundo do widget inteiro para vermelho
+            self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff;")
+            self.prioridade.setCurrentText("URGENTE")
         elif opcao == "RELEVANTE":
-            self.setStyleSheet("background-color: #ff6600;")
+            # Mudar a cor de fundo do widget inteiro para laranja
+            self.prioridade.setCurrentText("RELEVANTE")
+            self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff;")
         elif opcao == "TRANQUILO":
-            self.setStyleSheet("background-color: #007a0a;")
+            # Mudar a cor de fundo do widget inteiro para verde
+            self.prioridade.setCurrentText("TRANQUILO")
+            self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff;")
 
         
 
@@ -167,12 +205,14 @@ class TaskLista(QWidget):
         def add_tarefas_inicial(tarefas):
             for tarefa in tarefas:
                 id = tarefa['id']
+                prioridade = tarefa["prioridade"]
+                difuculdade = tarefa["dificuldade"]
                 item = QListWidgetItem(self.task_list)
-                widget = Custom_widget(tarefa['titulo'], id)
+                widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade)
                 item.setSizeHint(widget.sizeHint())
                 self.task_list.addItem(item)
                 self.task_list.setItemWidget(item, widget)
-                widget.muda_cor()
+                widget.muda_cor(prioridade)
         
         add_tarefas_inicial(self.tarefas)
         

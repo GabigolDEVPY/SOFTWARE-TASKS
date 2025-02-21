@@ -112,7 +112,8 @@ class login(QMainWindow):
         self.show()        
                 
 if __name__ == "__main__":
+    
     app = QApplication(sys.argv)
-    app.setStyle("Cleanlooks")
+    app.setStyle("windows11")
     window = login()
     app.exec()
