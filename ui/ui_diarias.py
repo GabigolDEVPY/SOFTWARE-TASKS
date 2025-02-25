@@ -82,7 +82,7 @@ class dialog_tarefa(QDialog):
         def add_task(tarefas):
             id = len(tarefas)
             item = QListWidgetItem(self.lista)
-            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText())
+            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice)
             item.setSizeHint(widget.sizeHint())
             self.lista.addItem(item)
             self.lista.setItemWidget(item, widget)
@@ -118,8 +118,9 @@ class botoes(QPushButton):
         self.setFixedSize(largura, altura)
         
 class Custom_widget(QWidget):
-    def __init__(self, nome, id, dificuldade, prioridade):
+    def __init__(self, nome, id, dificuldade, prioridade, indice):
         super().__init__()
+        self.indice = indice
         self.central_layout = QHBoxLayout()
         self.setLayout(self.central_layout)
         self.Qprioridade = prioridade
@@ -142,25 +143,53 @@ class Custom_widget(QWidget):
         self.central_layout.addWidget(self.checkbox)     
         self.central_layout.addWidget(self.titulo)     
         self.central_layout.addWidget(self.xp, alignment=Qt.AlignmentFlag.AlignRight)
-        self.central_layout.addWidget(self.prioridade)     
+        self.central_layout.addWidget(self.prioridade)
+        
+        def qual_cor():
+            
+            xp_text = self.xp.text()
+            xp_value = int(xp_text.split()[1])
+            
+            if xp_value == 150:
+                self.xp.setStyleSheet("color: #800000; background-color: transparent; font-weight: bold;")
+                
+            elif xp_value == 120:
+                self.xp.setStyleSheet("color: #ff6600; background-color: transparent; font-weight: bold;")
+                
+            elif xp_value == 100:
+                self.xp.setStyleSheet("color: #007a0a; background-color: transparent; font-weight: bold;")
+            else:
+                self.xp.setStyleSheet("color: #ffffff; background-color: transparent; font-weight: bold;")  
+                
+        qual_cor()
         
     def verificarXP(self, dificuldade):
         xp = 0
         if dificuldade == "DIFÍCIL":
             xp = 150
-            self.xp.setStyleSheet("color: #800000")
+
         elif dificuldade == "MEDIO":
             xp = 120
-            self.xp.setStyleSheet("color: #ff6600")
+
         elif dificuldade == "FÁCIL":
             xp = 100
-            self.xp.setStyleSheet("color: #007a0a")   
-        return str(xp)    
+
+        return str(xp)
     
 
+    
+    
     def muda_cor(self, opcao):
-        print(opcao)
+        users = load_json.load_file()
+        tarefas = users[self.indice]['tarefas']
         opcao = opcao      
+        for tarefa in tarefas:
+            if tarefa["id"] == self.id:
+                tarefa["prioridade"] = opcao
+                print(tarefa)
+                load_json.save_file(users)
+                break
+        print(opcao)
         if opcao == "URGENTE":
             # Mudar a cor de fundo do widget inteiro para vermelho
             self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff;")
@@ -174,7 +203,6 @@ class Custom_widget(QWidget):
             self.prioridade.setCurrentText("TRANQUILO")
             self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff;")
 
-        
 
 class TaskLista(QWidget):
     def __init__(self, status_patente, user, indice):
@@ -211,7 +239,7 @@ class TaskLista(QWidget):
                 prioridade = tarefa["prioridade"]
                 difuculdade = tarefa["dificuldade"]
                 item = QListWidgetItem(self.task_list)
-                widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade)
+                widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade, self.indice)
                 item.setSizeHint(widget.sizeHint())
                 self.task_list.addItem(item)
                 self.task_list.setItemWidget(item, widget)

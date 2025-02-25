@@ -2,28 +2,28 @@
     {
         "login": "1",
         "senha": "1",
-        "xp": 3770,
+        "xp": 0,
         "tarefas": [
             {
                 "id": 0,
-                "titulo": "ir jogar com a rapaziada",
-                "descrição": "jogar bola co \n1 jogar bola com a rapaziada, depois ir pro clube",
+                "titulo": "das",
+                "descrição": "dasdasdsad",
                 "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE"
+                "prioridade": "TRANQUILO"
             },
             {
                 "id": 1,
-                "titulo": "sd",
-                "descrição": "asdasdasdasd",
+                "titulo": "dasd",
+                "descrição": "asdsdsdsds",
                 "dificuldade": "MEDIO",
-                "prioridade": "URGENTE"
+                "prioridade": "TRANQUILO"
             },
             {
                 "id": 2,
-                "titulo": "ir academia",
-                "descrição": "213213123123123",
-                "dificuldade": "MEDIO",
-                "prioridade": "RELEVANTE"
+                "titulo": "dsa",
+                "descrição": "dasdasdasddsdsds",
+                "dificuldade": "DIFÍCIL",
+                "prioridade": "TRANQUILO"
             }
         ]
     }
