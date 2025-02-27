@@ -26,6 +26,7 @@ def cadastrar(self, login, senha):
             "login": login,
             "senha": senha,
             "xp": 0,
+            "xp_variavel": 0,
             "tarefas": []
         }
     )

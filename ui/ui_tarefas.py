@@ -82,7 +82,7 @@ class dialog_tarefa(QDialog):
         def add_task(tarefas):
             id = len(tarefas)
             item = QListWidgetItem(self.lista)
-            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice)
+            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice, None)
             item.setSizeHint(widget.sizeHint())
             self.lista.addItem(item)
             self.lista.setItemWidget(item, widget)
@@ -93,7 +93,8 @@ class dialog_tarefa(QDialog):
                 "titulo": self.tarefa.text(),
                 "descrição": self.descricao.toPlainText(),
                 "dificuldade": self.qual_dificuldade.currentText(),
-                "prioridade": self.qual_prioridade.currentText()
+                "prioridade": self.qual_prioridade.currentText(),
+                "checkbox": 0
                 })
             users = load_json.load_file()
             users[self.indice] = self.user
@@ -118,7 +119,7 @@ class botoes(QPushButton):
         self.setFixedSize(largura, altura)
         
 class Custom_widget(QWidget):
-    def __init__(self, nome, id, dificuldade, prioridade, indice):
+    def __init__(self, nome, id, dificuldade, prioridade, indice, check):
         super().__init__()
         self.indice = indice
         self.central_layout = QHBoxLayout()
@@ -130,6 +131,11 @@ class Custom_widget(QWidget):
         self.checkbox.setStyleSheet("background-color: #c0c0c0;")
         self.checkbox.setStyleSheet("background: transparent;")
         self.checkbox.setFixedWidth(40)
+        if check == 1:
+            self.checkbox.setChecked(True)
+        else:
+            self.checkbox.setChecked(False)
+            
         self.titulo = QLabel(nome)
         self.titulo.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.xp = QLabel(f"XP {self.verificarXP(self.dificuldade)}  ")
@@ -144,6 +150,23 @@ class Custom_widget(QWidget):
         self.central_layout.addWidget(self.titulo)     
         self.central_layout.addWidget(self.xp, alignment=Qt.AlignmentFlag.AlignRight)
         self.central_layout.addWidget(self.prioridade)
+        
+        self.checkbox.stateChanged.connect(lambda: mudar_check(self))
+        
+        def mudar_check(self):
+            print(self.id)
+            users = load_json.load_file()
+            checkedbox = users[self.indice]["tarefas"][self.id]["checkbox"]
+            if checkedbox == 0:
+                self.checkbox.setChecked(True)
+                checkedbox = 1
+                users[self.indice]["tarefas"][self.id]["checkbox"] = 1
+            else:
+                users[self.indice]["tarefas"][self.id]["checkbox"] = 0
+            load_json.save_file(users)
+
+                
+            
         
         def qual_cor():
             
@@ -236,10 +259,11 @@ class TaskLista(QWidget):
         def add_tarefas_inicial(tarefas):
             for tarefa in tarefas:
                 id = tarefa['id']
+                check = tarefa["checkbox"]
                 prioridade = tarefa["prioridade"]
                 difuculdade = tarefa["dificuldade"]
                 item = QListWidgetItem(self.task_list)
-                widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade, self.indice)
+                widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade, self.indice, check)
                 item.setSizeHint(widget.sizeHint())
                 self.task_list.addItem(item)
                 self.task_list.setItemWidget(item, widget)
@@ -311,7 +335,7 @@ class ui_diarias(QFrame):
         self.statusPatente = status_patente
         
         # criando widgets
-        self.texto = QLabel("INICIO")
+        self.texto = QLabel("TAREFAS")
         self.texto.setMinimumSize(100, 24)
         self.texto.setStyleSheet("font-size: 24px; font-weight: bold; color: #ffffff;")
         self.tela_list = TaskLista(self.statusPatente, self.user, self.indice)

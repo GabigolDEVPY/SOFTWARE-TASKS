@@ -2,29 +2,8 @@
     {
         "login": "1",
         "senha": "1",
-        "xp": 0,
-        "tarefas": [
-            {
-                "id": 0,
-                "titulo": "das",
-                "descrição": "dasdasdsad",
-                "dificuldade": "FÁCIL",
-                "prioridade": "TRANQUILO"
-            },
-            {
-                "id": 1,
-                "titulo": "dasd",
-                "descrição": "asdsdsdsds",
-                "dificuldade": "MEDIO",
-                "prioridade": "TRANQUILO"
-            },
-            {
-                "id": 2,
-                "titulo": "dsa",
-                "descrição": "dasdasdasddsdsds",
-                "dificuldade": "DIFÍCIL",
-                "prioridade": "TRANQUILO"
-            }
-        ]
+        "xp": 8110,
+        "xp_variavel": 110,
+        "tarefas": []
     }
 ]

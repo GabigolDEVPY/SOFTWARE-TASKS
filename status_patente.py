@@ -94,20 +94,28 @@ class statusPatente(QFrame):
     def atualizar_patente(self):
         xp = int(self.XP.text())
         for i in range(111, -1, -1):
-            if xp == (i) * 1000:
+            if xp >= (i) * 1000:
                 Pixmap = QPixmap(patentes[i][1])
                 self.patente.setPixmap(Pixmap)
                 popUp(patentes[i][1], patentes[i][0])
+                break
 
     def atualizar_xp(self, xp):
         self.xp = int(self.XP.text()) + xp
         self.XP.setText(str(self.xp))            
-        self.atualizar_patente()
         self.user["xp"] += xp
+        self.user["xp_variavel"] += xp
         dados = load_json.load_file()
         dados[self.indice] = self.user
         load_json.save_file(dados)
-        print(self.user)            
+        
+        if self.user["xp_variavel"] >= 1000:
+            self.atualizar_patente()
+            sobra = self.user["xp_variavel"] - 1000
+            self.user["xp_variavel"] = 0 + sobra
+            dados[self.indice] = self.user
+            load_json.save_file(dados)
+
 
         
         
