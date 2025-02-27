@@ -9,7 +9,7 @@ class botoes(QPushButton):
         self.setMinimumSize(40, 60)
         self.setText(nome)
         self.setMinimumHeight(70)
-        self.setStyleSheet("QPushButton {background-color:  #30005f; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff; text-align: left; padding-left: 25px;} QPushButton:Hover {Background-color: #000000;}")
+        self.setStyleSheet("QPushButton {background-color:  #f87000; border: None; border-radius: None; font-size: 16px; font-weight: bold; color: #ffffff; text-align: left; padding-left: 25px;} QPushButton:Hover {Background-color: #000000;}")
         
 
 class Sidebar(QWidget):
@@ -27,7 +27,7 @@ class Sidebar(QWidget):
         # 🔹 Botão de menu (três barras)
         self.btn_menu = QPushButton(" ☰ ")
         self.btn_menu.setMinimumSize(70, 40)
-        self.btn_menu.setStyleSheet("QPushButton {color: white; background: #000000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #400040;}")
+        self.btn_menu.setStyleSheet("QPushButton {color: #ffffff; background: #f87000; border: None; font-size: 20px; border-radius: None;} QPushButton:Hover {background-color: #000000;}")
 
 
         # Criar botões e adicionar ao VerticalLayout

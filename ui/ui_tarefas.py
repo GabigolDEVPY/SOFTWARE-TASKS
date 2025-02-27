@@ -114,7 +114,7 @@ class dialog_tarefa(QDialog):
 class botoes(QPushButton):
     def __init__(self, nome, altura, largura):
         super().__init__()
-        self.setStyleSheet("QPushButton {background-color: #30005f; border-radius: None; color: #ffffff; font-weight: bold;} QPushButton:Hover {background-color: #000000;}")
+        self.setStyleSheet("QPushButton {background-color: #f87000; border-radius: 10px; color: #ffffff; font-weight: bold;} QPushButton:Hover {background-color: #000000;}")
         self.setText(nome)
         self.setFixedSize(largura, altura)
         
@@ -141,7 +141,7 @@ class Custom_widget(QWidget):
         self.xp = QLabel(f"XP {self.verificarXP(self.dificuldade)}  ")
         self.xp.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.prioridade = QComboBox()
-        self.prioridade.setStyleSheet("border-radius: 2px; font-weight: bold; color: #ffffff;")
+        self.prioridade.setStyleSheet("border-radius: 5px; font-weight: bold; color: #ffffff;")
         self.prioridade.setFixedSize(105, 35)
         self.prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
         self.muda_cor(self.Qprioridade)
@@ -215,21 +215,22 @@ class Custom_widget(QWidget):
         print(opcao)
         if opcao == "URGENTE":
             # Mudar a cor de fundo do widget inteiro para vermelho
-            self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff;")
+            self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff; font-weight: bold;")
             self.prioridade.setCurrentText("URGENTE")
         elif opcao == "RELEVANTE":
             # Mudar a cor de fundo do widget inteiro para laranja
             self.prioridade.setCurrentText("RELEVANTE")
-            self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff;")
+            self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff; font-weight: bold;")
         elif opcao == "TRANQUILO":
             # Mudar a cor de fundo do widget inteiro para verde
             self.prioridade.setCurrentText("TRANQUILO")
-            self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff;")
+            self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff; font-weight: bold;")
 
 
 class TaskLista(QWidget):
     def __init__(self, status_patente, user, indice):
         super().__init__()
+        self.setStyleSheet("background-color: #1b1b1b;")
         self.user = user
         self.tarefas = user['tarefas']
         self.indice = indice
@@ -328,20 +329,15 @@ class ui_diarias(QFrame):
         self.user = user
         self.indice = indice
         self.setFixedSize(825, 555)
-        self.setStyleSheet("background-color: #303030;")
+        self.setStyleSheet("background-color: #1b1b1b;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)
         self.setLayout(self.centralLayout)
         self.statusPatente = status_patente
         
-        # criando widgets
-        self.texto = QLabel("TAREFAS")
-        self.texto.setMinimumSize(100, 24)
-        self.texto.setStyleSheet("font-size: 24px; font-weight: bold; color: #ffffff;")
         self.tela_list = TaskLista(self.statusPatente, self.user, self.indice)
 
         
         # add no layout
-        
-        self.centralLayout.addWidget(self.texto)
+
         self.centralLayout.addWidget(self.tela_list)

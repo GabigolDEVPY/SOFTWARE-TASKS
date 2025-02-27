@@ -51,7 +51,7 @@ class janela_principal(QMainWindow):
         self.CentralLayout = QHBoxLayout()
         self.CentralLayout.setSpacing(0)
         self.CentralLayout.setContentsMargins(0, 0, 0, 0)
-        self.widget_central.setStyleSheet("background-color: #161616;")
+        self.widget_central.setStyleSheet("background-color: #1b1b1b;")
         
         # frame centro
         self.layoutCENTRO = QHBoxLayout()

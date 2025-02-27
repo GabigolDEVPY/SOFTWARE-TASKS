@@ -10,7 +10,7 @@ class botoes(QPushButton):
         super().__init__()
         self.setText(nome)
         self.setFixedSize(260, 40)
-        self.setStyleSheet("QPushButton {border: None; background-color: #30005f; font-weight: bold; color: #ffffff;} QPushButton:Hover {background-color: #000000;}")
+        self.setStyleSheet("QPushButton {border: None; background-color: #f87000; font-weight: bold; color: #ffffff; border-radius: 10px;} QPushButton:Hover {background-color: #000000;}")
 
 # criar layouts
 class layouts(QVBoxLayout):
@@ -39,7 +39,7 @@ class linha(QLineEdit):
         super().__init__()
         self.configStyle(nome)
     def configStyle(self, nome):
-        self.setStyleSheet("QLineEdit {border: 1px solid #400040; color: #ffffff;} QLineEdit:Focus {border: 3px solid #400040;}")
+        self.setStyleSheet("QLineEdit {border: 1px solid #f87000; color: #f87000; border-radius: 10px;} QLineEdit:Focus {border: 2px solid #f87000;}")
         self.setFixedSize(330, 40)
         self.setPlaceholderText(nome) 
         self.setContentsMargins(50, 0, 30, 0)
@@ -50,7 +50,7 @@ class login(QMainWindow):
         
         # criando a janela
         self.widget_central = QWidget()
-        self.widget_central.setStyleSheet("background-color: #161616;")
+        self.widget_central.setStyleSheet("background-color: #1b1b1b;")
 
         self.vlayout = QVBoxLayout()
         self.vlayout.setContentsMargins(0, 0, 0, 50)

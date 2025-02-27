@@ -26,7 +26,7 @@ class popUp(QDialog):
         self.label_patente.setScaledContents(True)
         
         self.botao = QPushButton("OK")
-        self.botao.setStyleSheet("QPushButton {background-color: #30005f; font-size: 20px; font-weight: bold; color: #ffffff; border-radius: 1px;} QPushButton:Hover {background-color: #000000;}")
+        self.botao.setStyleSheet("QPushButton {background-color: #f87000; font-size: 20px; font-weight: bold; color: #ffffff; border-radius: 1px;} QPushButton:Hover {background-color: #000000;}")
         self.botao.setFixedSize(110, 35)
         self.patente = QPixmap(id)
         self.label_patente.setPixmap(self.patente)
@@ -47,17 +47,17 @@ class statusPatente(QFrame):
         self.xp_user = user["xp"]
         self.indice = indice
         self.setFixedSize(830, 40)
-        self.setStyleSheet("background-color: #30005f;")
+        self.setStyleSheet("background-color: #f87000 ;")
         
         # criando widgets
         
         self.XPmenu = QLabel("XP")
         self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #000000; font-size: 15px;")
+        self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #1b1b1b; font-size: 15px; font-weight: bold;")
         self.XPmenu.setFixedSize(35, 40)
         
         self.XP = QLabel(str(self.xp_user))
-        self.XP.setStyleSheet("border-radius: None; background-color: #161616; color: #ffffff; font-weight: semi-bold; font-size: 15px;")
+        self.XP.setStyleSheet("border-radius: None; background-color: #1b1b1b; color: #ffffff; font-weight: bold; font-size: 15px;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(70, 40)
         
@@ -72,7 +72,7 @@ class statusPatente(QFrame):
         self.patente.setPixmap(self.Pixmap)
         self.patente.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.patente.setFixedSize(50, 50)
-        self.patente.setStyleSheet("border-radius: None; background-color: #30005f")
+        self.patente.setStyleSheet("border-radius: None; background-color: #1b1b1b")
         self.patente.setScaledContents(True)
         self.patente.setContentsMargins(0, 0, 0, 10)
         
