@@ -11,14 +11,14 @@
                 "descrição": "fdsafsdf",
                 "dificuldade": "FÁCIL",
                 "prioridade": "RELEVANTE",
-                "checkbox": 1
+                "checkbox": 0
             },
             {
                 "id": 1,
                 "titulo": "ds",
                 "descrição": "dsdsdsdsd",
                 "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
+                "prioridade": "TRANQUILO",
                 "checkbox": 0
             },
             {
