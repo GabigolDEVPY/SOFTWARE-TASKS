@@ -46,7 +46,7 @@ class statusPatente(QFrame):
         self.user = user
         self.xp_user = user["xp"]
         self.indice = indice
-        self.setFixedSize(830, 40)
+        self.setFixedSize(1125, 40)
         self.setStyleSheet("background-color: #f87000 ;")
         
         # criando widgets

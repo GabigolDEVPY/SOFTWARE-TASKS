@@ -328,7 +328,7 @@ class ui_diarias(QFrame):
         super().__init__()
         self.user = user
         self.indice = indice
-        self.setFixedSize(825, 555)
+        self.setFixedSize(1125, 770)
         self.setStyleSheet("background-color: #1b1b1b;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)

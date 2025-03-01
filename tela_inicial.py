@@ -18,10 +18,10 @@ class janela_principal(QMainWindow):
             self.expanded = not self.expanded
             
             # Tamanho para o widgetcentro
-            widgetcentro_width = 750 if self.expanded else 825
+            widgetcentro_width = 1055 if self.expanded else 1125
 
             # Tamanho para o status_patente
-            status_patente_width = 750 if self.expanded else 825 # Exemplo de valores diferentes
+            status_patente_width = 1055 if self.expanded else 1125 # Exemplo de valores diferentes
             
             # Animação para `widgetcentro`
             anim_central = QPropertyAnimation(self.widgetcentro, b"minimumWidth")
@@ -45,7 +45,7 @@ class janela_principal(QMainWindow):
             # Inicia a animação
             self.animation_group.start()
             
-        self.setFixedSize(900, 600)
+        self.setFixedSize(1200, 800)
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
         self.CentralLayout = QHBoxLayout()
