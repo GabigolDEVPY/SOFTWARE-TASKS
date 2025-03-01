@@ -7,34 +7,10 @@
         "tarefas": [
             {
                 "id": 0,
-                "titulo": "fdsa",
-                "descrição": "fdsafsdf",
-                "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE",
-                "checkbox": 1
-            },
-            {
-                "id": 1,
-                "titulo": "ds",
-                "descrição": "dsdsdsdsd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
-                "checkbox": 0
-            },
-            {
-                "id": 2,
-                "titulo": "ds",
-                "descrição": "dsds",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
-                "checkbox": 0
-            },
-            {
-                "id": 3,
-                "titulo": "",
-                "descrição": "",
-                "dificuldade": "MEDIO",
-                "prioridade": "RELEVANTE",
+                "titulo": "dsa",
+                "descrição": "dsadasdasda",
+                "dificuldade": "DIFÍCIL",
+                "prioridade": "TRANQUILO",
                 "checkbox": 0
             }
         ]
