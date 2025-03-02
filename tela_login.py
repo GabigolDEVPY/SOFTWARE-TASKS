@@ -25,13 +25,15 @@ class layouts(QVBoxLayout):
         
 # criador e estilizador dos textos
 class texto(QLabel):
-    def __init__(self, nome, tamanho):
+    def __init__(self, nome, tamanho, color):
         super().__init__()
-        self.configstyle(nome, tamanho)
-    def configstyle(self, nome, tamanho):
-        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold; color: #ffffff;")
+        self.configstyle(nome, tamanho, color)
+    def configstyle(self, nome, tamanho, color):
+        self.setStyleSheet(f"font-size: {tamanho}px; font-weight: bold; color: #{color}")
         self.setText(nome)
         self.setContentsMargins(50, 0, 20, 0)
+
+            
 
 # criador e estilizador de linhas 
 class linha(QLineEdit):
@@ -58,7 +60,7 @@ class login(QMainWindow):
         self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
-        self.olho.setStyleSheet("border: 1px solid #400040; border-radius: 4px;")
+        self.olho.setStyleSheet("border: 1px solid #f87000; border-radius: 4px;")
         self.olho.setFixedSize(30, 30)
         
         # criando botões
@@ -68,9 +70,9 @@ class login(QMainWindow):
 
         
         # textos, Usuário, Senha
-        self.titulo = texto("     BEM-VINDO", "30")
-        self.texto_login = texto("Usuário", "14")
-        self.texto_senha = texto("Senha", "14")
+        self.titulo = texto("     BEM-VINDO", "30", "FFFFFF")
+        self.texto_login = texto("Usuário", "14", "FFFFFF")
+        self.texto_senha = texto("Senha", "14", "FFFFFF")
         
         # campos de digitar senha e usuário
         self.campo_usuario = linha("Digite o nome...")
@@ -81,12 +83,23 @@ class login(QMainWindow):
         self.layout_login = layouts(self.texto_login, self.campo_usuario)
         self.layout_login.setContentsMargins(0, 50, 0, 0)
         
+        
+        
         # layout senha
-        self.layout_senha = QGridLayout()
-        self.layout_senha.addWidget(self.texto_senha, 0, 0)
-        self.layout_senha.addWidget(self.campo_senha, 1, 0)
-        self.layout_senha.addWidget(self.olho, 1, 2)
-        self.layout_senha.setContentsMargins(0, 20, 15, 100)
+        # mensagem de status
+        self.mensagemStatus = texto(None, "15", "FFFFFF")
+        self.spacer = QSpacerItem(90, 90)
+        self.layout_senha = QVBoxLayout()
+        self.layout_senha.addWidget(self.texto_senha)
+        # layout senha mais olho 
+        self.layoutSenhaOlho = QHBoxLayout()
+        self.layoutSenhaOlho.setContentsMargins(0, 0, 15, 10)
+        self.layoutSenhaOlho.addWidget(self.campo_senha)
+        self.layoutSenhaOlho.addWidget(self.olho, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.layout_senha.addLayout(self.layoutSenhaOlho)
+        self.layout_senha.addWidget(self.mensagemStatus)
+        self.layout_senha.addItem(self.spacer)
+        
         
         #adicionando na tela
 

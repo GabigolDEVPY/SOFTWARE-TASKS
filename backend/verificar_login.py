@@ -1,8 +1,15 @@
 from backend import load_json
 from tela_inicial import janela_principal
+import re
+from PySide6.QtCore import *
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
 
 def verificar_login(self, login, senha):
     users = load_json.load_file()
+    if users == []:
+        self.mensagemStatus.configstyle("Usuário não existente", 12, "d91717")
+        return
     print(users)
     indice = -1
     for user in users:
@@ -11,15 +18,32 @@ def verificar_login(self, login, senha):
             self.janela = janela_principal(user, indice)
             self.janela.show()
             self.close()
-        else: 
+        else:
+            self.mensagemStatus.configstyle("Usuário ou senha incorretos", 12, "d91717")
             print("usuário não encontrado")   
 
 def cadastrar(self, login, senha):
+    if not (8 <= len(senha) <=20):
+        self.mensagemStatus.configstyle("A senha deve conter 8 a 20 digitos", 12, "d91717")
+        return
+    if not re.search(r'[A-Z]', senha):
+        self.mensagemStatus.configstyle("A senha deve conter uma letra maiúscula", 12, "d91717")
+        return
+    if not re.search(r'\d', senha):
+        self.mensagemStatus.configstyle("A senha deve conter um número", 12, "d91717")
+        return
+    if not re.search(r'[#@*!&]', senha):
+        self.mensagemStatus.configstyle("A senha deve conter um caractere especial", 12, "d91717")
+        return
+    
+    
     users = load_json.load_file()
     print(users)
     for user in users:
         if user["login"] == login:
-            return print("usuário já existe")
+            self.mensagemStatus.configstyle("Usuário Já existente escolha outro, BURRO", 12, "d91717")
+            return 
+        
         
     users.append(
         {
@@ -30,6 +54,7 @@ def cadastrar(self, login, senha):
             "tarefas": []
         }
     )
+    self.mensagemStatus.configstyle("Usuário cadastrado com sucesso", 12, "b7ff44")
     print(users)
     load_json.save_file(users)  
 
