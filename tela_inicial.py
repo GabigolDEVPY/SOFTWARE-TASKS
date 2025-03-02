@@ -5,6 +5,7 @@ from custom_sidebar import Sidebar
 from status_patente import statusPatente
 from ui.ui_tarefas import ui_diarias
 from ui.ui_concluidos import Ui_Concluidos
+from teste import MainWindow
 import sys
 
 class janela_principal(QMainWindow):
@@ -62,11 +63,11 @@ class janela_principal(QMainWindow):
             self.widgetcentro = Ui_Concluidos()
             self.Vlayout.addWidget(self.widgetcentro)
             
-        def troca_widget_diarias(self):
+        def troca_widget_tarefas(self):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice, self.expanded)
+            self.widgetcentro = MainWindow(self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
         
         self.setFixedSize(1200, 900)
@@ -95,6 +96,7 @@ class janela_principal(QMainWindow):
         self.sideBar.btn_menu.clicked.connect(lambda: mudar_tamanhos(self))
         self.sideBar.botao_inicio.clicked.connect(lambda: troca_widget_diarias(self))
         self.sideBar.botao_concluidos.clicked.connect(lambda: troca_widget_concluidos(self))
+        self.sideBar.botao_diarias.clicked.connect(lambda: troca_widget_tarefas(self))
         self.sideBar.setParent(self)
         
         # layout para o frma e o status patente

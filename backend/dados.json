@@ -4,6 +4,15 @@
         "senha": "@Gabriel12",
         "xp": 640,
         "xp_variavel": 640,
-        "tarefas": []
+        "tarefas": [
+            {
+                "id": 0,
+                "titulo": "f",
+                "descrição": "asdfasdfasdfsadfsadf",
+                "dificuldade": "FÁCIL",
+                "prioridade": "RELEVANTE",
+                "checkbox": 0
+            }
+        ]
     }
 ]

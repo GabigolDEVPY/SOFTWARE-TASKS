@@ -241,7 +241,7 @@ class Custom_widget(QWidget):
 class TaskLista(QWidget):
     def __init__(self, status_patente, user, indice):
         super().__init__()
-        self.setStyleSheet("background-color: #1b1b1b;")
+        self.setStyleSheet("background-color: #2C2F33; border-radius: 10px;")
         self.user = user
         self.tarefas = user['tarefas']
         self.indice = indice
@@ -361,7 +361,7 @@ class ui_diarias(QFrame):
         else:
             print("não expandido")
             self.setFixedSize(1125, 850)
-        self.setStyleSheet("background-color: #1b1b1b;")
+        self.setStyleSheet("background-color: #23272A;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)
         self.setLayout(self.centralLayout)
