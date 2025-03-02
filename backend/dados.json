@@ -1,0 +1,23 @@
+[
+    {
+        "login": "7",
+        "senha": "123456 78G#",
+        "xp": 0,
+        "xp_variavel": 0,
+        "tarefas": []
+    },
+    {
+        "login": "12",
+        "senha": "1232131G#",
+        "xp": 0,
+        "xp_variavel": 0,
+        "tarefas": []
+    },
+    {
+        "login": "Gabriel",
+        "senha": "@Gabriel123",
+        "xp": 0,
+        "xp_variavel": 0,
+        "tarefas": []
+    }
+]

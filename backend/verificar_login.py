@@ -23,6 +23,16 @@ def verificar_login(self, login, senha):
             print("usuário não encontrado")   
 
 def cadastrar(self, login, senha):
+    
+    if not (3 <= len(login) <=15):
+        self.mensagemStatus.configstyle("Nome deve conter 3 a 15 digitos", 12, "d91717")
+        return
+    
+    if not bool(re.fullmatch(r'[A-Za-z0-9]+', login)):
+        self.mensagemStatus.configstyle("Nome deve conter apenas letras e numeros ", 12, "d91717")
+        return
+    
+    
     if not (8 <= len(senha) <=20):
         self.mensagemStatus.configstyle("A senha deve conter 8 a 20 digitos", 12, "d91717")
         return
@@ -35,7 +45,9 @@ def cadastrar(self, login, senha):
     if not re.search(r'[#@*!&]', senha):
         self.mensagemStatus.configstyle("A senha deve conter um caractere especial", 12, "d91717")
         return
-    
+    if " " in senha:
+        self.mensagemStatus.configstyle("A senha deve conter espaços", 12, "d91717")
+        return
     
     users = load_json.load_file()
     print(users)
