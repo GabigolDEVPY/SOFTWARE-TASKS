@@ -1,23 +1,18 @@
 [
     {
-        "login": "7",
-        "senha": "123456 78G#",
+        "login": "gabriel",
+        "senha": "@Gabriel12",
         "xp": 0,
         "xp_variavel": 0,
-        "tarefas": []
-    },
-    {
-        "login": "12",
-        "senha": "1232131G#",
-        "xp": 0,
-        "xp_variavel": 0,
-        "tarefas": []
-    },
-    {
-        "login": "Gabriel",
-        "senha": "@Gabriel123",
-        "xp": 0,
-        "xp_variavel": 0,
-        "tarefas": []
+        "tarefas": [
+            {
+                "id": 0,
+                "titulo": "sad",
+                "descrição": "SDASD",
+                "dificuldade": "FÁCIL",
+                "prioridade": "TRANQUILO",
+                "checkbox": 0
+            }
+        ]
     }
 ]
