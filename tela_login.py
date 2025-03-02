@@ -3,6 +3,11 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 import sys
 from backend import load_json, verificar_login
+import os
+
+local = os.path.dirname(os.path.abspath(__file__))
+local_bg = os.path.join(local, "backgrounds\\")
+print(local_bg)
 
 
 class botoes(QPushButton):
@@ -46,18 +51,23 @@ class linha(QLineEdit):
         self.setPlaceholderText(nome) 
         self.setContentsMargins(50, 0, 30, 0)
 
-class login(QMainWindow):
-    def __init__(self):
+class login(QFrame):
+    def __init__(self, tela):
         super().__init__()
-        
-        # criando a janela
-        self.widget_central = QWidget()
-        self.widget_central.setStyleSheet("background-color: #1b1b1b;")
 
+        image_path = os.path.join(local_bg, "2.png")  # Ajuste a extensão correta!
+
+        self.setStyleSheet(f"""
+            QFrame {{
+                background-image: url('{image_path.replace("\\", "/")}'); 
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                border-radius: 10px;
+            }}
+        """)
+        self.tela = tela
         self.vlayout = QVBoxLayout()
         self.vlayout.setContentsMargins(0, 0, 0, 50)
-        self.widget_central.setLayout(self.vlayout)
-        self.setCentralWidget(self.widget_central)
         # criando olho botão
         self.olho = QPushButton("🙈")
         self.olho.setStyleSheet("border: 1px solid #f87000; border-radius: 4px;")
@@ -70,7 +80,8 @@ class login(QMainWindow):
 
         
         # textos, Usuário, Senha
-        self.titulo = texto("     BEM-VINDO", "30", "FFFFFF")
+        self.titulo = texto("          LOGIN", "30", "FFFFFF")
+        self.titulo.setFixedSize(350, 60)
         self.texto_login = texto("Usuário", "14", "FFFFFF")
         self.texto_senha = texto("Senha", "14", "FFFFFF")
         
@@ -109,10 +120,11 @@ class login(QMainWindow):
         self.vlayout.addLayout(self.layout_senha)
         self.vlayout.addWidget(self.botao_login, alignment=Qt.AlignCenter)
         self.vlayout.addWidget(self.botao_registrar, alignment=Qt.AlignCenter)
+        self.setLayout(self.vlayout)
         self.setFixedSize(350, 500)
-    
+        
         self.olho.clicked.connect(lambda: trocar_status_senha())
-        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self, self.campo_usuario.text(), self.campo_senha.text()))
+        self.botao_login.clicked.connect(lambda: verificar_login.verificar_login(self.tela, self.campo_usuario.text(), self.campo_senha.text()))
         self.botao_registrar.clicked.connect(lambda: verificar_login.cadastrar(self, self.campo_usuario.text(), self.campo_senha.text()))
         
         def trocar_status_senha():
@@ -122,11 +134,45 @@ class login(QMainWindow):
             else:
                 self.campo_senha.setEchoMode(QLineEdit.Password)
                 self.olho.setText("🙈")
-        self.show()        
                 
+class tela_principal(QFrame):
+    def __init__(self):
+        super().__init__()
+        
+        # Aplicando a imagem de fundo ao QFrame da tela principal
+        image_path = os.path.join(local_bg, "1.png")  # Ajuste a extensão correta!
+
+        self.setStyleSheet(f"""
+            QFrame {{
+                background-image: url('{image_path.replace("\\", "/")}'); 
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                border-radius: 10px;
+            }}
+        """)
+        
+        self.titulo = QLabel("                KANBAN DA SHOPEE")
+        self.titulo.setFixedSize(800, 60)
+        self.titulo.setStyleSheet("font-size: 40px; font-weight: bold")
+        self.setFixedSize(1200, 700)
+        self.layoutCentral = QVBoxLayout()
+        self.layoutCanto = QHBoxLayout()
+        
+        # Adicionando o QFrame de login à tela principal
+        self.login = login(self)
+        self.spacer = QSpacerItem(70, 70)
+        self.layoutCanto.addWidget(self.login, alignment=Qt.AlignRight | Qt.AlignmentFlag.AlignTop)
+        self.layoutCanto.addItem(self.spacer)
+        self.layoutCentral.addWidget(self.titulo)
+        self.layoutCentral.addLayout(self.layoutCanto)
+        
+        self.setLayout(self.layoutCentral)
+
+                    
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     app.setStyle("windows11")
-    window = login()
+    window = tela_principal()
+    window.show()
     app.exec()

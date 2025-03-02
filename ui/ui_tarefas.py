@@ -7,7 +7,8 @@ import random
 class ver(QDialog):
     def __init__(self, descricao):
         super().__init__()
-        self.setStyleSheet("background-color: #303030;")
+        self.setWindowFlags(Qt.WindowTitleHint)
+        self.setStyleSheet("background-color: #1b1b1b;")
         self.centrallayout = QVBoxLayout()
         self.setLayout(self.centrallayout)
         self.titulo = QLabel("DESCRIÇÃO")  
@@ -20,7 +21,11 @@ class ver(QDialog):
         self.centrallayout.addWidget(self.titulo, alignment=Qt.AlignCenter)       
         self.centrallayout.addWidget(self.descricao)       
         self.centrallayout.addWidget(self.botao_ok, alignment=Qt.AlignCenter)
-        self.botao_ok.clicked.connect(lambda: self.close())
+        self.botao_ok.clicked.connect(lambda: fechar())
+        def fechar():
+            self.ver_tarefa = 0
+            self.close()
+            
         self.show()
         self.exec()       
 
@@ -28,11 +33,13 @@ class ver(QDialog):
 class dialog_tarefa(QDialog):
     def __init__(self, lista, user, indice):
         super().__init__()
+        self.setWindowFlags(Qt.WindowTitleHint)
         self.user = user
         self.tarefas = user['tarefas']
         self.indice = indice
         self.lista = lista
-        self.setStyleSheet("background-color: #303030;")
+        self.ver_tarefa = 1
+        self.setStyleSheet("background-color: #1b1b1b;")
         self.setFixedSize(500, 500)
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
@@ -76,8 +83,12 @@ class dialog_tarefa(QDialog):
         self.central_layout.addWidget(self.botao_ok, alignment=Qt.AlignmentFlag.AlignCenter)
         self.central_layout.addWidget(self.botao_cancelar, alignment=Qt.AlignmentFlag.AlignCenter)
         
-        self.botao_cancelar.clicked.connect(lambda: self.close())
+        self.botao_cancelar.clicked.connect(lambda: cancelar())
         self.botao_ok.clicked.connect(lambda: add_task(self.tarefas))
+        
+        def cancelar():
+            self.ver_tarefa = 0
+            self.close()
         
         def add_task(tarefas):
             id = len(tarefas)
@@ -100,7 +111,7 @@ class dialog_tarefa(QDialog):
             users[self.indice] = self.user
             load_json.save_file(users)
             print(users)
-            
+            self.ver_tarefa = 0
             
 
             self.close()
@@ -241,21 +252,30 @@ class TaskLista(QWidget):
         # layout botões
         self.layout_botoes = QVBoxLayout()
         self.layout_botoes.setAlignment(Qt.AlignTop)
-        self.botao_concluir = botoes("CONCLUIR", 35, 80)
-        self.botao_adicionar = botoes("ADICIONAR", 35, 80)
-        self.botao_ver = botoes("VER TAREFA", 35, 80)
-        self.botao_excluir = botoes("EXCLUIR", 35, 80)
+        self.botao_concluir = botoes("CONCLUIR", 35, 110)
+        self.botao_adicionar = botoes("ADICIONAR", 35, 110)
+        self.botao_ver = botoes("VER TAREFA", 35, 110)
+        self.botao_excluir = botoes("EXCLUIR", 35, 110)
         self.layout_botoes.addWidget(self.botao_concluir)
         self.layout_botoes.addWidget(self.botao_adicionar)
         self.layout_botoes.addWidget(self.botao_ver)
         self.layout_botoes.addWidget(self.botao_excluir)
         self.CentralLayout.addWidget(self.task_list)
         self.CentralLayout.addLayout(self.layout_botoes)
+        self.ver_tarefa = 0
         
-        self.botao_adicionar.clicked.connect(lambda: dialog_tarefa(self.task_list, self.user, self.indice))
+        self.botao_adicionar.clicked.connect(lambda: dialogDa_tarefa())
         self.botao_concluir.clicked.connect(lambda: concluir_tarefa(self, self.tarefas))
-        self.botao_ver.clicked.connect(lambda: ver_tarefa(self.tarefas))
+        self.botao_ver.clicked.connect(lambda: ver_tarefa(self, self.tarefas))
         self.botao_excluir.clicked.connect(lambda: excluir_tarefa(self.tarefas))
+        
+        def dialogDa_tarefa():
+            print()
+            if self.ver_tarefa == 0:
+                self.ver_tarefa = 1
+                dialog = dialog_tarefa(self.task_list, self.user, self.indice)
+                self.ver_tarefa = dialog.ver_tarefa
+                print(dialog.ver_tarefa)
         
         def add_tarefas_inicial(tarefas):
             for tarefa in tarefas:
@@ -292,7 +312,8 @@ class TaskLista(QWidget):
                 load_json.save_file(users)
                 self.status_patente.atualizar_xp(xp)
         
-        def ver_tarefa(tarefas):
+        def ver_tarefa(self, tarefas):
+            print(self.ver_tarefa)
             tarefas = tarefas
             selected_item = self.task_list.currentItem()
             if selected_item:
@@ -300,7 +321,12 @@ class TaskLista(QWidget):
                 id = widget.id
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
-                        ver(tarefa["descrição"])
+                        if self.ver_tarefa == 0:
+                            self.ver_tarefa = 1
+                            dialog = ver(tarefa["descrição"])
+                            self.ver_tarefa = dialog.ver_tarefa
+
+                        
                         
         def excluir_tarefa(tarefas):
             tarefas = tarefas
@@ -328,7 +354,7 @@ class ui_diarias(QFrame):
         super().__init__()
         self.user = user
         self.indice = indice
-        self.setFixedSize(825, 555)
+        self.setFixedSize(1125, 850)
         self.setStyleSheet("background-color: #1b1b1b;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)
