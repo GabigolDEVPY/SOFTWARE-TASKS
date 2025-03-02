@@ -31,7 +31,7 @@ class Sidebar(QWidget):
 
 
         # Criar botões e adicionar ao VerticalLayout
-        self.botao_dashboard = botoes(" 🏠")
+        self.botao_inicio = botoes(" 🏠")
         self.botao_tarefas = botoes(" 📋")
         self.botao_diarias = botoes(" 📅")
         self.botao_concluidos = botoes(" ✅")
@@ -43,7 +43,7 @@ class Sidebar(QWidget):
     
         
         self.VerticalLayout.addWidget(self.btn_menu)
-        self.VerticalLayout.addWidget(self.botao_dashboard)
+        self.VerticalLayout.addWidget(self.botao_inicio)
         self.VerticalLayout.addWidget(self.botao_tarefas)
         self.VerticalLayout.addWidget(self.botao_diarias)
         self.VerticalLayout.addWidget(self.botao_concluidos)
@@ -58,7 +58,7 @@ class Sidebar(QWidget):
         if self.expanded:
             self.animation.setStartValue(70)
             self.animation.setEndValue(145)
-            self.botao_dashboard.setText("🏠 Início")
+            self.botao_inicio.setText("🏠 Início")
             self.botao_tarefas.setText("📋 Tarefas")
             self.botao_diarias.setText("📅 Diarias")
             self.botao_concluidos.setText("✅ Concluidos")
@@ -66,7 +66,7 @@ class Sidebar(QWidget):
         else:
             self.animation.setStartValue(145)
             self.animation.setEndValue(70)
-            self.botao_dashboard.setText(" 🏠")
+            self.botao_inicio.setText(" 🏠")
             self.botao_tarefas.setText(" 📋")
             self.botao_diarias.setText(" 📅")
             self.botao_concluidos.setText(" ✅")

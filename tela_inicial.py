@@ -4,6 +4,7 @@ from PySide6.QtGui import *
 from custom_sidebar import Sidebar
 from status_patente import statusPatente
 from ui.ui_tarefas import ui_diarias
+from ui.ui_concluidos import Ui_Concluidos
 import sys
 
 class janela_principal(QMainWindow):
@@ -45,6 +46,29 @@ class janela_principal(QMainWindow):
             # Inicia a animação
             self.animation_group.start()
             
+            #TROCANDO OS WIDGETTTTTTSSSSSSS CHATOS PRA KRLLLLLL SLCCCCCCCCCCC
+        
+        def troca_widget_diarias(self):
+            self.Vlayout.removeWidget(self.widgetcentro)
+            self.widgetcentro.deleteLater()
+            
+            self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice, self.expanded)
+            self.Vlayout.addWidget(self.widgetcentro)
+            
+        def troca_widget_concluidos(self):
+            self.Vlayout.removeWidget(self.widgetcentro)
+            self.widgetcentro.deleteLater()
+            
+            self.widgetcentro = Ui_Concluidos()
+            self.Vlayout.addWidget(self.widgetcentro)
+            
+        def troca_widget_diarias(self):
+            self.Vlayout.removeWidget(self.widgetcentro)
+            self.widgetcentro.deleteLater()
+            
+            self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice, self.expanded)
+            self.Vlayout.addWidget(self.widgetcentro)
+        
         self.setFixedSize(1200, 900)
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
@@ -63,12 +87,14 @@ class janela_principal(QMainWindow):
         
         # criando status patente
         self.status_patente = statusPatente(user, indice)
-        self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice)
         
+        self.widgetcentro = QFrame()
         # criando a sidebar
         self.sideBar = Sidebar(self.status_patente)
         self.sideBar.btn_menu.clicked.connect(lambda: self.sideBar.toggle_sidebar())
         self.sideBar.btn_menu.clicked.connect(lambda: mudar_tamanhos(self))
+        self.sideBar.botao_inicio.clicked.connect(lambda: troca_widget_diarias(self))
+        self.sideBar.botao_concluidos.clicked.connect(lambda: troca_widget_concluidos(self))
         self.sideBar.setParent(self)
         
         # layout para o frma e o status patente

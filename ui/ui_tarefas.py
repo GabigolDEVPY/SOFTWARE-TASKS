@@ -350,11 +350,17 @@ class TaskLista(QWidget):
 
 
 class ui_diarias(QFrame):
-    def __init__(self, status_patente, user, indice):
+    def __init__(self, status_patente, user, indice, expanded):
         super().__init__()
+        self.expanded = expanded
         self.user = user
         self.indice = indice
-        self.setFixedSize(1125, 850)
+        if self.expanded:
+            print("está expandido")
+            self.setFixedSize(1050, 850)
+        else:
+            print("não expandido")
+            self.setFixedSize(1125, 850)
         self.setStyleSheet("background-color: #1b1b1b;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)
