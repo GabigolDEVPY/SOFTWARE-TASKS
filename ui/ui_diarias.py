@@ -39,7 +39,7 @@ class dialog_tarefa(QDialog):
         self.indice = indice
         self.lista = lista
         self.ver_tarefa = 1
-        self.setStyleSheet("background-color: #1b1b1b;")
+        self.setStyleSheet("background-color: #23272A;")
         self.setFixedSize(500, 500)
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
@@ -47,18 +47,20 @@ class dialog_tarefa(QDialog):
         self.titulo.setStyleSheet("font-size: 30px; color: #ffffff; font-weight: bold;")
         self.espaco = QSpacerItem(90, 90, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.linha_tarefa = QLabel("NOME DA TAREFA")
-        self.linha_tarefa.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold;")
+        self.linha_tarefa.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold ;")
         self.tarefa = QLineEdit()
-        self.tarefa.setStyleSheet("color: #ffffff;")
+        self.tarefa.setStyleSheet("color: #ffffff; background-color: #303030;")
         self.tarefa.setMinimumHeight(35)
         
         # parte só para esses combobox chato aqui
         self.layoutCombos = QHBoxLayout()
         self.layoutCombos.setContentsMargins(70, 5, 70, 5)
         self.qual_prioridade = QComboBox()
+        self.qual_prioridade.setStyleSheet("background-color: #303030;")
         self.qual_prioridade.setFixedSize(140, 40)
         self.qual_prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
         self.qual_dificuldade = QComboBox()
+        self.qual_dificuldade.setStyleSheet("background-color: #303030;")
         self.qual_dificuldade.setFixedSize(140, 40)
         self.qual_dificuldade.addItems(["FÁCIL", "MEDIO", "DIFÍCIL"])
         self.layoutCombos.addWidget(self.qual_prioridade)
@@ -68,7 +70,7 @@ class dialog_tarefa(QDialog):
         self.linha_descricao = QLabel("DESCRIÇÃO")
         self.linha_descricao.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold;")
         self.descricao = QTextEdit()
-        self.descricao.setStyleSheet("color: #ffffff;")
+        self.descricao.setStyleSheet("color: #ffffff; background-color: #303030;")
         self.botao_ok = botoes("OK", 45, 300)
         self.botao_cancelar = botoes("CANCELAR", 45, 300)
         
@@ -129,9 +131,10 @@ class botoes(QPushButton):
         self.setText(nome)
         self.setFixedSize(largura, altura)
         
-class Custom_widget(QWidget):
+class Custom_widget(QFrame):
     def __init__(self, nome, id, dificuldade, prioridade, indice, check):
         super().__init__()
+        self.setStyleSheet("background-color: #23272A;")
         self.indice = indice
         self.central_layout = QHBoxLayout()
         self.setLayout(self.central_layout)
@@ -153,7 +156,7 @@ class Custom_widget(QWidget):
         self.xp.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.prioridade = QComboBox()
         self.prioridade.setStyleSheet("border-radius: 5px; font-weight: bold; color: #ffffff;")
-        self.prioridade.setFixedSize(105, 35)
+        self.prioridade.setFixedSize(120, 35)
         self.prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
         self.muda_cor(self.Qprioridade)
         self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor(self.prioridade.currentText()))
@@ -247,6 +250,7 @@ class TaskLista(QWidget):
         self.indice = indice
         self.CentralLayout = QHBoxLayout(self)
         self.task_list = QListWidget()
+        self.task_list.setSpacing(10)
         self.status_patente = status_patente
         
         # layout botões
@@ -357,10 +361,10 @@ class ui_diarias(QFrame):
         self.indice = indice
         if self.expanded:
             print("está expandido")
-            self.setFixedSize(1050, 850)
+            self.setFixedSize(1050, 760)
         else:
             print("não expandido")
-            self.setFixedSize(1125, 850)
+            self.setFixedSize(1125, 760)
         self.setStyleSheet("background-color: #23272A;")
         self.centralLayout = QVBoxLayout()
         self.centralLayout.setSpacing(0)

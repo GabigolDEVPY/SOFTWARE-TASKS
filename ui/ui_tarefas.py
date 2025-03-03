@@ -22,6 +22,9 @@ class TaskWidget(QFrame):
         self.text = text
 
 class DragDropList(QListWidget):
+    # Sinal para indicar que essa lista foi ativada
+    listActivated = Signal(QListWidget)
+    
     def __init__(self, name):
         super().__init__()
         self.setObjectName(name)
@@ -38,6 +41,12 @@ class DragDropList(QListWidget):
                 padding: 10px;
             }
         """)
+        # Conecta o sinal de mudança de seleção para emitir o sinal listActivated
+        self.itemSelectionChanged.connect(self.on_item_selection_changed)
+
+    def on_item_selection_changed(self):
+        if self.currentItem() is not None:
+            self.listActivated.emit(self)
 
     def startDrag(self, supported_actions):
         item = self.currentItem()
@@ -69,28 +78,20 @@ class DragDropList(QListWidget):
         if event.mimeData().hasText():
             text = event.mimeData().text()
             source_list = event.mimeData().data("application/list-source").data().decode()
-
-            # Verifique se a tarefa já está na lista de destino
             if not any(self.itemWidget(item).text == text for item in self.findItems(text, Qt.MatchExactly)):
                 new_item = QListWidgetItem()
                 new_item.setSizeHint(QSize(180, 80))
                 self.addItem(new_item)
-
-                # Define a cor da nova lista
                 color = "#FF5733" if "ToDo" in self.objectName() else "#3498db" if "Doing" in self.objectName() else "#2ecc71"
                 widget = TaskWidget(text, color)
                 self.setItemWidget(new_item, widget)
-
-                # Remove a tarefa da lista de origem
                 list_widget = self.window().findChild(QListWidget, source_list)
                 if list_widget:
                     for index in range(list_widget.count()):
                         item = list_widget.item(index)
                         if list_widget.itemWidget(item).text == text:
-                            list_widget.takeItem(index)  # Remover item da lista de origem
+                            list_widget.takeItem(index)
                             break
-
-                # Salva as mudanças nas tarefas
                 self.save_tasks()
                 event.acceptProposedAction()
 
@@ -100,7 +101,6 @@ class DragDropList(QListWidget):
             "Doing": [],
             "Done": []
         }
-
         for list_name in tasks.keys():
             list_widget = self.window().findChild(QListWidget, list_name)
             if list_widget:
@@ -109,8 +109,6 @@ class DragDropList(QListWidget):
                     widget = list_widget.itemWidget(item)
                     if widget:
                         tasks[list_name].append(widget.text)
-
-        # Agora, vamos salvar a estrutura das tarefas atualizada
         with open(TASKS_FILE, "w") as file:
             json.dump(tasks, file, indent=4)
 
@@ -134,15 +132,14 @@ class MainWindow(QFrame):
         self.setStyleSheet("background: #23272A; color: white; font-size: 16px;")
         self.expanded = expanded
         if expanded:
-            self.setFixedSize(1050, 850)
+            self.setFixedSize(1050, 760)
         else:
-            self.setFixedSize(1125, 850)
+            self.setFixedSize(1125, 760)
         layout = QVBoxLayout(self)
 
-        # Criando um QHBoxLayout para organizar as listas horizontalmente
-        horizontal_layout = QHBoxLayout()
+        self.last_active_list = None
 
-        # Criando layouts verticais para cada lista (nome + lista)
+        horizontal_layout = QHBoxLayout()
         todo_layout = QVBoxLayout()
         doing_layout = QVBoxLayout()
         done_layout = QVBoxLayout()
@@ -151,31 +148,63 @@ class MainWindow(QFrame):
         self.doing_list = DragDropList("Doing")
         self.done_list = DragDropList("Done")
 
-        # Adicionando o nome da lista e a lista de tarefas em cada layout
-        todo_layout.addWidget(QLabel("To Do"))
+        # Conecta os sinais para atualizar a última lista ativa
+        self.todo_list.listActivated.connect(self.set_last_active_list)
+        self.doing_list.listActivated.connect(self.set_last_active_list)
+        self.done_list.listActivated.connect(self.set_last_active_list)
+
+        # Criando os labels com bold para os títulos
+        todo_label = QLabel("                          To Do")
+        todo_label.setStyleSheet("font-weight: bold; font-size: 22px;")
+        doing_label = QLabel("                         Doing")
+        doing_label.setStyleSheet("font-weight: bold; font-size: 22px;")
+        done_label = QLabel("                          Done")
+        done_label.setStyleSheet("font-weight: bold; font-size: 22px;")
+
+        todo_layout.addWidget(todo_label)
         todo_layout.addWidget(self.todo_list)
-
-        doing_layout.addWidget(QLabel("Doing"))
+        doing_layout.addWidget(doing_label)
         doing_layout.addWidget(self.doing_list)
-
-        done_layout.addWidget(QLabel("Done"))
+        done_layout.addWidget(done_label)
         done_layout.addWidget(self.done_list)
 
-        # Adicionando os layouts verticais ao layout horizontal
         horizontal_layout.addLayout(todo_layout)
         horizontal_layout.addLayout(doing_layout)
         horizontal_layout.addLayout(done_layout)
 
         self.add_task_button = QPushButton("Adicionar Tarefa")
+        self.add_task_button.setStyleSheet("""
+            font-weight: bold;
+            background-color: orange;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+        """)
         self.add_task_button.clicked.connect(self.open_add_task_dialog)
 
-        # Adicionando o layout horizontal com as listas ao layout principal
-        layout.addLayout(horizontal_layout)  # Usando addLayout para adicionar um QHBoxLayout
+        self.delete_task_button = QPushButton("Excluir Tarefa")
+        self.delete_task_button.setStyleSheet("""
+            font-weight: bold;
+            background-color: orange;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+        """)
+        self.delete_task_button.clicked.connect(self.delete_selected_task)
 
-        # Adicionando o botão de adicionar tarefa ao layout principal
-        layout.addWidget(self.add_task_button)
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addWidget(self.add_task_button)
+        buttons_layout.addWidget(self.delete_task_button)
+
+        layout.addLayout(horizontal_layout)
+        layout.addLayout(buttons_layout)
         self.setLayout(layout)
         self.load_tasks()
+
+    def set_last_active_list(self, list_widget):
+        self.last_active_list = list_widget
 
     def open_add_task_dialog(self):
         dialog = AddTaskDialog(self)
@@ -192,6 +221,13 @@ class MainWindow(QFrame):
         task_widget = TaskWidget(text, color)
         list_widget.setItemWidget(item, task_widget)
 
+    def delete_selected_task(self):
+        if self.last_active_list is not None:
+            current_item = self.last_active_list.currentItem()
+            if current_item is not None:
+                self.last_active_list.takeItem(self.last_active_list.row(current_item))
+                self.last_active_list.save_tasks()
+
     def load_tasks(self):
         try:
             with open(TASKS_FILE, "r") as file:
@@ -199,12 +235,11 @@ class MainWindow(QFrame):
                 for list_name, items in tasks.items():
                     list_widget = self.findChild(QListWidget, list_name)
                     if list_widget:
-                        # Adiciona as tarefas carregadas, mas não cria duplicados
                         existing_items = [list_widget.item(index).text() for index in range(list_widget.count())]
-
                         for task in items:
                             if task not in existing_items:
                                 color = "#FF5733" if "ToDo" in list_name else "#3498db" if "Doing" in list_name else "#2ecc71"
                                 self.add_task(list_widget, task, color)
         except FileNotFoundError:
             pass
+

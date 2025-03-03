@@ -160,6 +160,16 @@ class tela_principal(QFrame):
         
         # Adicionando o QFrame de login à tela principal
         self.login = login(self)
+        
+        # sombra
+        
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(20)
+        shadow.setXOffset(10)
+        shadow.setYOffset(10)
+        shadow.setColor(QColor(100, 100, 100, 100))  # Cor preta com transparência
+        
+        self.login.setGraphicsEffect(shadow)
         self.spacer = QSpacerItem(70, 70)
         self.layoutCanto.addWidget(self.login, alignment=Qt.AlignRight | Qt.AlignmentFlag.AlignTop)
         self.layoutCanto.addItem(self.spacer)

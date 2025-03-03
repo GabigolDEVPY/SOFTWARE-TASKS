@@ -70,13 +70,13 @@ class janela_principal(QMainWindow):
             self.widgetcentro = MainWindow(self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
         
-        self.setFixedSize(1200, 900)
+        self.setFixedSize(1200, 800)
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
         self.CentralLayout = QHBoxLayout()
         self.CentralLayout.setSpacing(0)
         self.CentralLayout.setContentsMargins(0, 0, 0, 0)
-        self.widget_central.setStyleSheet("background-color: #1b1b1b;")
+        self.widget_central.setStyleSheet("background-color: #23272A;")
         
         # frame centro
         self.layoutCENTRO = QHBoxLayout()
