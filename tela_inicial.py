@@ -3,9 +3,9 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from custom_sidebar import Sidebar
 from status_patente import statusPatente
-from ui.ui_tarefas import ui_diarias
+from ui.ui_diarias import ui_diarias
 from ui.ui_concluidos import Ui_Concluidos
-from teste import MainWindow
+from ui.ui_tarefas import MainWindow
 import sys
 
 class janela_principal(QMainWindow):

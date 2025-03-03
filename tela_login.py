@@ -55,7 +55,7 @@ class login(QFrame):
     def __init__(self, tela):
         super().__init__()
 
-        image_path = os.path.join(local_bg, "2.png")  # Ajuste a extensão correta!
+        image_path = os.path.join(local_bg, "3.png")  # Ajuste a extensão correta!
 
         self.setStyleSheet(f"""
             QFrame {{
@@ -80,10 +80,10 @@ class login(QFrame):
 
         
         # textos, Usuário, Senha
-        self.titulo = texto("          LOGIN", "30", "FFFFFF")
+        self.titulo = texto("          LOGIN", "30", "f87000")
         self.titulo.setFixedSize(350, 60)
-        self.texto_login = texto("Usuário", "14", "FFFFFF")
-        self.texto_senha = texto("Senha", "14", "FFFFFF")
+        self.texto_login = texto("Usuário", "14", "f87000")
+        self.texto_senha = texto("Senha", "14", "f87000")
         
         # campos de digitar senha e usuário
         self.campo_usuario = linha("Digite o nome...")
@@ -153,7 +153,7 @@ class tela_principal(QFrame):
         
         self.titulo = QLabel("                KANBAN DA SHOPEE")
         self.titulo.setFixedSize(800, 60)
-        self.titulo.setStyleSheet("font-size: 40px; font-weight: bold")
+        self.titulo.setStyleSheet("font-size: 40px; font-weight: bold; color: #f87000;")
         self.setFixedSize(1200, 700)
         self.layoutCentral = QVBoxLayout()
         self.layoutCanto = QHBoxLayout()
