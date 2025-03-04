@@ -57,7 +57,7 @@ class janela_principal(QMainWindow):
             
             self.widgetcentro = PomodoroApp()
             self.Vlayout.addWidget(self.widgetcentro)
-            self.status_patente.labelTitulo.setText("   PATENTES")
+            self.status_patente.labelTitulo.setText("   POMODORO")
             
         def troca_widget_diarias(self):
             self.Vlayout.removeWidget(self.widgetcentro)
