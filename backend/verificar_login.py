@@ -63,6 +63,7 @@ def cadastrar(self, login, senha):
             "senha": senha,
             "xp": 0,
             "xp_variavel": 0,
+            "diarias": [],
             "tarefas": []
         }
     )

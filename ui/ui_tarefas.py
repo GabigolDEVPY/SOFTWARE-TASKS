@@ -1,13 +1,14 @@
-import json
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-
-TASKS_FILE = "tasks.json"
+from backend import load_json
 
 class TaskWidget(QFrame):
-    def __init__(self, text, color):
+    def __init__(self, text, color, checked=False):  # Adiciona parâmetro checked
         super().__init__()
+        self.layoutCentral = QHBoxLayout()
+        self.Vlayout = QVBoxLayout()
+        self.setLayout(self.layoutCentral)
         self.setStyleSheet(f"""
             background-color: {color};
             border-radius: 10px;
@@ -16,18 +17,34 @@ class TaskWidget(QFrame):
             font-weight: bold;
             color: white;
         """)
-        self.label = QLabel(text, self)
-        self.label.setAlignment(Qt.AlignCenter)
-        self.setMinimumSize(310, 70)
+        self.checkbox = QCheckBox(self)
+        self.checkbox.setChecked(checked)  # Define o estado inicial do checkbox
+        self.checkbox.stateChanged.connect(self.on_checkbox_changed)  # Conecta o sinal de mudança
+        self.spacer = QSpacerItem(1,1)
+        self.label = QTextEdit(text)
+        self.label.setReadOnly(True)
+        self.label.setFixedSize(240, 80)
+        self.label.setStyleSheet(f"background-color: #ffffff; color: {color};") 
+        self.layoutCentral.addWidget(self.checkbox, alignment=Qt.AlignTop)
+        self.layoutCentral.addLayout(self.Vlayout)
+        self.Vlayout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignTop)
+        self.Vlayout.addItem(self.spacer)
+        self.setMinimumSize(250, 100)
         self.text = text
 
+    def on_checkbox_changed(self, state):
+        # Quando o checkbox mudar, salva o estado nas tarefas
+        list_widget = self.parent().parent()  # Acessa o QListWidget que contém este TaskWidget
+        if isinstance(list_widget, DragDropList):
+            list_widget.save_tasks()
+
 class DragDropList(QListWidget):
-    # Sinal para indicar que essa lista foi ativada
     listActivated = Signal(QListWidget)
     
-    def __init__(self, name):
+    def __init__(self, name, indice):
         super().__init__()
         self.setObjectName(name)
+        self.indice = indice
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
         self.setDefaultDropAction(Qt.MoveAction)
@@ -41,7 +58,6 @@ class DragDropList(QListWidget):
                 padding: 10px;
             }
         """)
-        # Conecta o sinal de mudança de seleção para emitir o sinal listActivated
         self.itemSelectionChanged.connect(self.on_item_selection_changed)
 
     def on_item_selection_changed(self):
@@ -80,10 +96,10 @@ class DragDropList(QListWidget):
             source_list = event.mimeData().data("application/list-source").data().decode()
             if not any(self.itemWidget(item).text == text for item in self.findItems(text, Qt.MatchExactly)):
                 new_item = QListWidgetItem()
-                new_item.setSizeHint(QSize(180, 80))
+                new_item.setSizeHint(QSize(180, 110))
                 self.addItem(new_item)
                 color = "#FF5733" if "ToDo" in self.objectName() else "#3498db" if "Doing" in self.objectName() else "#2ecc71"
-                widget = TaskWidget(text, color)
+                widget = TaskWidget(text, color)  # Cria com checked=False por padrão ao arrastar
                 self.setItemWidget(new_item, widget)
                 list_widget = self.window().findChild(QListWidget, source_list)
                 if list_widget:
@@ -96,41 +112,68 @@ class DragDropList(QListWidget):
                 event.acceptProposedAction()
 
     def save_tasks(self):
-        tasks = {
-            "ToDo": [],
-            "Doing": [],
-            "Done": []
-        }
-        for list_name in tasks.keys():
+        users = load_json.load_file()  # Carrega o JSON
+        tasks = []
+        
+        for list_name in ["ToDo", "Doing", "Done"]:
             list_widget = self.window().findChild(QListWidget, list_name)
             if list_widget:
                 for index in range(list_widget.count()):
                     item = list_widget.item(index)
                     widget = list_widget.itemWidget(item)
                     if widget:
-                        tasks[list_name].append(widget.text)
-        with open(TASKS_FILE, "w") as file:
-            json.dump(tasks, file, indent=4)
+                        tasks.append({
+                            "text": widget.text,
+                            "status": list_name,
+                            "checked": 1 if widget.checkbox.isChecked() else 0
+                        })
+        
+        users[self.indice]["tarefas"] = tasks
+        load_json.save_file(users)  # Salva no JSON
+        print("JSON atualizado:", users[self.indice]["tarefas"])  # Debug
 
 class AddTaskDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setFixedSize(400, 310)
         self.setWindowTitle("Adicionar Tarefa")
         layout = QVBoxLayout(self)
-        self.task_input = QLineEdit(self)
+        layout_botoes = QHBoxLayout()
+        self.titulo = QLabel("ADICIONAR TASK")
+        self.titulo.setStyleSheet("font-size: 20px; font-weight: bold ;")
+        self.task_input = QTextEdit(self)
+        self.task_input.setFixedSize(360, 200)
+        self.task_input.setStyleSheet("border-radius: 5px; background-color: #2C2F33;")
         self.task_input.setPlaceholderText("Digite a nova tarefa...")
+        self.botao_cancelar = QPushButton("Cancelar")
+        self.botao_cancelar.setStyleSheet("background-color: #f87000; font-weight: bold ; border-radius: 10px ;")
+        self.botao_cancelar.setFixedSize(170, 40)
         self.add_button = QPushButton("Adicionar")
-        self.add_button.clicked.connect(self.accept)
-        layout.addWidget(self.task_input)
-        layout.addWidget(self.add_button)
+        self.add_button.setFixedSize(170, 40)
+        self.add_button.setStyleSheet("background-color: #f87000; font-weight: bold ; border-radius: 10px ;")
+        self.add_button.clicked.connect(self.verificar)  # Chama o método verificar
+        self.botao_cancelar.clicked.connect(lambda: self.close())
+
+        layout.addWidget(self.titulo, alignment=Qt.AlignCenter)
+        layout.addWidget(self.task_input, alignment=Qt.AlignCenter)
+        layout.addLayout(layout_botoes)
+        layout_botoes.addWidget(self.add_button)
+        layout_botoes.addWidget(self.botao_cancelar)
         self.setLayout(layout)
 
+    def verificar(self):
+        print("ta aqui")
+        if len(self.task_input.toPlainText()) >= 5:
+            self.accept()
+
 class MainWindow(QFrame):
-    def __init__(self, expanded):
+    def __init__(self, expanded, indice, status):
         super().__init__()
         self.setWindowTitle("Kanban Personalizado")
         self.setStyleSheet("background: #23272A; color: white; font-size: 16px;")
         self.expanded = expanded
+        self.statusPatente = status
+        self.indice = indice
         if expanded:
             self.setFixedSize(1050, 760)
         else:
@@ -144,16 +187,14 @@ class MainWindow(QFrame):
         doing_layout = QVBoxLayout()
         done_layout = QVBoxLayout()
 
-        self.todo_list = DragDropList("ToDo")
-        self.doing_list = DragDropList("Doing")
-        self.done_list = DragDropList("Done")
+        self.todo_list = DragDropList("ToDo", self.indice)
+        self.doing_list = DragDropList("Doing", self.indice)
+        self.done_list = DragDropList("Done", self.indice)
 
-        # Conecta os sinais para atualizar a última lista ativa
         self.todo_list.listActivated.connect(self.set_last_active_list)
         self.doing_list.listActivated.connect(self.set_last_active_list)
         self.done_list.listActivated.connect(self.set_last_active_list)
 
-        # Criando os labels com bold para os títulos
         todo_label = QLabel("                          To Do")
         todo_label.setStyleSheet("font-weight: bold; font-size: 22px;")
         doing_label = QLabel("                         Doing")
@@ -175,7 +216,7 @@ class MainWindow(QFrame):
         self.add_task_button = QPushButton("Adicionar Tarefa")
         self.add_task_button.setStyleSheet("""
             font-weight: bold;
-            background-color: orange;
+            background-color: #f87000;
             color: white;
             padding: 8px;
             border: none;
@@ -186,7 +227,7 @@ class MainWindow(QFrame):
         self.delete_task_button = QPushButton("Excluir Tarefa")
         self.delete_task_button.setStyleSheet("""
             font-weight: bold;
-            background-color: orange;
+            background-color: #f87000;
             color: white;
             padding: 8px;
             border: none;
@@ -194,9 +235,21 @@ class MainWindow(QFrame):
         """)
         self.delete_task_button.clicked.connect(self.delete_selected_task)
 
+        self.complete_task_button = QPushButton("Concluir Agora")
+        self.complete_task_button.setStyleSheet("""
+            font-weight: bold;
+            background-color: #f87000;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+        """)
+        self.complete_task_button.clicked.connect(self.conclued_selected_task)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.add_task_button)
         buttons_layout.addWidget(self.delete_task_button)
+        buttons_layout.addWidget(self.complete_task_button)
 
         layout.addLayout(horizontal_layout)
         layout.addLayout(buttons_layout)
@@ -209,37 +262,55 @@ class MainWindow(QFrame):
     def open_add_task_dialog(self):
         dialog = AddTaskDialog(self)
         if dialog.exec():
-            task_text = dialog.task_input.text().strip()
+            task_text = dialog.task_input.toPlainText()
             if task_text:
                 self.add_task(self.todo_list, task_text, "#FF5733")
                 self.todo_list.save_tasks()
 
-    def add_task(self, list_widget, text, color):
+    def add_task(self, list_widget, text, color, checked=False):  # Adiciona parâmetro checked
         item = QListWidgetItem()
-        item.setSizeHint(QSize(180, 80))
+        item.setSizeHint(QSize(180, 110))
         list_widget.addItem(item)
-        task_widget = TaskWidget(text, color)
+        task_widget = TaskWidget(text, color, checked)  # Passa o estado do checkbox
         list_widget.setItemWidget(item, task_widget)
+
+    def conclued_selected_task(self):
+        if self.last_active_list is not None:
+            current_item = self.last_active_list.currentItem()
+            if current_item is not None:
+                self.statusPatente.atualizar_xp(100)
+                self.last_active_list.takeItem(self.last_active_list.row(current_item))
+                self.last_active_list.save_tasks()  # Salva as alterações no JSON
+                return
 
     def delete_selected_task(self):
         if self.last_active_list is not None:
             current_item = self.last_active_list.currentItem()
             if current_item is not None:
                 self.last_active_list.takeItem(self.last_active_list.row(current_item))
-                self.last_active_list.save_tasks()
+                self.last_active_list.save_tasks()  # Salva as alterações no JSON
 
     def load_tasks(self):
-        try:
-            with open(TASKS_FILE, "r") as file:
-                tasks = json.load(file)
-                for list_name, items in tasks.items():
-                    list_widget = self.findChild(QListWidget, list_name)
-                    if list_widget:
-                        existing_items = [list_widget.item(index).text() for index in range(list_widget.count())]
-                        for task in items:
-                            if task not in existing_items:
-                                color = "#FF5733" if "ToDo" in list_name else "#3498db" if "Doing" in list_name else "#2ecc71"
-                                self.add_task(list_widget, task, color)
-        except FileNotFoundError:
-            pass
-
+        users = load_json.load_file()
+        print("Carregando tarefas:", users[self.indice]["tarefas"])  # Debug
+        tarefas = users[self.indice]["tarefas"]
+        
+        list_widgets = {
+            "ToDo": self.todo_list,
+            "Doing": self.doing_list,
+            "Done": self.done_list
+        }
+        
+        # Limpa as listas antes de recarregar
+        for list_widget in list_widgets.values():
+            list_widget.clear()
+        
+        # Recarrega as tarefas
+        for task in tarefas:
+            text = task.get("text", "")
+            status = task.get("status", "ToDo")
+            checked = bool(task.get("checked", 0))
+            color = "#FF5733" if status == "ToDo" else "#3498db" if status == "Doing" else "#2ecc71"
+            list_widget = list_widgets.get(status)
+            if list_widget and text:
+                self.add_task(list_widget, text, color, checked)

@@ -35,7 +35,7 @@ class dialog_tarefa(QDialog):
         super().__init__()
         self.setWindowFlags(Qt.WindowTitleHint)
         self.user = user
-        self.tarefas = user['tarefas']
+        self.tarefas = user['diarias']
         self.indice = indice
         self.lista = lista
         self.ver_tarefa = 1
@@ -49,18 +49,18 @@ class dialog_tarefa(QDialog):
         self.linha_tarefa = QLabel("NOME DA TAREFA")
         self.linha_tarefa.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold ;")
         self.tarefa = QLineEdit()
-        self.tarefa.setStyleSheet("color: #ffffff; background-color: #303030;")
+        self.tarefa.setStyleSheet("color: #ffffff; background-color: #303030; border-radius: 10px;")
         self.tarefa.setMinimumHeight(35)
         
         # parte só para esses combobox chato aqui
         self.layoutCombos = QHBoxLayout()
         self.layoutCombos.setContentsMargins(70, 5, 70, 5)
         self.qual_prioridade = QComboBox()
-        self.qual_prioridade.setStyleSheet("background-color: #303030;")
+        self.qual_prioridade.setStyleSheet("background-color: #303030; border-radius: 10px ;")
         self.qual_prioridade.setFixedSize(140, 40)
         self.qual_prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
         self.qual_dificuldade = QComboBox()
-        self.qual_dificuldade.setStyleSheet("background-color: #303030;")
+        self.qual_dificuldade.setStyleSheet("background-color: #303030; border-radius: 10px ;")
         self.qual_dificuldade.setFixedSize(140, 40)
         self.qual_dificuldade.addItems(["FÁCIL", "MEDIO", "DIFÍCIL"])
         self.layoutCombos.addWidget(self.qual_prioridade)
@@ -70,7 +70,9 @@ class dialog_tarefa(QDialog):
         self.linha_descricao = QLabel("DESCRIÇÃO")
         self.linha_descricao.setStyleSheet("font-size: 15px; color: #ffffff; font-weight: bold;")
         self.descricao = QTextEdit()
-        self.descricao.setStyleSheet("color: #ffffff; background-color: #303030;")
+        self.descricao.setStyleSheet("color: #ffffff; background-color: #303030; border-radius: 10px ;")
+        self.message = QLabel()
+        self.message.setStyleSheet("color: #800000; font-size: 16px;")
         self.botao_ok = botoes("OK", 45, 300)
         self.botao_cancelar = botoes("CANCELAR", 45, 300)
         
@@ -81,6 +83,7 @@ class dialog_tarefa(QDialog):
         self.central_layout.addWidget(self.tarefa)
         self.central_layout.addWidget(self.linha_descricao)
         self.central_layout.addWidget(self.descricao)
+        self.central_layout.addWidget(self.message)
         self.central_layout.addLayout(self.layoutCombos)
         self.central_layout.addWidget(self.botao_ok, alignment=Qt.AlignmentFlag.AlignCenter)
         self.central_layout.addWidget(self.botao_cancelar, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -93,31 +96,33 @@ class dialog_tarefa(QDialog):
             self.close()
         
         def add_task(tarefas):
-            id = len(tarefas)
-            item = QListWidgetItem(self.lista)
-            widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice, None)
-            item.setSizeHint(widget.sizeHint())
-            self.lista.addItem(item)
-            self.lista.setItemWidget(item, widget)
-            widget.muda_cor(self.qual_prioridade.currentText())
+            if len(self.tarefa.text()) > 2 and len(self.tarefa.text()) < 70:
+                id = len(tarefas)
+                item = QListWidgetItem(self.lista)
+                widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice, None)
+                item.setSizeHint(widget.sizeHint())
+                self.lista.addItem(item)
+                self.lista.setItemWidget(item, widget)
+                widget.muda_cor(self.qual_prioridade.currentText())
 
-            self.user['tarefas'].append({
-                "id": id, 
-                "titulo": self.tarefa.text(),
-                "descrição": self.descricao.toPlainText(),
-                "dificuldade": self.qual_dificuldade.currentText(),
-                "prioridade": self.qual_prioridade.currentText(),
-                "checkbox": 0
-                })
-            users = load_json.load_file()
-            users[self.indice] = self.user
-            load_json.save_file(users)
-            print(users)
-            self.ver_tarefa = 0
-            
+                self.user['diarias'].append({
+                    "id": id, 
+                    "titulo": self.tarefa.text(),
+                    "descrição": self.descricao.toPlainText(),
+                    "dificuldade": self.qual_dificuldade.currentText(),
+                    "prioridade": self.qual_prioridade.currentText(),
+                    "checkbox": 0
+                    })
+                users = load_json.load_file()
+                users[self.indice] = self.user
+                load_json.save_file(users)
+                print(users)
+                self.ver_tarefa = 0
+                
 
-            self.close()
-            
+                self.close()
+            else:
+                self.message.setText("O Titulo da tarefa deve ter entre 3 a 70 digitos")
 
         
         self.show()
@@ -170,13 +175,13 @@ class Custom_widget(QFrame):
         def mudar_check(self):
             print(self.id)
             users = load_json.load_file()
-            checkedbox = users[self.indice]["tarefas"][self.id]["checkbox"]
+            checkedbox = users[self.indice]["diarias"][self.id]["checkbox"]
             if checkedbox == 0:
                 self.checkbox.setChecked(True)
                 checkedbox = 1
-                users[self.indice]["tarefas"][self.id]["checkbox"] = 1
+                users[self.indice]["diarias"][self.id]["checkbox"] = 1
             else:
-                users[self.indice]["tarefas"][self.id]["checkbox"] = 0
+                users[self.indice]["diarias"][self.id]["checkbox"] = 0
             load_json.save_file(users)
 
                 
@@ -218,7 +223,7 @@ class Custom_widget(QFrame):
     
     def muda_cor(self, opcao):
         users = load_json.load_file()
-        tarefas = users[self.indice]['tarefas']
+        tarefas = users[self.indice]['diarias']
         opcao = opcao      
         for tarefa in tarefas:
             if tarefa["id"] == self.id:
@@ -230,15 +235,18 @@ class Custom_widget(QFrame):
         if opcao == "URGENTE":
             # Mudar a cor de fundo do widget inteiro para vermelho
             self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #ff4f4f;")
             self.prioridade.setCurrentText("URGENTE")
         elif opcao == "RELEVANTE":
             # Mudar a cor de fundo do widget inteiro para laranja
             self.prioridade.setCurrentText("RELEVANTE")
             self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #ff934a;")
         elif opcao == "TRANQUILO":
             # Mudar a cor de fundo do widget inteiro para verde
             self.prioridade.setCurrentText("TRANQUILO")
             self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #3fff4f;")
 
 
 class TaskLista(QWidget):
@@ -246,7 +254,7 @@ class TaskLista(QWidget):
         super().__init__()
         self.setStyleSheet("background-color: #2C2F33; border-radius: 10px;")
         self.user = user
-        self.tarefas = user['tarefas']
+        self.tarefas = user['diarias']
         self.indice = indice
         self.CentralLayout = QHBoxLayout(self)
         self.task_list = QListWidget()
@@ -310,9 +318,9 @@ class TaskLista(QWidget):
                         tarefas.remove(tarefa)
                         print(tarefas)
                 self.task_list.takeItem(selected_item)
-                self.user['tarefas'] = tarefas
+                self.user['diarias'] = tarefas
                 users = load_json.load_file()
-                users[self.indice]['tarefas'] = tarefas
+                users[self.indice]['diarias'] = tarefas
                 load_json.save_file(users)
                 self.status_patente.atualizar_xp(xp)
         
@@ -344,7 +352,7 @@ class TaskLista(QWidget):
                     if tarefa["id"] == id:
                         tarefas.remove(tarefa)
                         users = load_json.load_file()
-                        users[self.indice]['tarefas'] = tarefas
+                        users[self.indice]['diarias'] = tarefas
                         load_json.save_file(users)
                         print(users)
                 self.task_list.takeItem(selected_item)                

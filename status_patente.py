@@ -50,7 +50,8 @@ class statusPatente(QFrame):
         self.setStyleSheet("background-color: #f87000 ;")
         
         # criando widgets
-        
+        self.labelTitulo = QLabel()
+        self.labelTitulo.setStyleSheet("font-size: 20px; font-weight: bold;")
         self.XPmenu = QLabel("XP")
         self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #1b1b1b; font-size: 15px; font-weight: bold;")
@@ -77,6 +78,7 @@ class statusPatente(QFrame):
         self.patente.setContentsMargins(0, 0, 0, 10)
         
         self.setLayout(self.layoutStatus)
+        self.layoutStatus.addWidget(self.labelTitulo, alignment=Qt.AlignLeft)
         self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignRight)
         self.layoutStatus.addWidget(self.XP)
         self.layoutStatus.addWidget(self.patente)
@@ -115,6 +117,8 @@ class statusPatente(QFrame):
             self.user["xp_variavel"] = 0 + sobra
             dados[self.indice] = self.user
             load_json.save_file(dados)
+        else:
+            return
 
 
         

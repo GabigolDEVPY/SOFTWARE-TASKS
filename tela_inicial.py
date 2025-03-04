@@ -6,6 +6,8 @@ from status_patente import statusPatente
 from ui.ui_diarias import ui_diarias
 from ui.ui_concluidos import Ui_Concluidos
 from ui.ui_tarefas import MainWindow
+from ui.ui_inicio import Ui_inicio
+from ui.ui_patentes import Ui_patentes
 import sys
 
 class janela_principal(QMainWindow):
@@ -49,12 +51,29 @@ class janela_principal(QMainWindow):
             
             #TROCANDO OS WIDGETTTTTTSSSSSSS CHATOS PRA KRLLLLLL SLCCCCCCCCCCC
         
+        def troca_widget_patentes(self):
+            self.Vlayout.removeWidget(self.widgetcentro)
+            self.widgetcentro.deleteLater()
+            
+            self.widgetcentro = Ui_patentes()
+            self.Vlayout.addWidget(self.widgetcentro)
+            self.status_patente.labelTitulo.setText("   PATENTES")
+            
         def troca_widget_diarias(self):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
             self.widgetcentro = ui_diarias(self.status_patente, self.user, self.indice, self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
+            self.status_patente.labelTitulo.setText("   DIÁRIAS")
+            
+        def troca_widget_inicio(self):
+            self.Vlayout.removeWidget(self.widgetcentro)
+            self.widgetcentro.deleteLater()
+            
+            self.widgetcentro = Ui_inicio()
+            self.Vlayout.addWidget(self.widgetcentro)
+            self.status_patente.labelTitulo.setText("   INÍCIO")
             
         def troca_widget_concluidos(self):
             self.Vlayout.removeWidget(self.widgetcentro)
@@ -62,13 +81,15 @@ class janela_principal(QMainWindow):
             
             self.widgetcentro = Ui_Concluidos()
             self.Vlayout.addWidget(self.widgetcentro)
+            self.status_patente.labelTitulo.setText("   CONCLUÍDOS")
             
         def troca_widget_tarefas(self):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = MainWindow(self.expanded)
+            self.widgetcentro = MainWindow(self.expanded, self.indice, self.status_patente)
             self.Vlayout.addWidget(self.widgetcentro)
+            self.status_patente.labelTitulo.setText("   TAREFAS")
         
         self.setFixedSize(1200, 800)
         self.widget_central = QWidget()
@@ -89,14 +110,17 @@ class janela_principal(QMainWindow):
         # criando status patente
         self.status_patente = statusPatente(user, indice)
         
-        self.widgetcentro = QFrame()
+        self.widgetcentro = Ui_inicio()
+        self.status_patente.labelTitulo.setText("   INÍCIO")
         # criando a sidebar
         self.sideBar = Sidebar(self.status_patente)
         self.sideBar.btn_menu.clicked.connect(lambda: self.sideBar.toggle_sidebar())
         self.sideBar.btn_menu.clicked.connect(lambda: mudar_tamanhos(self))
-        self.sideBar.botao_inicio.clicked.connect(lambda: troca_widget_diarias(self))
+        self.sideBar.botao_diarias.clicked.connect(lambda: troca_widget_diarias(self))
         self.sideBar.botao_concluidos.clicked.connect(lambda: troca_widget_concluidos(self))
-        self.sideBar.botao_diarias.clicked.connect(lambda: troca_widget_tarefas(self))
+        self.sideBar.botao_tarefas.clicked.connect(lambda: troca_widget_tarefas(self))
+        self.sideBar.botao_inicio.clicked.connect(lambda: troca_widget_inicio(self))
+        self.sideBar.botao_patente.clicked.connect(lambda: troca_widget_patentes(self))
         self.sideBar.setParent(self)
         
         # layout para o frma e o status patente

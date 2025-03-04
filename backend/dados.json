@@ -2,49 +2,42 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 640,
-        "xp_variavel": 640,
-        "tarefas": [
+        "xp": 7900,
+        "xp_variavel": 900,
+        "diarias": [
+            {
+                "id": 0,
+                "titulo": "dasdasdas",
+                "descrição": "dasdsd",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 1
+            },
             {
                 "id": 1,
-                "titulo": "sdfdsfsdfsdfds",
-                "descrição": "sdfdsf",
+                "titulo": "dasdasdasdasdasdasdasd",
+                "descrição": "",
                 "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE",
+                "prioridade": "URGENTE",
                 "checkbox": 0
             },
             {
                 "id": 2,
-                "titulo": "dsad",
-                "descrição": "asdsadasdsa",
-                "dificuldade": "MEDIO",
+                "titulo": "dasdasdasdasdasd",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
                 "prioridade": "RELEVANTE",
                 "checkbox": 0
             },
             {
                 "id": 3,
-                "titulo": "dasdasd",
-                "descrição": "asdasd",
+                "titulo": "dasdasdasdasdas",
+                "descrição": "",
                 "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE",
-                "checkbox": 0
-            },
-            {
-                "id": 4,
-                "titulo": "dsad",
-                "descrição": "asdasdsad",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
-                "checkbox": 0
-            },
-            {
-                "id": 5,
-                "titulo": "dasdas",
-                "descrição": "dasd",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
+                "prioridade": "TRANQUILO",
                 "checkbox": 0
             }
-        ]
+        ],
+        "tarefas": []
     }
 ]
