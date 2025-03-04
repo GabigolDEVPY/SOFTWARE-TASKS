@@ -4,6 +4,8 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 import sys
 import math
+import random
+from backend.mensagem_motivacoes import mensagens
 
 # Inicialize o pygame para tocar o áudio
 pygame.mixer.init()
@@ -218,22 +220,94 @@ class TelaRelogio(QFrame):
         print(f"Atualizando tempo de pausa: {value}")
         self.clock.update_break_time(value)
 
-class TelaDireita(QFrame):
+class linha(QLabel):
+    def __init__(self, texto):
+        super().__init__()
+        self.setStyleSheet("color: white; font-size: 22px; font-weight: bold ;")
+        self.setText(texto)
+
+class tela_motivacao(QFrame):
     def __init__(self):
+        super().__init__()
+        self.setFixedSize(400, 130)
+        self.setStyleSheet("background-color: #23272A; border-radius: 20px;")
+        self.central_layout = QHBoxLayout()
+        self.setLayout(self.central_layout)
+        self.texto = QTextEdit()
+        self.texto.setStyleSheet("font-size: 18px; font-weight: bold;")
+        self.texto.setReadOnly(True)
+        self.central_layout.addWidget(self.texto)
+        def selecionar_texto():
+            texto = random.choice(mensagens)
+            self.texto.setPlainText(texto)    
+        selecionar_texto()
+
+    
+class widget(QFrame):
+    def __init__(self, user):
+        super().__init__()
+        self.setFixedSize(400, 70) 
+        self.setStyleSheet("background-color: #ffae00; border-radius: 20px;")
+        self.marcacao = QFrame()
+        self.marcacao.setFixedSize(20, 20)
+        self.marcacao.setStyleSheet("background-color: #d70000; border-radius: 10px;")
+        self.texto = QTextEdit()
+        self.texto.setReadOnly(True)
+        self.texto.setStyleSheet("font-weight: bold; font-size: 15px;")
+        self.centralLayout = QHBoxLayout()
+        self.setLayout(self.centralLayout)
+        self.centralLayout.addWidget(self.texto, alignment=Qt.AlignCenter)
+        self.centralLayout.addWidget(self.marcacao, alignment=Qt.AlignRight)
+        def trocar_texto():
+            mais_atual = 0
+            tarefa_atual = None
+            tarefas = user["diarias"]
+            for tarefa in tarefas:
+                if len(tarefa["titulo"]) > mais_atual:
+                    tarefa_atual = tarefa["titulo"]
+                    mais_atual = len(tarefa["titulo"])
+            self.texto.setText(tarefa_atual)      
+        trocar_texto()   
+            
+        
+class TelaDireita(QFrame):
+    def __init__(self, user):
         super().__init__()
         self.setMinimumSize(450, 720)
         self.setStyleSheet("background-color: #2f2f2f; border-radius: 20px;")
-
+        self.centralLayout = QVBoxLayout()
+        self.setLayout(self.centralLayout)
+        
+        # criando os widgets
+        
+        self.TarefaPrincipal = linha("Tarefa principal")
+        self.mensagem = linha("Mensagem Motivacional")
+        self.widget = widget(user)
+        self.motivacao = tela_motivacao()
+        spacer1 = QSpacerItem(260, 260)
+        spacer2 = QSpacerItem(160, 130)
+        
+        self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.widget, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addItem(spacer2)
+        self.centralLayout.addWidget(self.mensagem, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.motivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addItem(spacer1)
+        
+        
+        
+        
 
 class PomodoroApp(QFrame):
-    def __init__(self):
+    def __init__(self, user):
         super().__init__()
+        self.user = user
         self.setFixedSize(1125, 750)
         self.setStyleSheet("background-color: #23272A;")
         self.CentralLayout = QHBoxLayout()
         self.setLayout(self.CentralLayout)
         self.Tela_Relogio = TelaRelogio()
-        self.tela_direita = TelaDireita()
+        self.tela_direita = TelaDireita(self.user)
         self.CentralLayout.addWidget(self.Tela_Relogio, alignment=Qt.AlignCenter | Qt.AlignLeft)
         self.CentralLayout.addWidget(self.tela_direita, alignment=Qt.AlignCenter | Qt.AlignRight)
 

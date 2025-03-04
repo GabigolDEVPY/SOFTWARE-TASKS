@@ -51,11 +51,11 @@ class janela_principal(QMainWindow):
             
             #TROCANDO OS WIDGETTTTTTSSSSSSS CHATOS PRA KRLLLLLL SLCCCCCCCCCCC
         
-        def troca_widget_patentes(self):
+        def troca_widget_pomodoro(self):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = PomodoroApp()
+            self.widgetcentro = PomodoroApp(self.user)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   POMODORO")
             
@@ -105,7 +105,6 @@ class janela_principal(QMainWindow):
         # criando user e indice
         self.user = user
         self.indice = indice
-
         
         # criando status patente
         self.status_patente = statusPatente(user, indice)
@@ -120,7 +119,7 @@ class janela_principal(QMainWindow):
         self.sideBar.botao_concluidos.clicked.connect(lambda: troca_widget_concluidos(self))
         self.sideBar.botao_tarefas.clicked.connect(lambda: troca_widget_tarefas(self))
         self.sideBar.botao_inicio.clicked.connect(lambda: troca_widget_inicio(self))
-        self.sideBar.botao_patente.clicked.connect(lambda: troca_widget_patentes(self))
+        self.sideBar.botao_patente.clicked.connect(lambda: troca_widget_pomodoro(self))
         self.sideBar.setParent(self)
         
         # layout para o frma e o status patente

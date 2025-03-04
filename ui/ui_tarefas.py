@@ -27,7 +27,7 @@ class TaskWidget(QFrame):
         self.label.setStyleSheet(f"background-color: #ffffff; color: {color};") 
         self.layoutCentral.addWidget(self.checkbox, alignment=Qt.AlignTop)
         self.layoutCentral.addLayout(self.Vlayout)
-        self.Vlayout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignTop)
+        self.Vlayout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignLeft)
         self.Vlayout.addItem(self.spacer)
         self.setMinimumSize(250, 100)
         self.text = text

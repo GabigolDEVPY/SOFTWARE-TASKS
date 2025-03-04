@@ -35,7 +35,7 @@ class Sidebar(QWidget):
         self.botao_tarefas = botoes(" 📋")
         self.botao_diarias = botoes(" 📅")
         self.botao_concluidos = botoes(" ✅")
-        self.botao_patente = botoes(" 🎖️")
+        self.botao_patente = botoes(" ⌚")
         
 
         self.VerticalLayout.addStretch()  # 🔹 Mantém alinhamento correto
@@ -62,7 +62,7 @@ class Sidebar(QWidget):
             self.botao_tarefas.setText("📋 Tarefas")
             self.botao_diarias.setText("📅 Diarias")
             self.botao_concluidos.setText("✅ Concluidos")
-            self.botao_patente.setText("🎖️ Patente")
+            self.botao_patente.setText("⌚ Patente")
         else:
             self.animation.setStartValue(145)
             self.animation.setEndValue(70)
@@ -70,7 +70,7 @@ class Sidebar(QWidget):
             self.botao_tarefas.setText(" 📋")
             self.botao_diarias.setText(" 📅")
             self.botao_concluidos.setText(" ✅")
-            self.botao_patente.setText(" 🎖️")
+            self.botao_patente.setText(" ⌚")
         self.animation.start()
         
 
