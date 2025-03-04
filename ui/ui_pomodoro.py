@@ -6,6 +6,7 @@ import sys
 import math
 import random
 from backend.mensagem_motivacoes import mensagens
+from backend import load_json
 
 # Inicialize o pygame para tocar o áudio
 pygame.mixer.init()
@@ -244,7 +245,7 @@ class tela_motivacao(QFrame):
 
     
 class widget(QFrame):
-    def __init__(self, user):
+    def __init__(self, indice):
         super().__init__()
         self.setFixedSize(400, 70) 
         self.setStyleSheet("background-color: #ffae00; border-radius: 20px;")
@@ -258,20 +259,22 @@ class widget(QFrame):
         self.setLayout(self.centralLayout)
         self.centralLayout.addWidget(self.texto, alignment=Qt.AlignCenter)
         self.centralLayout.addWidget(self.marcacao, alignment=Qt.AlignRight)
+        
         def trocar_texto():
-            mais_atual = 0
-            tarefa_atual = None
-            tarefas = user["diarias"]
+            users = load_json.load_file()
+            tarefas = users[indice]["diarias"]
+            print("as tarefas", tarefas)
+            principal = users[indice]["principal"]
+            print("a principal", principal)
             for tarefa in tarefas:
-                if len(tarefa["titulo"]) > mais_atual:
-                    tarefa_atual = tarefa["titulo"]
-                    mais_atual = len(tarefa["titulo"])
-            self.texto.setText(tarefa_atual)      
+                if tarefa["titulo"] == principal:
+                    self.texto.setText(principal)      
+                    
         trocar_texto()   
             
         
 class TelaDireita(QFrame):
-    def __init__(self, user):
+    def __init__(self, user, indice):
         super().__init__()
         self.setMinimumSize(450, 720)
         self.setStyleSheet("background-color: #2f2f2f; border-radius: 20px;")
@@ -282,9 +285,11 @@ class TelaDireita(QFrame):
         
         self.TarefaPrincipal = linha("Tarefa principal")
         self.mensagem = linha("Mensagem Motivacional")
-        self.widget = widget(user)
+        self.sua_mensagem = linha("Sua Motivação")
+        self.widget = widget(indice)
         self.motivacao = tela_motivacao()
-        spacer1 = QSpacerItem(260, 260)
+        self.suamotivacao = tela_motivacao()
+        spacer1 = QSpacerItem(220, 220)
         spacer2 = QSpacerItem(160, 130)
         
         self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop)
@@ -292,6 +297,8 @@ class TelaDireita(QFrame):
         self.centralLayout.addItem(spacer2)
         self.centralLayout.addWidget(self.mensagem, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addWidget(self.motivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.sua_mensagem, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.suamotivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addItem(spacer1)
         
         
@@ -299,15 +306,19 @@ class TelaDireita(QFrame):
         
 
 class PomodoroApp(QFrame):
-    def __init__(self, user):
+    def __init__(self, user, indice, expanded):
         super().__init__()
+        if expanded:
+            self.setFixedSize(1050, 750)
+        else:
+            self.setFixedSize(1125, 750)
         self.user = user
-        self.setFixedSize(1125, 750)
+        self.indice = indice
         self.setStyleSheet("background-color: #23272A;")
         self.CentralLayout = QHBoxLayout()
         self.setLayout(self.CentralLayout)
         self.Tela_Relogio = TelaRelogio()
-        self.tela_direita = TelaDireita(self.user)
+        self.tela_direita = TelaDireita(self.user, self.indice)
         self.CentralLayout.addWidget(self.Tela_Relogio, alignment=Qt.AlignCenter | Qt.AlignLeft)
         self.CentralLayout.addWidget(self.tela_direita, alignment=Qt.AlignCenter | Qt.AlignRight)
 

@@ -23,13 +23,13 @@ class TaskWidget(QFrame):
         self.spacer = QSpacerItem(1,1)
         self.label = QTextEdit(text)
         self.label.setReadOnly(True)
-        self.label.setFixedSize(240, 80)
+        self.label.setFixedSize(230, 70)
         self.label.setStyleSheet(f"background-color: #ffffff; color: {color};") 
         self.layoutCentral.addWidget(self.checkbox, alignment=Qt.AlignTop)
         self.layoutCentral.addLayout(self.Vlayout)
         self.Vlayout.addWidget(self.label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignLeft)
         self.Vlayout.addItem(self.spacer)
-        self.setMinimumSize(250, 100)
+        self.setFixedSize(310, 100)
         self.text = text
 
     def on_checkbox_changed(self, state):
@@ -214,36 +214,18 @@ class MainWindow(QFrame):
         horizontal_layout.addLayout(done_layout)
 
         self.add_task_button = QPushButton("Adicionar Tarefa")
-        self.add_task_button.setStyleSheet("""
-            font-weight: bold;
-            background-color: #f87000;
-            color: white;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-        """)
+        self.add_task_button.setMinimumHeight(50)
+        self.add_task_button.setStyleSheet("QPushButton {background-color: #f87000; color: white; font-weight: bold; font-size: 18px;} QPushButton:hover {background-color: #000000; color: white; font-size: 19px;}")
         self.add_task_button.clicked.connect(self.open_add_task_dialog)
 
         self.delete_task_button = QPushButton("Excluir Tarefa")
-        self.delete_task_button.setStyleSheet("""
-            font-weight: bold;
-            background-color: #f87000;
-            color: white;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-        """)
+        self.delete_task_button.setMinimumHeight(50)
+        self.delete_task_button.setStyleSheet("QPushButton {background-color: #f87000; color: white; font-weight: bold; font-size: 18px;} QPushButton:hover {background-color: #000000; color: white; font-weight: bold; font-size: 19px;}")
         self.delete_task_button.clicked.connect(self.delete_selected_task)
 
         self.complete_task_button = QPushButton("Concluir Agora")
-        self.complete_task_button.setStyleSheet("""
-            font-weight: bold;
-            background-color: #f87000;
-            color: white;
-            padding: 8px;
-            border: none;
-            border-radius: 5px;
-        """)
+        self.complete_task_button.setMinimumHeight(50)
+        self.complete_task_button.setStyleSheet("QPushButton {background-color: #f87000; color: white; font-weight: bold; font-size: 18px;} QPushButton:hover {background-color: #000000; color: white; font-weight: bold; font-size: 19px;}")
         self.complete_task_button.clicked.connect(self.conclued_selected_task)
 
         buttons_layout = QHBoxLayout()

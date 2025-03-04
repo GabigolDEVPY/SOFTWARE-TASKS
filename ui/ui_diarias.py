@@ -97,7 +97,9 @@ class dialog_tarefa(QDialog):
         
         def add_task(tarefas):
             if len(self.tarefa.text()) > 2 and len(self.tarefa.text()) < 70:
-                id = len(tarefas)
+                users = load_json.load_file()
+                tarefas = users[indice]["diarias"]
+                id = len(tarefas) 
                 item = QListWidgetItem(self.lista)
                 widget = Custom_widget(self.tarefa.text(), id, self.qual_dificuldade.currentText(), self.qual_prioridade.currentText(), self.indice, None)
                 item.setSizeHint(widget.sizeHint())
@@ -105,7 +107,7 @@ class dialog_tarefa(QDialog):
                 self.lista.setItemWidget(item, widget)
                 widget.muda_cor(self.qual_prioridade.currentText())
 
-                self.user['diarias'].append({
+                users[self.indice]['diarias'].append({
                     "id": id, 
                     "titulo": self.tarefa.text(),
                     "descrição": self.descricao.toPlainText(),
@@ -113,8 +115,6 @@ class dialog_tarefa(QDialog):
                     "prioridade": self.qual_prioridade.currentText(),
                     "checkbox": 0
                     })
-                users = load_json.load_file()
-                users[self.indice] = self.user
                 load_json.save_file(users)
                 print(users)
                 self.ver_tarefa = 0
@@ -268,18 +268,37 @@ class TaskLista(QWidget):
         self.botao_adicionar = botoes("ADICIONAR", 35, 110)
         self.botao_ver = botoes("VER TAREFA", 35, 110)
         self.botao_excluir = botoes("EXCLUIR", 35, 110)
+        self.botao_principal = botoes("PRINCIPAL", 35, 110)
         self.layout_botoes.addWidget(self.botao_concluir)
         self.layout_botoes.addWidget(self.botao_adicionar)
         self.layout_botoes.addWidget(self.botao_ver)
+        self.layout_botoes.addWidget(self.botao_principal)
         self.layout_botoes.addWidget(self.botao_excluir)
         self.CentralLayout.addWidget(self.task_list)
         self.CentralLayout.addLayout(self.layout_botoes)
         self.ver_tarefa = 0
         
         self.botao_adicionar.clicked.connect(lambda: dialogDa_tarefa())
-        self.botao_concluir.clicked.connect(lambda: concluir_tarefa(self, self.tarefas))
-        self.botao_ver.clicked.connect(lambda: ver_tarefa(self, self.tarefas))
-        self.botao_excluir.clicked.connect(lambda: excluir_tarefa(self.tarefas))
+        self.botao_concluir.clicked.connect(lambda: concluir_tarefa(self))
+        self.botao_ver.clicked.connect(lambda: ver_tarefa(self))
+        self.botao_excluir.clicked.connect(lambda: excluir_tarefa(self))
+        self.botao_principal.clicked.connect(lambda: principal())
+        
+        def principal():
+            users = load_json.load_file()
+            tarefas = users[indice]["diarias"]
+            selected_item = self.task_list.currentItem()
+            if selected_item:
+                widget = self.task_list.itemWidget(selected_item)
+                id = widget.id
+                for tarefa in tarefas:
+                    if tarefa["id"] == id:
+                        tarefa_principal = tarefa["titulo"]
+                        users[self.indice]["principal"] = tarefa_principal
+                        load_json.save_file(users)
+
+                
+        
         
         def dialogDa_tarefa():
             print()
@@ -289,7 +308,10 @@ class TaskLista(QWidget):
                 self.ver_tarefa = dialog.ver_tarefa
                 print(dialog.ver_tarefa)
         
-        def add_tarefas_inicial(tarefas):
+        def add_tarefas_inicial():
+            users = load_json.load_file()
+            tarefas = users[indice]["diarias"]
+            
             for tarefa in tarefas:
                 id = tarefa['id']
                 check = tarefa["checkbox"]
@@ -302,10 +324,11 @@ class TaskLista(QWidget):
                 self.task_list.setItemWidget(item, widget)
                 widget.muda_cor(prioridade)
         
-        add_tarefas_inicial(self.tarefas)
+        add_tarefas_inicial()
         
-        def concluir_tarefa(self, tarefas):
-            tarefas = tarefas
+        def concluir_tarefa(self):
+            users = load_json.load_file()
+            tarefas = users[indice]["diarias"]
             selected_item = self.task_list.currentRow()
             selected_line = self.task_list.currentItem()
             if selected_item >= 0:
@@ -319,14 +342,14 @@ class TaskLista(QWidget):
                         print(tarefas)
                 self.task_list.takeItem(selected_item)
                 self.user['diarias'] = tarefas
-                users = load_json.load_file()
                 users[self.indice]['diarias'] = tarefas
                 load_json.save_file(users)
                 self.status_patente.atualizar_xp(xp)
         
-        def ver_tarefa(self, tarefas):
+        def ver_tarefa(self):
             print(self.ver_tarefa)
-            tarefas = tarefas
+            users = load_json.load_file()
+            tarefas = users[indice]["diarias"]
             selected_item = self.task_list.currentItem()
             if selected_item:
                 widget = self.task_list.itemWidget(selected_item)
@@ -340,8 +363,9 @@ class TaskLista(QWidget):
 
                         
                         
-        def excluir_tarefa(tarefas):
-            tarefas = tarefas
+        def excluir_tarefa(self):
+            users = load_json.load_file()
+            tarefas = users[self.indice]["diarias"]
             selected_item = self.task_list.currentRow()
             selected_line = self.task_list.currentItem()
             if selected_item >= 0:
@@ -351,7 +375,6 @@ class TaskLista(QWidget):
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
                         tarefas.remove(tarefa)
-                        users = load_json.load_file()
                         users[self.indice]['diarias'] = tarefas
                         load_json.save_file(users)
                         print(users)

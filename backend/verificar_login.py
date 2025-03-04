@@ -64,7 +64,8 @@ def cadastrar(self, login, senha):
             "xp": 0,
             "xp_variavel": 0,
             "diarias": [],
-            "tarefas": []
+            "tarefas": [], 
+            "principal": " "
         }
     )
     self.mensagemStatus.configstyle("Usuário cadastrado com sucesso", 12, "b7ff44")

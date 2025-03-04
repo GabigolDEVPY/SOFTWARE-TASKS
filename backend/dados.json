@@ -2,56 +2,43 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 7900,
-        "xp_variavel": 900,
+        "xp": 500,
+        "xp_variavel": 500,
         "diarias": [
             {
                 "id": 0,
-                "titulo": "dasdasdas",
-                "descrição": "dasdsd",
+                "titulo": "vcxzzzzzzz",
+                "descrição": "vzxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcfefe",
                 "dificuldade": "FÁCIL",
                 "prioridade": "URGENTE",
                 "checkbox": 1
             },
             {
                 "id": 1,
-                "titulo": "dasdasdasdasdasdasdasd",
-                "descrição": "",
+                "titulo": "sdaaaaaaaa",
+                "descrição": "aadsaaaaaaaaaaaaaaaaaaaaaaas",
                 "dificuldade": "FÁCIL",
                 "prioridade": "URGENTE",
-                "checkbox": 0
-            },
-            {
-                "id": 2,
-                "titulo": "dasdasdasdasdasd",
-                "descrição": "",
-                "dificuldade": "FÁCIL",
-                "prioridade": "RELEVANTE",
-                "checkbox": 0
-            },
-            {
-                "id": 3,
-                "titulo": "dasdasdasdasdas",
-                "descrição": "",
-                "dificuldade": "FÁCIL",
-                "prioridade": "TRANQUILO",
-                "checkbox": 0
-            },
-            {
-                "id": 4,
-                "titulo": "dsaaaaaaaasdsaasasasasasasasasasasasasasasasasas",
-                "descrição": "",
-                "dificuldade": "FÁCIL",
-                "prioridade": "URGENTE",
-                "checkbox": 0
+                "checkbox": 1
             }
         ],
         "tarefas": [
             {
-                "text": "dsadasdasdasdd",
+                "text": "fgfdgdfgdfg",
+                "status": "ToDo",
+                "checked": 0
+            },
+            {
+                "text": "fdasfdsfdfdfdfdf",
                 "status": "Doing",
                 "checked": 0
+            },
+            {
+                "text": "gsdfgdfsgdfsgdfsgdfsgdfsgdfsgdfsgdfsgdfsg",
+                "status": "Done",
+                "checked": 1
             }
-        ]
+        ],
+        "principal": "sdaaaaaaaa"
     }
 ]

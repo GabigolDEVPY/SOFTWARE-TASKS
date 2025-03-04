@@ -55,7 +55,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = PomodoroApp(self.user)
+            self.widgetcentro = PomodoroApp(self.user, self.indice, self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   POMODORO")
             
@@ -71,7 +71,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = Ui_inicio()
+            self.widgetcentro = Ui_inicio(self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   INÍCIO")
             
@@ -79,7 +79,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = Ui_Concluidos()
+            self.widgetcentro = Ui_Concluidos(self.expanded)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   CONCLUÍDOS")
             
@@ -109,7 +109,7 @@ class janela_principal(QMainWindow):
         # criando status patente
         self.status_patente = statusPatente(user, indice)
         
-        self.widgetcentro = Ui_inicio()
+        self.widgetcentro = Ui_inicio(self.expanded)
         self.status_patente.labelTitulo.setText("   INÍCIO")
         # criando a sidebar
         self.sideBar = Sidebar(self.status_patente)
