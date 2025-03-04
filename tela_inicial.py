@@ -7,7 +7,7 @@ from ui.ui_diarias import ui_diarias
 from ui.ui_concluidos import Ui_Concluidos
 from ui.ui_tarefas import MainWindow
 from ui.ui_inicio import Ui_inicio
-from ui.ui_patentes import Ui_patentes
+from ui.ui_pomodoro import PomodoroApp
 import sys
 
 class janela_principal(QMainWindow):
@@ -55,7 +55,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = Ui_patentes()
+            self.widgetcentro = PomodoroApp()
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   PATENTES")
             

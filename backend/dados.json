@@ -38,6 +38,12 @@
                 "checkbox": 0
             }
         ],
-        "tarefas": []
+        "tarefas": [
+            {
+                "text": "dsadasdasdasdd",
+                "status": "Doing",
+                "checked": 0
+            }
+        ]
     }
 ]
