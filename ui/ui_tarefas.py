@@ -96,7 +96,7 @@ class DragDropList(QListWidget):
             source_list = event.mimeData().data("application/list-source").data().decode()
             if not any(self.itemWidget(item).text == text for item in self.findItems(text, Qt.MatchExactly)):
                 new_item = QListWidgetItem()
-                new_item.setSizeHint(QSize(180, 110))
+                new_item.setSizeHint(QSize(310, 100))
                 self.addItem(new_item)
                 color = "#FF5733" if "ToDo" in self.objectName() else "#3498db" if "Doing" in self.objectName() else "#2ecc71"
                 widget = TaskWidget(text, color)  # Cria com checked=False por padrão ao arrastar
@@ -251,7 +251,7 @@ class MainWindow(QFrame):
 
     def add_task(self, list_widget, text, color, checked=False):  # Adiciona parâmetro checked
         item = QListWidgetItem()
-        item.setSizeHint(QSize(180, 110))
+        item.setSizeHint(QSize(180, 100))
         list_widget.addItem(item)
         task_widget = TaskWidget(text, color, checked)  # Passa o estado do checkbox
         list_widget.setItemWidget(item, task_widget)

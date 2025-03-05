@@ -160,7 +160,7 @@ class TelaRelogio(QFrame):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Pomodoro Timer")
-        self.setFixedSize(580, 720)
+        self.setFixedSize(580, 730)
         self.setStyleSheet("background-color: #2f2f2f; border-radius: 20px;")
         
         layout = QVBoxLayout()
@@ -224,7 +224,7 @@ class TelaRelogio(QFrame):
 class linha(QLabel):
     def __init__(self, texto):
         super().__init__()
-        self.setStyleSheet("color: white; font-size: 22px; font-weight: bold ;")
+        self.setStyleSheet("color: white; font-size: 19px; font-weight: bold ;")
         self.setText(texto)
 
 class tela_motivacao(QFrame):
@@ -283,23 +283,25 @@ class TelaDireita(QFrame):
         
         # criando os widgets
         
-        self.TarefaPrincipal = linha("Tarefa principal")
-        self.mensagem = linha("Mensagem Motivacional")
-        self.sua_mensagem = linha("Sua Motivação")
+        self.TarefaPrincipal = linha("      Tarefa principal")
+        self.mensagem = linha("      Mensagem Motivacional")
+        self.sua_mensagem = linha("     Sua Motivação")
         self.widget = widget(indice)
         self.motivacao = tela_motivacao()
         self.suamotivacao = tela_motivacao()
-        spacer1 = QSpacerItem(220, 220)
-        spacer2 = QSpacerItem(160, 130)
+        spacer1 = QSpacerItem(40, 40)
+        spacer2 = QSpacerItem(130, 130)
+        spacer3 = QSpacerItem(70, 70)
         
-        self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop | Qt.AlignLeft)
         self.centralLayout.addWidget(self.widget, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addItem(spacer2)
-        self.centralLayout.addWidget(self.mensagem, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addWidget(self.mensagem, alignment=Qt.AlignCenter | Qt.AlignLeft)
         self.centralLayout.addWidget(self.motivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
-        self.centralLayout.addWidget(self.sua_mensagem, alignment=Qt.AlignCenter | Qt.AlignTop)
-        self.centralLayout.addWidget(self.suamotivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addItem(spacer1)
+        self.centralLayout.addWidget(self.sua_mensagem, alignment=Qt.AlignCenter | Qt.AlignLeft)
+        self.centralLayout.addWidget(self.suamotivacao, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.centralLayout.addItem(spacer3)
         
         
         
