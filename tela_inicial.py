@@ -79,7 +79,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = Ui_Concluidos(self.expanded)
+            self.widgetcentro = Ui_Concluidos(self.expanded, self.indice)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   CONCLUÍDOS")
             

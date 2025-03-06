@@ -323,5 +323,6 @@ class PomodoroApp(QFrame):
         self.tela_direita = TelaDireita(self.user, self.indice)
         self.CentralLayout.addWidget(self.Tela_Relogio, alignment=Qt.AlignCenter | Qt.AlignLeft)
         self.CentralLayout.addWidget(self.tela_direita, alignment=Qt.AlignCenter | Qt.AlignRight)
+        
 
 

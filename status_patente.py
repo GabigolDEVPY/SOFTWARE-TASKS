@@ -102,23 +102,20 @@ class statusPatente(QFrame):
                 popUp(patentes[i][1], patentes[i][0])
                 break
 
-    def atualizar_xp(self, xp):
+    def atualizar_xp(self, xp, users):
         self.xp = int(self.XP.text()) + xp
         self.XP.setText(str(self.xp))            
-        self.user["xp"] += xp
-        self.user["xp_variavel"] += xp
-        dados = load_json.load_file()
-        dados[self.indice] = self.user
-        load_json.save_file(dados)
+        dados = users
+        user = dados[self.indice]
+        user["xp"] += xp
+        user["xp_variavel"] += xp
         
-        if self.user["xp_variavel"] >= 1000:
+        if user["xp_variavel"] >= 1000:
             self.atualizar_patente()
-            sobra = self.user["xp_variavel"] - 1000
-            self.user["xp_variavel"] = 0 + sobra
-            dados[self.indice] = self.user
-            load_json.save_file(dados)
-        else:
-            return
+            sobra = user["xp_variavel"] - 1000
+            user["xp_variavel"] = 0 + sobra
+
+        load_json.save_file(dados)
 
 
         

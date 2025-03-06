@@ -327,8 +327,9 @@ class TaskLista(QWidget):
         add_tarefas_inicial()
         
         def concluir_tarefa(self):
-            users = load_json.load_file()
-            tarefas = users[indice]["diarias"]
+            usuarios = load_json.load_file()
+            indice = self.indice
+            tarefas = usuarios[indice]["diarias"]
             selected_item = self.task_list.currentRow()
             selected_line = self.task_list.currentItem()
             if selected_item >= 0:
@@ -338,13 +339,13 @@ class TaskLista(QWidget):
                 
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
+                        usuarios[indice]["concluidas"].append(tarefa)
                         tarefas.remove(tarefa)
-                        print(tarefas)
-                self.task_list.takeItem(selected_item)
-                self.user['diarias'] = tarefas
-                users[self.indice]['diarias'] = tarefas
-                load_json.save_file(users)
-                self.status_patente.atualizar_xp(xp)
+                        print("concluidasssssssssssssssss", usuarios[indice]["concluidas"])
+                        print(usuarios)
+
+            self.task_list.takeItem(selected_item)
+            self.status_patente.atualizar_xp(xp, usuarios)
         
         def ver_tarefa(self):
             print(self.ver_tarefa)
