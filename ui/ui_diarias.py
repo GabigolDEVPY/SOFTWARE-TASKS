@@ -341,8 +341,7 @@ class TaskLista(QWidget):
                     if tarefa["id"] == id:
                         usuarios[indice]["concluidas"].append(tarefa)
                         tarefas.remove(tarefa)
-                        print("concluidasssssssssssssssss", usuarios[indice]["concluidas"])
-                        print(usuarios)
+
 
             self.task_list.takeItem(selected_item)
             self.status_patente.atualizar_xp(xp, usuarios)

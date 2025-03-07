@@ -135,25 +135,38 @@ class TelaDireita(QFrame):
         self.centralLayout = QVBoxLayout()
         self.setLayout(self.centralLayout)
         
+        # frame para Tarefas concluidas
+        self.frame_concluidas = framezinho("Concluidas")
+
+        
         # criando os widgets
         
         self.TarefaPrincipal = linha("  Tarefa principal")
-        self.mensagem = linha("  Tarefas concluidas")
         self.widget = widget(indice)
         spacer1 = QSpacerItem(50, 50)
         spacer2 = QSpacerItem(280, 280)
         spacer3 = QSpacerItem(200, 200)
-        self.numero_tarefas = linha("  0")
         
         self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop | Qt.AlignLeft)
         self.centralLayout.addWidget(self.widget, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addItem(spacer1)
-        self.centralLayout.addWidget(self.mensagem, alignment=Qt.AlignCenter | Qt.AlignLeft | Qt.AlignTop)
-        self.centralLayout.addWidget(self.numero_tarefas, alignment=Qt.AlignCenter | Qt.AlignLeft | Qt.AlignTop)
+        self.centralLayout.addWidget(self.frame_concluidas, alignment=Qt.AlignCenter | Qt.AlignLeft | Qt.AlignTop)
+
         self.centralLayout.addItem(spacer2)
 
         self.centralLayout.addItem(spacer3)
 
+class framezinho(QFrame):
+    def __init__(self, texto):
+        super().__init__()
+        self.setStyleSheet("background-color: #23272A;")
+        self.Central_layout = QVBoxLayout()
+        self.setLayout(self.Central_layout)
+        self.setFixedSize(150, 150)
+        self.linha = linha(texto)
+        self.Central_layout.addWidget(self.linha, alignment=Qt.AlignTop | Qt.AlignCenter)
+        
+        
 class Ui_Concluidos(QFrame):
     def __init__(self, expanded, indice):
         super().__init__()
