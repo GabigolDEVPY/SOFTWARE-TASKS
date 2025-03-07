@@ -7,6 +7,7 @@ class Custom_widget(QFrame):
     def __init__(self, nome, id, dificuldade, prioridade, indice, check):
         super().__init__()
         self.setStyleSheet("background-color: #23272A;")
+        self.setMinimumHeight(70)
 
         def verificarXP(dificuldade):
             xp = 0
@@ -26,27 +27,15 @@ class Custom_widget(QFrame):
         self.setLayout(self.central_layout)
         self.Qprioridade = prioridade
         self.dificuldade = dificuldade
-        self.id = id
-
-            
+        self.id = id   
         self.titulo = QLabel(nome)
         self.titulo.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.xp = QLabel(f"XP {verificarXP(self.dificuldade)}  ")
         self.xp.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
-        self.prioridade = QComboBox()
-        self.prioridade.setDisabled(True)
-        self.prioridade.setStyleSheet("border-radius: 5px; font-weight: bold; color: #ffffff;")
-        self.prioridade.setFixedSize(120, 35)
-        self.prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
-        self.muda_cor(self.Qprioridade)
-        self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor(self.prioridade.currentText()))
-    
         self.central_layout.addWidget(self.titulo)     
         self.central_layout.addWidget(self.xp, alignment=Qt.AlignmentFlag.AlignRight)
-        self.central_layout.addWidget(self.prioridade)
-        
-                
-            
+
+
         
         def qual_cor():
             
@@ -54,45 +43,19 @@ class Custom_widget(QFrame):
             xp_value = int(xp_text.split()[1])
             
             if xp_value == 150:
-                self.xp.setStyleSheet("color: #800000; background-color: transparent; font-weight: bold;")
-                
+                self.setStyleSheet("background-color: #800000;")
             elif xp_value == 120:
-                self.xp.setStyleSheet("color: #ff6600; background-color: transparent; font-weight: bold;")
-                
+                self.setStyleSheet("background-color: #ff6600;")
             elif xp_value == 100:
-                self.xp.setStyleSheet("color: #007a0a; background-color: transparent; font-weight: bold;")
-            else:
-                self.xp.setStyleSheet("color: #ffffff; background-color: transparent; font-weight: bold;")  
+                self.setStyleSheet("background-color: #007a0a;")
+
+
                 
         qual_cor()
         
-    def muda_cor(self, opcao):
-        users = load_json.load_file()
-        tarefas = users[self.indice]['diarias']
-        opcao = opcao      
-        for tarefa in tarefas:
-            if tarefa["id"] == self.id:
-                tarefa["prioridade"] = opcao
-                print(tarefa)
-                load_json.save_file(users)
-                break
-        print(opcao)
-        if opcao == "URGENTE":
-            # Mudar a cor de fundo do widget inteiro para vermelho
-            self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff; font-weight: bold;")
-            self.setStyleSheet("background-color: #ff4f4f;")
-            self.prioridade.setCurrentText("URGENTE")
-        elif opcao == "RELEVANTE":
-            # Mudar a cor de fundo do widget inteiro para laranja
-            self.prioridade.setCurrentText("RELEVANTE")
-            self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff; font-weight: bold;")
-            self.setStyleSheet("background-color: #ff934a;")
-        elif opcao == "TRANQUILO":
-            # Mudar a cor de fundo do widget inteiro para verde
-            self.prioridade.setCurrentText("TRANQUILO")
-            self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff; font-weight: bold;")
-            self.setStyleSheet("background-color: #3fff4f;")                
 
+
+        
 class widget(QFrame):
     def __init__(self, indice):
         super().__init__()
@@ -117,8 +80,11 @@ class widget(QFrame):
             print("a principal", principal)
             for tarefa in tarefas:
                 if tarefa["titulo"] == principal:
-                    self.texto.setText(principal)      
-                    
+                    self.texto.setText(principal)
+                    return
+            self.texto.setText("Nenhuma tarefa principal.")      
+            self.marcacao.setStyleSheet("background-color: #5ca300; border-radius: 10px;")  
+            self.setStyleSheet("background-color: #5ca300; border-radius: 20px;")      
         trocar_texto()   
 
 class linha(QLabel):
@@ -136,7 +102,9 @@ class TelaDireita(QFrame):
         self.setLayout(self.centralLayout)
         
         # frame para Tarefas concluidas
+        self.layoutframezinhos = QHBoxLayout()
         self.frame_concluidas = framezinho("Concluidas")
+        self.frame_restantes = framezinho("Restantes")
 
         
         # criando os widgets
@@ -150,7 +118,9 @@ class TelaDireita(QFrame):
         self.centralLayout.addWidget(self.TarefaPrincipal, alignment=Qt.AlignCenter | Qt.AlignTop | Qt.AlignLeft)
         self.centralLayout.addWidget(self.widget, alignment=Qt.AlignCenter | Qt.AlignTop)
         self.centralLayout.addItem(spacer1)
-        self.centralLayout.addWidget(self.frame_concluidas, alignment=Qt.AlignCenter | Qt.AlignLeft | Qt.AlignTop)
+        self.centralLayout.addLayout(self.layoutframezinhos)
+        self.layoutframezinhos.addWidget(self.frame_concluidas, alignment=Qt.AlignCenter)
+        self.layoutframezinhos.addWidget(self.frame_restantes, alignment=Qt.AlignCenter )
 
         self.centralLayout.addItem(spacer2)
 
@@ -181,7 +151,7 @@ class Ui_Concluidos(QFrame):
         
         self.lista = QListWidget()
         self.lista.setFixedSize(610, 740)
-        self.lista.setStyleSheet("background-color: #616161;")
+        self.lista.setStyleSheet("background-color: #2f2f2f;")
         self.lista.setSpacing(10)
         self.tela_direita = TelaDireita(indice)
         
@@ -202,7 +172,6 @@ class Ui_Concluidos(QFrame):
                 item.setSizeHint(widget.sizeHint())
                 self.lista.addItem(item)
                 self.lista.setItemWidget(item, widget)
-                widget.muda_cor(prioridade)
         
         add_tarefas_inicial(self)        
         

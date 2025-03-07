@@ -268,8 +268,11 @@ class widget(QFrame):
             print("a principal", principal)
             for tarefa in tarefas:
                 if tarefa["titulo"] == principal:
-                    self.texto.setText(principal)      
-                    
+                    self.texto.setText(principal)
+                    return      
+            self.texto.setText("Nenhuma tarefa principal.")      
+            self.marcacao.setStyleSheet("background-color: #5ca300; border-radius: 10px;")  
+            self.setStyleSheet("background-color: #5ca300; border-radius: 20px;")             
         trocar_texto()   
             
         
