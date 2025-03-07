@@ -2,10 +2,25 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 5450,
-        "xp_variavel": 450,
-        "diarias": [],
-        "tarefas": [],
+        "xp": 6070,
+        "xp_variavel": 70,
+        "diarias": [
+            {
+                "id": 0,
+                "titulo": "sdsadas",
+                "descrição": "dsadsdasdsdasd",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            }
+        ],
+        "tarefas": [
+            {
+                "text": "dsadsadsadsdas",
+                "status": "Doing",
+                "checked": 1
+            }
+        ],
         "concluidas": [
             {
                 "id": 0,
@@ -38,8 +53,56 @@
                 "dificuldade": "FÁCIL",
                 "prioridade": "RELEVANTE",
                 "checkbox": 1
+            },
+            {
+                "id": 0,
+                "titulo": "dasdasdasds",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 1,
+                "titulo": "dasdasdasdasd",
+                "descrição": "",
+                "dificuldade": "MEDIO",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 2,
+                "titulo": "dasdasdasdsa",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "RELEVANTE",
+                "checkbox": 0
+            },
+            {
+                "id": 3,
+                "titulo": "dasdasdasd",
+                "descrição": "dasdasdas",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 4,
+                "titulo": "asdas",
+                "descrição": "dsadasdsad",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 0,
+                "titulo": "dasdas",
+                "descrição": "dsad",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
             }
         ],
-        "principal": "fdff"
+        "principal": "sdsadas"
     }
 ]
