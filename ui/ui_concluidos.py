@@ -7,50 +7,44 @@ class Custom_widget(QFrame):
     def __init__(self, nome, id, dificuldade, prioridade, indice, check):
         super().__init__()
         self.setStyleSheet("background-color: #23272A;")
+
+        def verificarXP(dificuldade):
+            xp = 0
+            if dificuldade == "DIFÍCIL":
+                xp = 150
+
+            elif dificuldade == "MEDIO":
+                xp = 120
+
+            elif dificuldade == "FÁCIL":
+                xp = 100
+
+            return str(xp)
+        
         self.indice = indice
         self.central_layout = QHBoxLayout()
         self.setLayout(self.central_layout)
         self.Qprioridade = prioridade
         self.dificuldade = dificuldade
         self.id = id
-        self.checkbox = QCheckBox()
-        self.checkbox.setStyleSheet("background-color: #c0c0c0;")
-        self.checkbox.setStyleSheet("background: transparent;")
-        self.checkbox.setFixedWidth(40)
-        if check == 1:
-            self.checkbox.setChecked(True)
-        else:
-            self.checkbox.setChecked(False)
+
             
         self.titulo = QLabel(nome)
         self.titulo.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
-        self.xp = QLabel(f"XP {self.verificarXP(self.dificuldade)}  ")
+        self.xp = QLabel(f"XP {verificarXP(self.dificuldade)}  ")
         self.xp.setStyleSheet("background: transparent; font-weight: bold; font-size: 15px; color: #ffffff;")
         self.prioridade = QComboBox()
+        self.prioridade.setDisabled(True)
         self.prioridade.setStyleSheet("border-radius: 5px; font-weight: bold; color: #ffffff;")
         self.prioridade.setFixedSize(120, 35)
         self.prioridade.addItems(["URGENTE", "RELEVANTE", "TRANQUILO"])
         self.muda_cor(self.Qprioridade)
         self.prioridade.currentIndexChanged.connect(lambda: self.muda_cor(self.prioridade.currentText()))
-        self.central_layout.addWidget(self.checkbox)     
+    
         self.central_layout.addWidget(self.titulo)     
         self.central_layout.addWidget(self.xp, alignment=Qt.AlignmentFlag.AlignRight)
         self.central_layout.addWidget(self.prioridade)
         
-        self.checkbox.stateChanged.connect(lambda: mudar_check(self))
-        
-        def mudar_check(self):
-            print(self.id)
-            users = load_json.load_file()
-            checkedbox = users[self.indice]["diarias"][self.id]["checkbox"]
-            if checkedbox == 0:
-                self.checkbox.setChecked(True)
-                checkedbox = 1
-                users[self.indice]["diarias"][self.id]["checkbox"] = 1
-            else:
-                users[self.indice]["diarias"][self.id]["checkbox"] = 0
-            load_json.save_file(users)
-
                 
             
         
@@ -71,6 +65,33 @@ class Custom_widget(QFrame):
                 self.xp.setStyleSheet("color: #ffffff; background-color: transparent; font-weight: bold;")  
                 
         qual_cor()
+        
+    def muda_cor(self, opcao):
+        users = load_json.load_file()
+        tarefas = users[self.indice]['diarias']
+        opcao = opcao      
+        for tarefa in tarefas:
+            if tarefa["id"] == self.id:
+                tarefa["prioridade"] = opcao
+                print(tarefa)
+                load_json.save_file(users)
+                break
+        print(opcao)
+        if opcao == "URGENTE":
+            # Mudar a cor de fundo do widget inteiro para vermelho
+            self.prioridade.setStyleSheet("background-color: #800000; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #ff4f4f;")
+            self.prioridade.setCurrentText("URGENTE")
+        elif opcao == "RELEVANTE":
+            # Mudar a cor de fundo do widget inteiro para laranja
+            self.prioridade.setCurrentText("RELEVANTE")
+            self.prioridade.setStyleSheet("background-color: #ff6600; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #ff934a;")
+        elif opcao == "TRANQUILO":
+            # Mudar a cor de fundo do widget inteiro para verde
+            self.prioridade.setCurrentText("TRANQUILO")
+            self.prioridade.setStyleSheet("background-color: #007a0a; color: #ffffff; font-weight: bold;")
+            self.setStyleSheet("background-color: #3fff4f;")                
 
 class widget(QFrame):
     def __init__(self, indice):
@@ -137,6 +158,7 @@ class Ui_Concluidos(QFrame):
     def __init__(self, expanded, indice):
         super().__init__()
         self.setStyleSheet("background-color: #23272A; border-radius: 10px;")
+        self.indice = indice
         if expanded:
             self.setFixedSize(1050, 760)
         else:
@@ -153,23 +175,23 @@ class Ui_Concluidos(QFrame):
         self.central_layout.addWidget(self.lista, alignment=Qt.AlignLeft)
         self.central_layout.addWidget(self.tela_direita, alignment=Qt.AlignLeft)
         
-        def add_tarefas_inicial():
+        def add_tarefas_inicial(self):
             users = load_json.load_file()
-            tarefas = users[indice]["diarias"]
-            
+            tarefas = users[indice]["concluidas"]
+
             for tarefa in tarefas:
                 id = tarefa['id']
                 check = tarefa["checkbox"]
                 prioridade = tarefa["prioridade"]
                 difuculdade = tarefa["dificuldade"]
-                item = QListWidgetItem(self.task_list)
+                item = QListWidgetItem(self.lista)
                 widget = Custom_widget(tarefa['titulo'], id, difuculdade, prioridade, self.indice, check)
                 item.setSizeHint(widget.sizeHint())
-                self.task_list.addItem(item)
-                self.task_list.setItemWidget(item, widget)
+                self.lista.addItem(item)
+                self.lista.setItemWidget(item, widget)
                 widget.muda_cor(prioridade)
         
-        add_tarefas_inicial()        
+        add_tarefas_inicial(self)        
         
 
         

@@ -12,7 +12,7 @@ from backend import load_json
 pygame.mixer.init()
 
 # Carregar o som MP3 local
-pygame.mixer.music.load("D:/WINDOWS/PROGRAMACAO_TUDO/SOFTWARE-TASKS/audio.mp3")  # Ajuste o caminho do arquivo
+pygame.mixer.music.load("C:\\Users\\gabig\\Downloads\\SOFTWARE-TASKS-master\\audio.mp3")  # Ajuste o caminho do arquivo
 
 class PomodoroClock(QFrame):
     def __init__(self):
