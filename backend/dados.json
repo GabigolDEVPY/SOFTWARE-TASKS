@@ -2,8 +2,8 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 7040,
-        "xp_variavel": 40,
+        "xp": 7340,
+        "xp_variavel": 340,
         "diarias": [],
         "tarefas": [],
         "concluidas": [
@@ -265,7 +265,7 @@
             },
             {
                 "id": 0,
-                "titulo": "dasdas\ndasd\n",
+                "titulo": "dddddddddd",
                 "descrição": "",
                 "dificuldade": "DIFÍCIL",
                 "prioridade": "URGENTE",
@@ -294,10 +294,26 @@
                 "dificuldade": "DIFÍCIL",
                 "prioridade": "URGENTE",
                 "checkbox": 0
+            },
+            {
+                "id": 0,
+                "titulo": "fffffffffffffFFFF ffffffffffffffffff Ffffffffff",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 0,
+                "titulo": "fddddddddddddddddd\nFffffffffffffffffffffffffffff",
+                "descrição": "",
+                "dificuldade": "DIFÍCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
             }
         ],
         "principal": " ",
-        "feitas": 50,
+        "feitas": 52,
         "restantes": 0
     }
 ]
