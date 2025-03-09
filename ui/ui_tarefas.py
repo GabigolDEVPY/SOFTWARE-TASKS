@@ -117,8 +117,11 @@ class DragDropList(QListWidget):
         
         for list_name in ["ToDo", "Doing", "Done"]:
             list_widget = self.window().findChild(QListWidget, list_name)
+            print(list_widget)
             if list_widget:
+                print(list_widget)
                 for index in range(list_widget.count()):
+                    print(index)
                     item = list_widget.item(index)
                     widget = list_widget.itemWidget(item)
                     if widget:

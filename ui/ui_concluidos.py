@@ -97,14 +97,16 @@ class TelaDireita(QFrame):
     def __init__(self, indice):
         super().__init__()
         self.setMinimumSize(320, 720)
-        self.setStyleSheet("background-color: #2f2f2f; border-radius: 20px;")
+        self.setStyleSheet("background-color: #2C2F33; border-radius: 20px;")
         self.centralLayout = QVBoxLayout()
         self.setLayout(self.centralLayout)
         
         # frame para Tarefas concluidas
         self.layoutframezinhos = QHBoxLayout()
-        self.frame_concluidas = framezinho("Concluidas")
-        self.frame_restantes = framezinho("Restantes")
+        self.frame_concluidas = framezinho("Concluidas", indice)
+        self.frame_concluidas.trocar_concluidas()
+        self.frame_restantes = framezinho("Restantes", indice)
+        self.frame_restantes.trocar_restantes()
 
         
         # criando os widgets
@@ -127,14 +129,27 @@ class TelaDireita(QFrame):
         self.centralLayout.addItem(spacer3)
 
 class framezinho(QFrame):
-    def __init__(self, texto):
+    def __init__(self, texto, indice):
         super().__init__()
+        users = load_json.save_file()
+        user = users[indice]
         self.setStyleSheet("background-color: #23272A;")
         self.Central_layout = QVBoxLayout()
         self.setLayout(self.Central_layout)
         self.setFixedSize(150, 150)
         self.linha = linha(texto)
+        self.quantidade = linha("0")
         self.Central_layout.addWidget(self.linha, alignment=Qt.AlignTop | Qt.AlignCenter)
+        self.Central_layout.addWidget(self.quantidade, alignment=Qt.AlignTop | Qt.AlignCenter)
+        
+        def trocar_concluidas():
+            concluidas = str(user["feitas"])
+            self.linha.setText(concluidas)
+            
+        def trocar_restantes():
+            restantes = str(user["restantes"])
+            self.linha.setText(restantes)
+        
         
         
 class Ui_Concluidos(QFrame):
@@ -151,7 +166,7 @@ class Ui_Concluidos(QFrame):
         
         self.lista = QListWidget()
         self.lista.setFixedSize(610, 740)
-        self.lista.setStyleSheet("background-color: #2f2f2f;")
+        self.lista.setStyleSheet("background-color: #2C2F33;")
         self.lista.setSpacing(10)
         self.tela_direita = TelaDireita(indice)
         
