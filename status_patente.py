@@ -13,6 +13,7 @@ class popUp(QDialog):
         super().__init__()
         self.setFixedSize(300, 300)
         self.setStyleSheet("Background-color: #161616;")
+        self.setModal(True)
         
         #criando componentes
         self.VerticalLayout = QVBoxLayout()
@@ -48,6 +49,8 @@ class statusPatente(QFrame):
         self.indice = indice
         self.setFixedSize(1125, 40)
         self.setStyleSheet("background-color: #f87000 ;")
+
+        # Tornar a QDialog Modal
         
         # criando widgets
         self.labelTitulo = QLabel()
@@ -56,17 +59,17 @@ class statusPatente(QFrame):
         self.XPmenu.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XPmenu.setStyleSheet("border-radius: None; color: #ffffff; background-color: #1b1b1b; font-size: 15px; font-weight: bold;")
         self.XPmenu.setFixedSize(35, 40)
-        
+
         self.XP = QLabel(str(self.xp_user))
         self.XP.setStyleSheet("border-radius: None; background-color: #1b1b1b; color: #ffffff; font-weight: bold; font-size: 15px;")
         self.XP.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.XP.setFixedSize(70, 40)
-        
+
         #criando layout
         self.layoutStatus = QHBoxLayout()
         self.layoutStatus.setContentsMargins(0, 0, 0, 0)
         self.layoutStatus.setSpacing(0)
-        
+
         # criando patente
         self.patente = QLabel()
         self.Pixmap = QPixmap(patentes[0][1])
@@ -76,13 +79,13 @@ class statusPatente(QFrame):
         self.patente.setStyleSheet("border-radius: None; background-color: #1b1b1b")
         self.patente.setScaledContents(True)
         self.patente.setContentsMargins(0, 0, 0, 10)
-        
+
         self.setLayout(self.layoutStatus)
         self.layoutStatus.addWidget(self.labelTitulo, alignment=Qt.AlignLeft)
         self.layoutStatus.addWidget(self.XPmenu, alignment=Qt.AlignRight)
         self.layoutStatus.addWidget(self.XP)
         self.layoutStatus.addWidget(self.patente)
-        
+
         self.patente_inicial()
         
     def patente_inicial(self):

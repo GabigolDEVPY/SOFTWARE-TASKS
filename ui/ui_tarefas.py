@@ -246,10 +246,13 @@ class MainWindow(QFrame):
 
     def open_add_task_dialog(self):
         dialog = AddTaskDialog(self)
+        users = load_json.load_file()
         if dialog.exec():
             task_text = dialog.task_input.toPlainText()
             if task_text:
                 self.add_task(self.todo_list, task_text, "#FF5733")
+                users[self.indice]["restantes"] =+ 1
+                load_json.save_file(users)
                 self.todo_list.save_tasks()
 
     def add_task(self, list_widget, text, color, checked=False):  # Adiciona parâmetro checked
@@ -263,9 +266,23 @@ class MainWindow(QFrame):
         if self.last_active_list is not None:
             current_item = self.last_active_list.currentItem()
             if current_item is not None:
-                self.statusPatente.atualizar_xp(100)
+                widget = self.last_active_list.itemWidget(current_item)
+                text = widget.text
                 self.last_active_list.takeItem(self.last_active_list.row(current_item))
                 self.last_active_list.save_tasks()  # Salva as alterações no JSON
+                users = load_json.load_file()
+                user = users[self.indice]
+                user["feitas"] += 1
+                user["restantes"] -= 1
+                user["concluidas"].append({
+                "id": 0,
+                "titulo": text,
+                "descrição": "",
+                "dificuldade": "DIFÍCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            })
+                self.statusPatente.atualizar_xp(200, users)
                 return
 
     def delete_selected_task(self):

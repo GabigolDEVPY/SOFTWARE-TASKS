@@ -115,6 +115,7 @@ class dialog_tarefa(QDialog):
                     "prioridade": self.qual_prioridade.currentText(),
                     "checkbox": 0
                     })
+                users[self.indice]["restantes"] += 1
                 load_json.save_file(users)
                 print(users)
                 self.ver_tarefa = 0
@@ -341,6 +342,7 @@ class TaskLista(QWidget):
                     if tarefa["id"] == id:
                         usuarios[indice]["concluidas"].append(tarefa)
                         usuarios[indice]["feitas"] += 1
+                        usuarios[indice]["restantes"] += -1
                         tarefas.remove(tarefa)
 
 

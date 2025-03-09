@@ -167,7 +167,7 @@ class Ui_Concluidos(QFrame):
         self.lista = QListWidget()
         self.lista.setFixedSize(610, 740)
         self.lista.setStyleSheet("background-color: #2C2F33;")
-        self.lista.setSpacing(10)
+        self.lista.setSpacing(15)
         self.tela_direita = TelaDireita(indice)
         
         self.central_layout.addWidget(self.lista, alignment=Qt.AlignLeft)
