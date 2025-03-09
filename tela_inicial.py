@@ -71,7 +71,7 @@ class janela_principal(QMainWindow):
             self.Vlayout.removeWidget(self.widgetcentro)
             self.widgetcentro.deleteLater()
             
-            self.widgetcentro = Ui_inicio(self.expanded)
+            self.widgetcentro = Ui_inicio(self.expanded, self.indice)
             self.Vlayout.addWidget(self.widgetcentro)
             self.status_patente.labelTitulo.setText("   INÍCIO")
             
@@ -109,7 +109,7 @@ class janela_principal(QMainWindow):
         # criando status patente
         self.status_patente = statusPatente(user, indice)
         
-        self.widgetcentro = Ui_inicio(self.expanded)
+        self.widgetcentro = Ui_inicio(self.expanded, self.indice)
         self.status_patente.labelTitulo.setText("   INÍCIO")
         # criando a sidebar
         self.sideBar = Sidebar(self.status_patente)
