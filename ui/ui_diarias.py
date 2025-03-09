@@ -340,6 +340,7 @@ class TaskLista(QWidget):
                 for tarefa in tarefas:
                     if tarefa["id"] == id:
                         usuarios[indice]["concluidas"].append(tarefa)
+                        usuarios[indice]["feitas"] += 1
                         tarefas.remove(tarefa)
 
 

@@ -2,13 +2,22 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 0,
-        "xp_variavel": 0,
+        "xp": 100,
+        "xp_variavel": 100,
         "diarias": [],
         "tarefas": [],
-        "concluidas": [],
+        "concluidas": [
+            {
+                "id": 0,
+                "titulo": "gariel",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            }
+        ],
         "principal": " ",
-        "feitas": 0,
+        "feitas": 1,
         "restantes": 0
     }
 ]

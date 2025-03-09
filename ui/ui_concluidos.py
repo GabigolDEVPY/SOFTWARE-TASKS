@@ -131,8 +131,8 @@ class TelaDireita(QFrame):
 class framezinho(QFrame):
     def __init__(self, texto, indice):
         super().__init__()
-        users = load_json.save_file()
-        user = users[indice]
+        users = load_json.load_file()
+        self.user = users[indice]
         self.setStyleSheet("background-color: #23272A;")
         self.Central_layout = QVBoxLayout()
         self.setLayout(self.Central_layout)
@@ -142,13 +142,13 @@ class framezinho(QFrame):
         self.Central_layout.addWidget(self.linha, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.Central_layout.addWidget(self.quantidade, alignment=Qt.AlignTop | Qt.AlignCenter)
         
-        def trocar_concluidas():
-            concluidas = str(user["feitas"])
-            self.linha.setText(concluidas)
-            
-        def trocar_restantes():
-            restantes = str(user["restantes"])
-            self.linha.setText(restantes)
+    def trocar_concluidas(self):
+        concluidas = str(self.user["feitas"])
+        self.quantidade.setText(concluidas)
+        
+    def trocar_restantes(self):
+        restantes = str(self.user["restantes"])
+        self.quantidade.setText(restantes)
         
         
         
