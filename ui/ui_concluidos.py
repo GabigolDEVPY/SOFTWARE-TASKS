@@ -64,11 +64,13 @@ class widget(QFrame):
         self.marcacao = QFrame()
         self.marcacao.setFixedSize(20, 20)
         self.marcacao.setStyleSheet("background-color: #d70000; border-radius: 10px;")
+        self.spacer =QSpacerItem(5, 5)
         self.texto = QTextEdit()
         self.texto.setReadOnly(True)
         self.texto.setStyleSheet("font-weight: bold; font-size: 15px;")
         self.centralLayout = QHBoxLayout()
         self.setLayout(self.centralLayout)
+        self.centralLayout.addItem(self.spacer)
         self.centralLayout.addWidget(self.texto, alignment=Qt.AlignCenter)
         self.centralLayout.addWidget(self.marcacao, alignment=Qt.AlignRight)
         

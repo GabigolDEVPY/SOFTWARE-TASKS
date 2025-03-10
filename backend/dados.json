@@ -2,9 +2,34 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 7340,
+        "xp": 50340,
         "xp_variavel": 340,
-        "diarias": [],
+        "diarias": [
+            {
+                "id": 0,
+                "titulo": "ddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 1,
+                "titulo": "ddddddddddddddddddddddddddddddddddddddddd",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            },
+            {
+                "id": 2,
+                "titulo": "gabrielooooooooooooooooooooooooooooooooooooooooooooooooo",
+                "descrição": "",
+                "dificuldade": "FÁCIL",
+                "prioridade": "URGENTE",
+                "checkbox": 0
+            }
+        ],
         "tarefas": [],
         "concluidas": [
             {
@@ -312,8 +337,8 @@
                 "checkbox": 0
             }
         ],
-        "principal": " ",
+        "principal": "gabrielooooooooooooooooooooooooooooooooooooooooooooooooo",
         "feitas": 52,
-        "restantes": 0
+        "restantes": 3
     }
 ]
