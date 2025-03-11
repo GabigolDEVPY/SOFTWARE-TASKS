@@ -3,12 +3,37 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from backend import load_json
 import os
+from datetime import datetime
+
+
 
 local = os.path.dirname(os.path.abspath(__file__))
 raiz = os.path.dirname(local)  # Volta uma pasta
 local_patentes = os.path.join(raiz, "icons")
 patentes = [(i * 1000, os.path.join(local_patentes, f"Prancheta {i + 1}.png")) for i in range(111)]
 
+class framezinho(QFrame):
+    def __init__(self, texto, indice):
+        super().__init__()
+        users = load_json.load_file()
+        self.user = users[indice]
+        self.setStyleSheet("background-color: #23272A;")
+        self.Central_layout = QVBoxLayout()
+        self.setLayout(self.Central_layout)
+        self.setFixedSize(150, 150)
+        self.linha = linha(texto, 18)
+        self.quantidade = linha("0", 18)
+        self.Central_layout.addWidget(self.linha, alignment=Qt.AlignTop | Qt.AlignCenter)
+        self.Central_layout.addWidget(self.quantidade, alignment=Qt.AlignTop | Qt.AlignCenter)
+        
+    def trocar_concluidas(self):
+        concluidas = str(self.user["feitas"])
+        self.quantidade.setText(concluidas)
+        
+    def trocar_restantes(self):
+        restantes = str(self.user["restantes"])
+        self.quantidade.setText(restantes)
+        
 class botoes(QPushButton):
     def __init__(self, nome, altura, largura):
         super().__init__()
@@ -16,15 +41,21 @@ class botoes(QPushButton):
         self.setText(nome)
         self.setFixedSize(largura, altura)
         
-class frame_botoes(QHBoxLayout):
+class frame_botoes(QGridLayout):
     def __init__(self):
         super().__init__()
-        self.botao = botoes("CONCLUIR", 60, 180)
-        self.botao2 = botoes("CONCLUIR", 60, 180)
-        self.botao3 = botoes("CONCLUIR", 60, 180)
-        self.addWidget(self.botao)
-        self.addWidget(self.botao2)
-        self.addWidget(self.botao3)
+        self.botao = botoes("RESGATAR", 60, 180)
+        self.botao2 = botoes("MOTIVAÇÃO", 60, 180)
+        self.botao3 = botoes("ALARME", 60, 180)
+        self.resgatar = linha("Resgatar xp", 15)
+        self.motivacao = linha("Selecionar motivação", 15)
+        self.alarme = linha("Selecionar alarme", 15)
+        self.addWidget(self.botao, 1, 1)
+        self.addWidget(self.botao2, 1, 2)
+        self.addWidget(self.botao3, 1, 3)
+        self.addWidget(self.resgatar, 0, 1)
+        self.addWidget(self.motivacao, 0, 2)
+        self.addWidget(self.alarme, 0, 3)
 
 class widget(QFrame):
     def __init__(self, indice):
@@ -105,9 +136,9 @@ class BarraDeXP(QWidget):
         self.progress.setFormat(f"{self.get_porcentagem()}%")
 
 class linha(QLabel):
-    def __init__(self, texto):
+    def __init__(self, texto, tamanho):
         super().__init__()
-        self.setStyleSheet("color: white; font-size: 19px; font-weight: bold ;")
+        self.setStyleSheet(f"color: white; font-size: {tamanho}px; font-weight: bold ;")
         self.setText(texto)
 
 class framedireita(QFrame):
@@ -120,13 +151,15 @@ class framedireita(QFrame):
         
         # frame para coisas do XP
         self.frameXP = QFrame()
-        self.frameXP.setFixedSize(330, 140)
+        self.frameXP.setFixedSize(330, 190)
         self.layout_xp  = QVBoxLayout()
         self.frameXP.setLayout(self.layout_xp)
         self.frameXP.setStyleSheet("background-color: #23272A; border-radius: 10px;")
         self.progres_bar = BarraDeXP(int(self.user["xp_variavel"]))
-        self.xp_total = linha("XP TOTAL")
-        self.xp = linha(str(self.user["xp"]))
+        self.xp_total = linha("XP TOTAL", 18)
+        self.xp = linha(str(self.user["xp"]), 18)
+        self.texto_nivel = linha("NÍVEL", 18)
+        self.layout_xp.addWidget(self.texto_nivel, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.layout_xp.addWidget(self.progres_bar, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.layout_xp.addWidget(self.xp_total, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.layout_xp.addWidget(self.xp, alignment=Qt.AlignTop | Qt.AlignCenter)
@@ -135,21 +168,19 @@ class framedireita(QFrame):
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
 
-        self.texto_nivel = linha("NÍVEL")
         self.Patente = QLabel()
         self.Patente.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
-        self.Patente.setFixedSize(290, 290)
+        self.Patente.setFixedSize(240, 240)
         self.Patente.setScaledContents(True)
-        self.proxima_patente = linha("PRÓXIMA PATENTE")
+        self.proxima_patente = linha("Próxima patente", 18)
         self.Next_patente = QLabel()
         self.Next_patente.setFixedSize(130, 130)
         self.Next_patente.setScaledContents(True)
         
         
-        self.central_layout.addWidget(self.texto_nivel, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.central_layout.addWidget(self.frameXP, alignment=Qt.AlignTop | Qt.AlignCenter)
         self.central_layout.addWidget(self.Patente, alignment=Qt.AlignTop | Qt.AlignCenter)
-        self.central_layout.addWidget(self.proxima_patente, alignment=Qt.AlignTop | Qt.AlignCenter)
+        self.central_layout.addWidget(self.proxima_patente, alignment=Qt.AlignBottom | Qt.AlignCenter)
         self.central_layout.addWidget(self.Next_patente, alignment=Qt.AlignTop | Qt.AlignCenter)
 
         self.patente_inicial()  
@@ -172,18 +203,31 @@ class frameesquerda(QFrame):
         self.setStyleSheet("background-color: #2C2F33; border-radius: 10px;")
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
-        self.texto_principal = linha("    Tarefa Principal")
+        self.texto_principal = linha("    Tarefa Principal", 18)
         self.tarefa_principal = widget(indice)
         self.frame_botoes = frame_botoes()
-        self.spacer = QSpacerItem(510, 510)
+        self.spacer = QSpacerItem(50, 50)
+        self.spacer2 = QSpacerItem(50, 50)
+        self.spacer3 = QSpacerItem(250, 250)
         
         
+        self.layout_frames = QHBoxLayout()
+        self.concluidas = framezinho("Concluídas", indice)
+        self.concluidas.trocar_concluidas()
+        self.restantes = framezinho("Restantes", indice)
+        self.restantes.trocar_restantes()
+        
+        self.layout_frames.addWidget(self.concluidas)
+        self.layout_frames.addWidget(self.restantes)
         
         
         self.central_layout.addWidget(self.texto_principal, alignment=Qt.AlignTop | Qt.AlignLeft)
         self.central_layout.addWidget(self.tarefa_principal, alignment=Qt.AlignTop | Qt.AlignCenter)
-        self.central_layout.addLayout(self.frame_botoes)
         self.central_layout.addItem(self.spacer)
+        self.central_layout.addLayout(self.frame_botoes)
+        self.central_layout.addItem(self.spacer2)
+        self.central_layout.addLayout(self.layout_frames)
+        self.central_layout.addItem(self.spacer3)
 
 
 
@@ -194,6 +238,10 @@ class Ui_inicio(QFrame):
             self.setFixedSize(1050, 760)
         else:
             self.setFixedSize(1125, 760)
+        hora_agora = datetime.now()
+        print(hora_agora)    
+            
+            
         self.setStyleSheet("background-color: #23272A; border-radius: 10px;")
         self.Central_layout = QHBoxLayout()
         self.Central_layout.setSpacing(10)
