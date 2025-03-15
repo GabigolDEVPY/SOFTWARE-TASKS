@@ -4,6 +4,11 @@ import re
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from datetime import datetime
+
+hora_agora = str(datetime.now())
+hora = str(hora_agora[:10])
+
 
 def verificar_login(self, login, senha):
     users = load_json.load_file()
@@ -68,7 +73,8 @@ def cadastrar(self, login, senha):
             "concluidas": [],
             "principal": " ",
             "feitas": 0,
-            "restantes": 0
+            "restantes": 0,
+            "ultimo-login": hora
         }
     )
     self.mensagemStatus.configstyle("Usuário cadastrado com sucesso", 12, "b7ff44")

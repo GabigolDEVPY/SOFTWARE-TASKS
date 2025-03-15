@@ -10,7 +10,37 @@ from datetime import datetime
 local = os.path.dirname(os.path.abspath(__file__))
 raiz = os.path.dirname(local)  # Volta uma pasta
 local_patentes = os.path.join(raiz, "icons")
+xp = os.path.join(raiz, "backgrounds", "xp.png")
+print("caminhoooooooooooooo",xp)
 patentes = [(i * 1000, os.path.join(local_patentes, f"Prancheta {i + 1}.png")) for i in range(111)]
+
+class resgatar_xp(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setFixedSize(400, 450)
+        self.setWindowModality(Qt.ApplicationModal)
+        self.central_layout = QVBoxLayout()
+        self.setLayout(self.central_layout)
+        self.label = linha("Resgatar XP", 20)
+        self.labelXP = linha("XP 500", 20)
+        self.botao = botoes("Resgatar", 50, 180)
+        self.central_layout.addWidget(self.label, alignment=Qt.AlignTop | Qt.AlignCenter)
+        self.xpicone = QLabel()
+        self.xpicone.setAlignment(Qt.AlignCenter) 
+        self.xpicone.setScaledContents(True)
+        self.xpicone.setFixedSize(150, 110) 
+        self.Opixmap = QPixmap(xp)
+        self.xpicone.setPixmap(self.Opixmap)
+        
+        self.central_layout.addWidget(self.xpicone, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.central_layout.addWidget(self.labelXP, alignment=Qt.AlignCenter | Qt.AlignTop)
+        self.central_layout.addWidget(self.botao, alignment=Qt.AlignCenter | Qt.AlignTop)
+        
+        self.botao.clicked.connect(lambda: self.close())
+        
+        # Exibir a janela
+        self.show()
+        self.exec()
 
 class framezinho(QFrame):
     def __init__(self, texto, indice):
@@ -42,9 +72,16 @@ class botoes(QPushButton):
         self.setFixedSize(largura, altura)
         
 class frame_botoes(QGridLayout):
-    def __init__(self):
+    def __init__(self, indice, status_patente):
+        
+        self.status_patente = status_patente
+        self.users = load_json.load_file()
+        self.hora_recompensa = self.users[indice]["ultimo-login"]
+        self.users[indice]["ultimo-login"] = str(datetime.now())[:10]
+        load_json.save_file(self.users)
         super().__init__()
-        self.botao = botoes("RESGATAR", 60, 180)
+        
+        self.botao = botoes(" RESGATAR", 60, 180)
         self.botao2 = botoes("MOTIVAÇÃO", 60, 180)
         self.botao3 = botoes("ALARME", 60, 180)
         self.resgatar = linha("Resgatar xp", 15)
@@ -56,7 +93,18 @@ class frame_botoes(QGridLayout):
         self.addWidget(self.resgatar, 0, 1)
         self.addWidget(self.motivacao, 0, 2)
         self.addWidget(self.alarme, 0, 3)
-
+        
+        self.botao.clicked.connect(self.resgatar_xp)
+        
+    def resgatar_xp(self):
+        print("Ta chamando")
+        if self.hora_recompensa != str(datetime.now())[:10]:
+            print("hora recompensa")
+            self.hora_recompensa = str(datetime.now())[:10]
+            self.status_patente.atualizar_xp(500, self.users)
+            resgatar_xp()
+        
+        
 class widget(QFrame):
     def __init__(self, indice):
         super().__init__()
@@ -197,15 +245,16 @@ class framedireita(QFrame):
                 break
         
 class frameesquerda(QFrame):
-    def __init__(self, indice):
+    def __init__(self, indice, status_patente):
         super().__init__()
+
         self.setFixedSize(650, 740)
         self.setStyleSheet("background-color: #2C2F33; border-radius: 10px;")
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
         self.texto_principal = linha("    Tarefa Principal", 18)
         self.tarefa_principal = widget(indice)
-        self.frame_botoes = frame_botoes()
+        self.frame_botoes = frame_botoes(indice, status_patente)
         self.spacer = QSpacerItem(50, 50)
         self.spacer2 = QSpacerItem(50, 50)
         self.spacer3 = QSpacerItem(250, 250)
@@ -232,21 +281,20 @@ class frameesquerda(QFrame):
 
 
 class Ui_inicio(QFrame):
-    def __init__(self, expanded, indice):
+    def __init__(self, expanded, indice, status_patente):
         super().__init__()
         if expanded:
             self.setFixedSize(1050, 760)
         else:
             self.setFixedSize(1125, 760)
-        hora_agora = datetime.now()
-        print(hora_agora)    
+            
             
             
         self.setStyleSheet("background-color: #23272A; border-radius: 10px;")
         self.Central_layout = QHBoxLayout()
         self.Central_layout.setSpacing(10)
         self.setLayout(self.Central_layout)
-        self.frame_esquerda = frameesquerda(indice)
+        self.frame_esquerda = frameesquerda(indice, status_patente)
         self.frame_direita = framedireita(indice)
         self.spacer = QSpacerItem(30, 30)
         
