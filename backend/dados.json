@@ -2,8 +2,8 @@
     {
         "login": "gabriel",
         "senha": "@Gabriel12",
-        "xp": 4500,
-        "xp_variavel": 500,
+        "xp": 5000,
+        "xp_variavel": 0,
         "diarias": [],
         "tarefas": [],
         "concluidas": [],
