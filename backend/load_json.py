@@ -2,21 +2,11 @@ import os
 import json
 from cryptography.fernet import Fernet
 
-# === GERAÇÃO OU CARREGAMENTO DA CHAVE SECRETA ===
+# === CHAVE EMBUTIDA DIRETO NO CÓDIGO ===
+# Isso aqui é tipo tatuagem no código: "Gabi e Moranguinha para sempre" 😍
+CHAVE_FIXA = b"9IUXyHhJ8mWd1LGL3PnGAnV9h31uxBu3TUfsM1PcRpM="
 
-# Caminho onde a chave vai ser armazenada
-chave_path = os.path.join(os.path.dirname(__file__), "chave.key")
-
-# Se a chave ainda não existir, cria e salva
-if not os.path.exists(chave_path):
-    key = Fernet.generate_key()
-    with open(chave_path, "wb") as key_file:
-        key_file.write(key)
-else:
-    with open(chave_path, "rb") as key_file:
-        key = key_file.read()
-
-fernet = Fernet(key)
+fernet = Fernet(CHAVE_FIXA)
 
 # === DEFININDO CAMINHOS DE ARQUIVOS ===
 
