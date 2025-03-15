@@ -14,6 +14,7 @@ class janela_principal(QMainWindow):
     def __init__(self, user, indice):
         super().__init__()
         self.expanded = False
+        self.setWindowTitle("TELA INICIAL")
         print(user)
         def mudar_tamanhos(self):
             """Anima a mudança de tamanho de `widgetcentro` e `status_patente` ao mesmo tempo, mas com tamanhos diferentes."""

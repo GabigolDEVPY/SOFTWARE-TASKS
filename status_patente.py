@@ -12,6 +12,7 @@ class popUp(QDialog):
     def __init__(self, id, numero):
         super().__init__()
         self.setFixedSize(300, 300)
+        self.setWindowTitle("Novo Nível")
         self.setStyleSheet("Background-color: #161616;")
         self.setModal(True)
         

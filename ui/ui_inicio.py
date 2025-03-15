@@ -18,6 +18,7 @@ class resgatar_xp(QDialog):
     def __init__(self):
         super().__init__()
         self.setFixedSize(400, 450)
+        self.setWindowTitle("RESGATAR XP DIÁRIO")
         self.setWindowModality(Qt.ApplicationModal)
         self.central_layout = QVBoxLayout()
         self.setLayout(self.central_layout)
@@ -73,26 +74,20 @@ class botoes(QPushButton):
         
 class frame_botoes(QGridLayout):
     def __init__(self, indice, status_patente):
+        super().__init__()
         
         self.status_patente = status_patente
         self.users = load_json.load_file()
         self.hora_recompensa = self.users[indice]["ultimo-login"]
         self.users[indice]["ultimo-login"] = str(datetime.now())[:10]
         load_json.save_file(self.users)
-        super().__init__()
         
+        self.spacer = QSpacerItem(50, 50)
         self.botao = botoes(" RESGATAR", 60, 180)
-        self.botao2 = botoes("MOTIVAÇÃO", 60, 180)
-        self.botao3 = botoes("ALARME", 60, 180)
         self.resgatar = linha("Resgatar xp", 15)
-        self.motivacao = linha("Selecionar motivação", 15)
-        self.alarme = linha("Selecionar alarme", 15)
-        self.addWidget(self.botao, 1, 1)
-        self.addWidget(self.botao2, 1, 2)
-        self.addWidget(self.botao3, 1, 3)
-        self.addWidget(self.resgatar, 0, 1)
-        self.addWidget(self.motivacao, 0, 2)
-        self.addWidget(self.alarme, 0, 3)
+        self.addItem(self.spacer, 3, 1)
+        self.addWidget(self.resgatar, 1, 1)
+        self.addWidget(self.botao, 2, 1)
         
         self.botao.clicked.connect(self.resgatar_xp)
         
@@ -255,12 +250,12 @@ class frameesquerda(QFrame):
         self.texto_principal = linha("    Tarefa Principal", 18)
         self.tarefa_principal = widget(indice)
         self.frame_botoes = frame_botoes(indice, status_patente)
-        self.spacer = QSpacerItem(50, 50)
-        self.spacer2 = QSpacerItem(50, 50)
-        self.spacer3 = QSpacerItem(250, 250)
+        self.spacer2 = QSpacerItem(150, 150)
+        self.spacer3 = QSpacerItem(300, 300)
         
         
         self.layout_frames = QHBoxLayout()
+        self.layout_frames.addLayout(self.frame_botoes)
         self.concluidas = framezinho("Concluídas", indice)
         self.concluidas.trocar_concluidas()
         self.restantes = framezinho("Restantes", indice)
@@ -272,10 +267,8 @@ class frameesquerda(QFrame):
         
         self.central_layout.addWidget(self.texto_principal, alignment=Qt.AlignTop | Qt.AlignLeft)
         self.central_layout.addWidget(self.tarefa_principal, alignment=Qt.AlignTop | Qt.AlignCenter)
-        self.central_layout.addItem(self.spacer)
-        self.central_layout.addLayout(self.frame_botoes)
-        self.central_layout.addItem(self.spacer2)
         self.central_layout.addLayout(self.layout_frames)
+        self.central_layout.addItem(self.spacer2)
         self.central_layout.addItem(self.spacer3)
 
 

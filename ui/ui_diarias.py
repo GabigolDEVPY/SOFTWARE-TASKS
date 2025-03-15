@@ -9,6 +9,7 @@ class ver(QDialog):
         super().__init__()
         self.setWindowFlags(Qt.WindowTitleHint)
         self.setStyleSheet("background-color: #1b1b1b;")
+        self.setWindowTitle("Ver Tarefa")
         self.centrallayout = QVBoxLayout()
         self.setLayout(self.centrallayout)
         self.titulo = QLabel("DESCRIÇÃO")  
@@ -34,6 +35,7 @@ class dialog_tarefa(QDialog):
     def __init__(self, lista, user, indice):
         super().__init__()
         self.setWindowFlags(Qt.WindowTitleHint)
+        self.setWindowTitle("Adicionar tarefa")
         self.user = user
         self.tarefas = user['diarias']
         self.indice = indice

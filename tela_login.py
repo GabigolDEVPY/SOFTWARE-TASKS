@@ -138,6 +138,7 @@ class login(QFrame):
 class tela_principal(QFrame):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("TELA LOGIN")
         
         # Aplicando a imagem de fundo ao QFrame da tela principal
         image_path = os.path.join(local_bg, "1.png")  # Ajuste a extensão correta!
